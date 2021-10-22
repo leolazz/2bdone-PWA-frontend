@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "2bdone-PWA",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
