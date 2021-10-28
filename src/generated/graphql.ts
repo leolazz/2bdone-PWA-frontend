@@ -97,7 +97,7 @@ export type Task = {
   title?: Maybe<Scalars['String']>;
 };
 
-export type CreateTaskWithoutProjectMutationVariables = Exact<{
+export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
   createdDate: Scalars['String'];
   endDate: Scalars['String'];
@@ -107,10 +107,10 @@ export type CreateTaskWithoutProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateTaskWithoutProjectMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined } };
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined } };
 
-export const CreateTaskWithoutProjectDocument = gql`
-    mutation createTaskWithoutProject($title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean = false, $details: String, $outcomes: String) {
+export const CreateTaskDocument = gql`
+    mutation createTask($title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean = false, $details: String, $outcomes: String) {
   createTask(
     createTaskDto: {title: $title, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted, details: $details, outcomes: $outcomes}
   ) {
@@ -131,8 +131,8 @@ export const CreateTaskWithoutProjectDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class CreateTaskWithoutProjectGQL extends Apollo.Mutation<CreateTaskWithoutProjectMutation, CreateTaskWithoutProjectMutationVariables> {
-    document = CreateTaskWithoutProjectDocument;
+  export class CreateTaskGQL extends Apollo.Mutation<CreateTaskMutation, CreateTaskMutationVariables> {
+    document = CreateTaskDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
