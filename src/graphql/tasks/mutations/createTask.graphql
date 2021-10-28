@@ -1,0 +1,30 @@
+mutation createTaskWithoutProject(
+  $title: String!
+  $createdDate: String!
+  $endDate: String!
+  $isCompleted: Boolean = false
+  $details: String
+  $outcomes: String
+) {
+  createTask(
+    createTaskDto: {
+      title: $title
+      createdDate: $createdDate
+      endDate: $endDate
+      isCompleted: $isCompleted
+      details: $details
+      outcomes: $outcomes
+    }
+  ) {
+    id
+    title
+    details
+    createdDate
+    endDate
+    outcomes
+    isCompleted
+    project {
+      title
+    }
+  }
+}
