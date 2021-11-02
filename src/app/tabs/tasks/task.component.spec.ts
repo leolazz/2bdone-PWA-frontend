@@ -1,24 +1,26 @@
-// import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-// import { IonicModule } from '@ionic/angular';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { IonicModule } from '@ionic/angular';
 
-// import { TaskComponent } from './task.component';
+import { TaskPage } from './task.component';
 
-// describe('TaskComponent', () => {
-//   let component: TaskComponent;
-//   let fixture: ComponentFixture<TaskComponent>;
+describe('TaskPage', () => {
+  let component: TaskPage;
+  let fixture: ComponentFixture<TaskPage>;
 
-//   beforeEach(waitForAsync(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [ TaskComponent ],
-//       imports: [IonicModule.forRoot()]
-//     }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TaskPage],
+        imports: [IonicModule.forRoot()],
+      }).compileComponents();
 
-//     fixture = TestBed.createComponent(TaskComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   }));
+      fixture = TestBed.createComponent(TaskPage);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    })
+  );
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
