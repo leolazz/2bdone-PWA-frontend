@@ -1,0 +1,15 @@
+query allTasksLimit($limit: Int!) {
+  allTasksLimit(limit: $limit) {
+    id
+    title
+    createdDate
+    endDate
+    isCompleted
+    projectId
+    outcomes
+    details
+    project {
+      title
+    }
+  }
+}

@@ -76,7 +76,13 @@ export type Query = {
   __typename?: 'Query';
   allProjects: Array<Project>;
   allTasks: Array<Task>;
+  allTasksLimit: Array<Task>;
   findOneProjectById: Project;
+};
+
+
+export type QueryAllTasksLimitArgs = {
+  limit: Scalars['Int'];
 };
 
 
@@ -109,6 +115,13 @@ export type CreateTaskMutationVariables = Exact<{
 
 export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined } };
 
+export type AllTasksLimitQueryVariables = Exact<{
+  limit: Scalars['Int'];
+}>;
+
+
+export type AllTasksLimitQuery = { __typename?: 'Query', allTasksLimit: Array<{ __typename?: 'Task', id: string, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined }> };
+
 export const CreateTaskDocument = gql`
     mutation createTask($title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean = false, $details: String, $outcomes: String) {
   createTask(
@@ -133,6 +146,34 @@ export const CreateTaskDocument = gql`
   })
   export class CreateTaskGQL extends Apollo.Mutation<CreateTaskMutation, CreateTaskMutationVariables> {
     document = CreateTaskDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AllTasksLimitDocument = gql`
+    query allTasksLimit($limit: Int!) {
+  allTasksLimit(limit: $limit) {
+    id
+    title
+    createdDate
+    endDate
+    isCompleted
+    projectId
+    outcomes
+    details
+    project {
+      title
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AllTasksLimitGQL extends Apollo.Query<AllTasksLimitQuery, AllTasksLimitQueryVariables> {
+    document = AllTasksLimitDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
