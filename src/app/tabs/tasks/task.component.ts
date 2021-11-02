@@ -1,14 +1,15 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AllTasksLimitQuery } from '../../generated/graphql';
-import { TaskService } from '../services/task/task.service';
+import { AllTasksLimitQuery } from '../../../generated/graphql';
+
+import { TaskService } from '../../services/task/task.service';
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss'],
 })
-export class TaskComponent implements OnInit, OnDestroy {
+export class TaskPage implements OnInit, OnDestroy {
   private tasksLoading: boolean = false;
   public tasks: AllTasksLimitQuery['allTasksLimit'] = [];
   private subscriptions: Array<Subscription> = [];
