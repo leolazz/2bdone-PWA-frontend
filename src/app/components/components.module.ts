@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-
+import { TaskCardComponent } from './task-card/task-card.component';
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
+  declarations: [TaskCardComponent],
+  imports: [CommonModule, IonicModule],
+  exports: [TaskCardComponent],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

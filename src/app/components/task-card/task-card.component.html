@@ -1,0 +1,31 @@
+<ion-card *ngFor="let task of tasks">
+  <ion-item class="ion-activated">
+    <ion-card-header>
+      <ion-card-subtitle>{{ task?.project.title }}</ion-card-subtitle>
+      <ion-card-title>{{ task?.title.toUpperCase() }}</ion-card-title>
+      <ion-card-content>{{ task?.details }}</ion-card-content>
+    </ion-card-header>
+    <ion-card-content>
+      {{ task?.details }}
+    </ion-card-content>
+  </ion-item>
+
+  <ion-footer>
+    <ion-row>
+      <ion-col center text-center>
+        <ion-icon name="alert-outline"></ion-icon>
+        <div>{{ task?.outcomes }}</div>
+      </ion-col>
+      <ion-col>
+        <ion-icon name="time"></ion-icon>
+        <div>Created: {{ task?.createdDate }}</div>
+      </ion-col>
+      <ion-col center text-center>
+        <ion-icon name="alarm-outline"></ion-icon>
+        <div>
+          <div>Deadline: {{ task?.endDate }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+</ion-card>

@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AllTasksLimitQuery } from '../../../generated/graphql';
 
@@ -16,7 +24,9 @@ export class TaskPage implements OnInit, OnDestroy {
 
   constructor(
     private taskService: TaskService,
-    private changeRef: ChangeDetectorRef
+    private changeRef: ChangeDetectorRef,
+    private router: Router,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -37,4 +47,7 @@ export class TaskPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((x) => x.unsubscribe());
   }
+  // goToAddTask() {
+  //   this.navCtrl.navigateForward('add-task');
+  // }
 }

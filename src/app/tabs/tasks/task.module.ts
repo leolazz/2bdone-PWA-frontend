@@ -5,9 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TaskPage } from './task.component';
 import { TaskTabRoutingModule } from './tasks.tab-routing.module';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, TaskTabRoutingModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    TaskTabRoutingModule,
+    ComponentsModule,
+  ],
   declarations: [TaskPage],
   exports: [TaskPage],
 })

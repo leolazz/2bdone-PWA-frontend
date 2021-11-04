@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddTaskPage } from '../pages/add-task/add-task.page';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -23,9 +24,11 @@ const routes: Routes = [
           import('./projects/project.module').then((m) => m.ProjectPageModule),
       },
       {
-        path: '',
-        redirectTo: '/tabs/home',
-        pathMatch: 'full',
+        path: 'tasks/add-task',
+        loadChildren: () =>
+          import('../pages/add-task/add-task.module').then(
+            (m) => m.AddTaskPageModule
+          ),
       },
     ],
   },
