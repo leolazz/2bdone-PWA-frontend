@@ -6,14 +6,11 @@
 <ion-fab slot="fixed" horizontal="end" vertical="top">
   <ion-fab-button><ion-icon name="add-outline"></ion-icon></ion-fab-button>
   <ion-fab-list side="bottom">
-    <ion-button shape="round" href="/add-task" color="primary"
-      >Href Task</ion-button
-    >
     <!-- <ion-button shape="round" (click)="goToAddTask()" color="primary"
       >method Task</ion-button
     > -->
     <ion-button shape="round" [routerLink]="['add-task']" color="primary"
-      >routerlink Task</ion-button
+      >Task</ion-button
     >
     <ion-button shape="round" color="secondary">Task & Project</ion-button>
   </ion-fab-list>

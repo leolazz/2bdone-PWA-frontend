@@ -1,0 +1,64 @@
+<form [formGroup]="myForm" (ngSubmit)="saveTask()" method="post">
+  <ion-row
+    ><ion-col>
+      <ion-item-group>
+        <ion-item>
+          <ion-label position="stacked">
+            <ion-row>
+              <ion-col>
+                <ion-text><h1>Name</h1></ion-text>
+                <ion-text *ngIf="taskTitle.invalid" color="danger"
+                  ><h2>Required</h2></ion-text
+                >
+              </ion-col>
+            </ion-row>
+          </ion-label>
+          <ion-input type="text" formControlName="taskTitle"></ion-input>
+        </ion-item>
+        <ion-item-divider></ion-item-divider>
+        <ion-item>
+          <ion-textarea
+            type="text"
+            formControlName="taskDetails"
+            rows="2"
+            placeholder="Details"
+          ></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            type="text"
+            formControlName="taskOutcomes"
+            placeholder="Outcomes"
+          ></ion-input>
+        </ion-item>
+        <ion-item-divider></ion-item-divider>
+        <ion-item>
+          <ion-label position="stacked">
+            <ion-row>
+              <ion-col>
+                <ion-text *ngIf="taskTitle.invalid" color="danger"
+                  ><h2>Required</h2></ion-text
+                >
+              </ion-col>
+            </ion-row>
+          </ion-label>
+          <ion-datetime
+            type="date"
+            formControlName="taskEndDate"
+            placeholder="Task deadline"
+            min="{{ todaysDate() }}"
+            max="{{ maxDate() }}"
+            displayFormat="D / M / YY"
+          ></ion-datetime>
+        </ion-item>
+        <ion-button
+          [disabled]="myForm.invalid"
+          (click)="saveTask()"
+          type="submit"
+          expand="block"
+          >Add Task</ion-button
+        >
+      </ion-item-group>
+    </ion-col></ion-row
+  >
+</form>

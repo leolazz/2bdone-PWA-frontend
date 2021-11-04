@@ -1,9 +1,8 @@
 <ion-card *ngFor="let task of tasks">
   <ion-item class="ion-activated">
     <ion-card-header>
-      <ion-card-subtitle>{{ task?.project.title }}</ion-card-subtitle>
-      <ion-card-title>{{ task?.title.toUpperCase() }}</ion-card-title>
-      <ion-card-content>{{ task?.details }}</ion-card-content>
+      <ion-card-subtitle>{{ task?.project?.title }}</ion-card-subtitle>
+      <ion-card-title>{{ task?.title?.toUpperCase() }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       {{ task?.details }}

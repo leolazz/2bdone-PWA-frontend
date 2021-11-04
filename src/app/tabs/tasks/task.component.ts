@@ -32,16 +32,10 @@ export class TaskPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.taskService.getTasksObservable(10).subscribe((x) => {
-        console.log('hi');
-
         this.tasksLoading = x.loading;
         this.tasks = x?.data?.allTasksLimit;
-        console.log(this.tasks);
-        // this.changeRef.markForCheck();
-        // this.changeRef.detectChanges();
       })
     );
-    console.log(this.tasks);
   }
 
   ngOnDestroy(): void {
