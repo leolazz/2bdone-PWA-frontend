@@ -1,0 +1,7 @@
+query allProjectsTaskForm {
+  allProjects {
+    id
+    title
+    endDate
+  }
+}

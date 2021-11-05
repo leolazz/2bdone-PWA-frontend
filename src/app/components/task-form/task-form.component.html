@@ -13,13 +13,13 @@
               </ion-col>
             </ion-row>
           </ion-label>
-          <ion-input type="text" formControlName="taskTitle"></ion-input>
+          <ion-input type="text" formControlName="title"></ion-input>
         </ion-item>
         <ion-item-divider></ion-item-divider>
         <ion-item>
           <ion-textarea
             type="text"
-            formControlName="taskDetails"
+            formControlName="details"
             rows="2"
             placeholder="Details"
           ></ion-textarea>
@@ -27,7 +27,7 @@
         <ion-item>
           <ion-input
             type="text"
-            formControlName="taskOutcomes"
+            formControlName="outcomes"
             placeholder="Outcomes"
           ></ion-input>
         </ion-item>
@@ -44,18 +44,32 @@
           </ion-label>
           <ion-datetime
             type="date"
-            formControlName="taskEndDate"
+            formControlName="endDate"
             placeholder="Task deadline"
             min="{{ todaysDate() }}"
             max="{{ maxDate() }}"
             displayFormat="D / M / YY"
           ></ion-datetime>
         </ion-item>
-        <ion-button
-          [disabled]="myForm.invalid"
-          (click)="saveTask()"
-          type="submit"
-          expand="block"
+        <ion-list>
+          <ion-item>
+            <ion-select
+              formControlName="projectId"
+              okText="Add Task to Project"
+              cancelText="Cancel"
+              #projectSelect
+              placeholder="Assign To Project?"
+            >
+              <ion-select-option
+                *ngFor="let project of projects"
+                value="{{ project?.id }}"
+                >{{ project?.title }} Deadline: {{ project?.endDate }}
+              </ion-select-option>
+            </ion-select>
+            <ion-button (click)="resetProject()"> clear </ion-button>
+          </ion-item>
+        </ion-list>
+        <ion-button [disabled]="myForm.invalid" type="submit" expand="block"
           >Add Task</ion-button
         >
       </ion-item-group>

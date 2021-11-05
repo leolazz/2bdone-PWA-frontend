@@ -103,6 +103,11 @@ export type Task = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type AllProjectsTaskFormQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllProjectsTaskFormQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: string, title?: string | null | undefined, endDate?: string | null | undefined }> };
+
 export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
   createdDate: Scalars['String'];
@@ -122,6 +127,26 @@ export type AllTasksLimitQueryVariables = Exact<{
 
 export type AllTasksLimitQuery = { __typename?: 'Query', allTasksLimit: Array<{ __typename?: 'Task', id: string, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined }> };
 
+export const AllProjectsTaskFormDocument = gql`
+    query allProjectsTaskForm {
+  allProjects {
+    id
+    title
+    endDate
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AllProjectsTaskFormGQL extends Apollo.Query<AllProjectsTaskFormQuery, AllProjectsTaskFormQueryVariables> {
+    document = AllProjectsTaskFormDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const CreateTaskDocument = gql`
     mutation createTask($title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean = false, $details: String, $outcomes: String) {
   createTask(

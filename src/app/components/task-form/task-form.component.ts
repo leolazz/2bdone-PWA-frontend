@@ -1,13 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateTaskDto } from '../../../generated/graphql';
+import { IonSelect } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import {
+  AllProjectsTaskFormQuery,
+  CreateTaskDto,
+} from '../../../generated/graphql';
+import { ProjectService } from '../../services/projects/project.service';
+import { TaskService } from '../../services/task/task.service';
 
 @Component({
   selector: 'task-form',
   templateUrl: './task-form.component.html',
   styleUrls: ['./task-form.component.scss'],
 })
-export class TaskFormComponent implements OnInit {
+export class TaskFormComponent implements OnInit, OnDestroy {
   myForm: FormGroup;
   task: CreateTaskDto = {
     title: '',
@@ -15,28 +22,47 @@ export class TaskFormComponent implements OnInit {
     isCompleted: false,
     createdDate: this.todaysDate(),
   };
-
-  constructor(private fb: FormBuilder) {}
+  private subscriptions: Array<Subscription> = [];
+  public projects: AllProjectsTaskFormQuery['allProjects'];
+  private projectsLoading: boolean = false;
+  @ViewChild('projectSelect', { static: false }) projectSelect: IonSelect;
+  constructor(
+    private fb: FormBuilder,
+    private projectService: ProjectService,
+    private taskService: TaskService
+  ) {}
 
   ngOnInit() {
+    this.subscriptions.push(
+      this.projectService.getProjectsTaskFormObservable().subscribe((x) => {
+        this.projectsLoading = x.loading;
+        this.projects = x?.data?.allProjects;
+      })
+    );
+
     this.myForm = this.fb.group({
-      taskTitle: ['', [Validators.required]],
-      taskEndDate: ['', [Validators.required]],
-      taskDetails: [],
-      taskOutcomes: [],
+      title: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      details: [],
+      outcomes: [],
+      projectId: [],
     });
   }
-  taskEndDate(e) {
-    let date = new Date(e.target.value).toISOString().substring(0, 10);
-    this.myForm.get('dob').setValue(date, {
-      onlyself: true,
-    });
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((x) => x.unsubscribe());
   }
+
+  resetProject() {
+    this.projectSelect.value = '';
+  }
+
   get taskTitle() {
-    return this.myForm.get('taskTitle');
+    return this.myForm.get('title');
   }
   saveTask() {
-    console.log(this.myForm.value);
+    let newTask: CreateTaskDto = { ...this.task, ...this.myForm.value };
+    this.taskService.createTask(newTask);
   }
   todaysDate() {
     const today = new Date();

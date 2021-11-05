@@ -1,15 +1,14 @@
-<ion-card *ngFor="let task of tasks">
-  <ion-item class="ion-activated">
-    <ion-card-header>
-      <ion-card-subtitle>{{ task?.project?.title }}</ion-card-subtitle>
-      <ion-card-title>{{ task?.title?.toUpperCase() }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      {{ task?.details }}
-    </ion-card-content>
-  </ion-item>
-
-  <ion-footer>
+<ion-list>
+  <ion-card *ngFor="let task of tasks">
+    <ion-item class="ion-activated">
+      <ion-card-header>
+        <ion-card-subtitle>{{ task?.project?.title }}</ion-card-subtitle>
+        <ion-card-title>{{ task?.title?.toUpperCase() }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ task?.details }}
+      </ion-card-content>
+    </ion-item>
     <ion-row>
       <ion-col center text-center>
         <ion-icon name="alert-outline"></ion-icon>
@@ -26,5 +25,5 @@
         </div>
       </ion-col>
     </ion-row>
-  </ion-footer>
-</ion-card>
+  </ion-card>
+</ion-list>
