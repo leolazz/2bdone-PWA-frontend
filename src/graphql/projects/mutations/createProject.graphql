@@ -1,0 +1,21 @@
+mutation createProject(
+  $title: String!
+  $details: String
+  $tasksId: [Int]
+  $createdDate: String!
+  $endDate: String!
+  $isCompleted: Boolean!
+) {
+  createProject(
+    createProjectDto: {
+      title: $title
+      tasksId: $tasksId
+      details: $details
+      createdDate: $createdDate
+      endDate: $endDate
+      isCompleted: $isCompleted
+    }
+  ) {
+    title
+  }
+}

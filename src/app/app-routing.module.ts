@@ -14,6 +14,10 @@ const routes: Routes = [
         (m) => m.AddTaskPageModule
       ),
   },
+  {
+    path: 'add-project',
+    loadChildren: () => import('./pages/add-project/add-project.module').then( m => m.AddProjectPageModule)
+  },
 ];
 @NgModule({
   imports: [

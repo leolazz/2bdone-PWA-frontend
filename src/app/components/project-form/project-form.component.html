@@ -1,4 +1,4 @@
-<form [formGroup]="myForm" (ngSubmit)="saveTask()" method="post">
+<form [formGroup]="myForm" (ngSubmit)="saveProject()" method="post">
   <ion-row
     ><ion-col>
       <ion-item-group>
@@ -7,7 +7,7 @@
             <ion-row>
               <ion-col>
                 <ion-text><h1>Title</h1></ion-text>
-                <ion-text *ngIf="taskTitle.invalid" color="danger"
+                <ion-text *ngIf="projectTitle.invalid" color="danger"
                   ><h2>Required</h2></ion-text
                 >
               </ion-col>
@@ -24,20 +24,12 @@
             placeholder="Details"
           ></ion-textarea>
         </ion-item>
-        <ion-item>
-          <ion-input
-            type="text"
-            formControlName="outcomes"
-            placeholder="Outcomes"
-          ></ion-input>
-        </ion-item>
         <ion-item-divider></ion-item-divider>
         <ion-item>
           <ion-label position="stacked">
             <ion-row>
               <ion-col>
-                <!-- CHANGE TO HANDLE DATE -->
-                <ion-text *ngIf="taskEndDate.invalid" color="danger"
+                <ion-text *ngIf="projectEndDate.invalid" color="danger"
                   ><h2>Required</h2></ion-text
                 >
               </ion-col>
@@ -46,7 +38,7 @@
           <ion-datetime
             type="date"
             formControlName="endDate"
-            placeholder="Task deadline"
+            placeholder="Project Deadline"
             min="{{ todaysDate() }}"
             max="{{ maxDate() }}"
             displayFormat="D / M / YY"
@@ -55,20 +47,19 @@
         <ion-list>
           <ion-item>
             <ion-select
-              formControlName="projectId"
+              formControlName="tasksId"
               okText="Add Task to Project"
               cancelText="Cancel"
-              #projectSelect
-              placeholder="Assign To Project?"
+              #tasksSelect
+              placeholder="Add Tasks?"
+              multiple="true"
               class="select-full-width"
             >
-              <ion-select-option
-                *ngFor="let project of projects"
-                value="{{ project?.id }}"
-                >{{ project?.title }} Deadline: {{ project?.endDate }}
+              <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
+                >{{ task?.title }} Deadline: {{ task?.endDate }}
               </ion-select-option>
             </ion-select>
-            <ion-button (click)="resetProject()"> clear </ion-button>
+            <ion-button (click)="resetTasks()"> clear </ion-button>
           </ion-item>
         </ion-list>
         <ion-button [disabled]="myForm.invalid" type="submit" expand="block"

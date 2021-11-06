@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddTaskPage } from '../pages/add-task/add-task.page';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -28,6 +27,13 @@ const routes: Routes = [
         loadChildren: () =>
           import('../pages/add-task/add-task.module').then(
             (m) => m.AddTaskPageModule
+          ),
+      },
+      {
+        path: 'projects/add-project',
+        loadChildren: () =>
+          import('../pages/add-project/add-project.module').then(
+            (m) => m.AddProjectPageModule
           ),
       },
     ],

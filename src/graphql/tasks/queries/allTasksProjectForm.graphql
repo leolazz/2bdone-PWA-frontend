@@ -1,0 +1,7 @@
+query allTasksProjectForm {
+  allOrphanTasks {
+    id
+    title
+    endDate
+  }
+}

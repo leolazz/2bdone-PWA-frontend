@@ -1,0 +1,13 @@
+query allProjectsWithTasks {
+  allProjects {
+    id
+    title
+    details
+    isCompleted
+    createdDate
+    endDate
+    tasks {
+      title
+    }
+  }
+}

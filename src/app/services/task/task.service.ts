@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   AllTasksLimitGQL,
   CreateTaskGQL,
-  CreateTaskDto,
+  CreateTaskInput,
+  AllTasksProjectFormGQL,
 } from '../../../generated/graphql';
 
 @Injectable({
@@ -11,7 +12,8 @@ import {
 export class TaskService {
   constructor(
     private readonly createTaskGQlService: CreateTaskGQL,
-    private readonly allTasksLimitService: AllTasksLimitGQL
+    private readonly allTasksLimitService: AllTasksLimitGQL,
+    private readonly allTasksProjectFormService: AllTasksProjectFormGQL
   ) {}
 
   async getTasks(limit: number) {
@@ -26,7 +28,11 @@ export class TaskService {
     return this.allTasksLimitService.fetch({ limit });
   }
 
-  async createTask(task: CreateTaskDto) {
+  async createTask(task: CreateTaskInput) {
     return this.createTaskGQlService.mutate(task).toPromise();
+  }
+
+  getTasksProjectFormObservable() {
+    return this.allTasksProjectFormService.fetch();
   }
 }

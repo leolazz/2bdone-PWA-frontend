@@ -16,22 +16,11 @@ export type Scalars = {
 };
 
 export type CreateProjectDto = {
-  createdDate?: Maybe<Scalars['String']>;
-  details?: Maybe<Scalars['String']>;
-  endDate?: Maybe<Scalars['String']>;
-  isCompleted?: Maybe<Scalars['Boolean']>;
-  tasks?: Maybe<Array<CreateTaskDto>>;
-  title?: Maybe<Scalars['String']>;
-};
-
-export type CreateTaskDto = {
   createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
   endDate: Scalars['String'];
   isCompleted: Scalars['Boolean'];
-  outcomes?: Maybe<Scalars['String']>;
-  project?: Maybe<CreateProjectDto>;
-  projectId?: Maybe<Scalars['Int']>;
+  tasksId?: Maybe<Array<Maybe<Scalars['Int']>>>;
   title: Scalars['String'];
 };
 
@@ -63,17 +52,18 @@ export type MutationCreateTaskArgs = {
 
 export type Project = {
   __typename?: 'Project';
-  createdDate?: Maybe<Scalars['String']>;
+  createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
-  endDate?: Maybe<Scalars['String']>;
+  endDate: Scalars['String'];
   id: Scalars['ID'];
-  isCompleted?: Maybe<Scalars['Boolean']>;
-  tasks?: Maybe<Array<Task>>;
-  title?: Maybe<Scalars['String']>;
+  isCompleted: Scalars['Boolean'];
+  tasks?: Maybe<Array<Maybe<Task>>>;
+  title: Scalars['String'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  allOrphanTasks: Array<Task>;
   allProjects: Array<Project>;
   allTasks: Array<Task>;
   allTasksLimit: Array<Task>;
@@ -95,7 +85,7 @@ export type Task = {
   createdDate?: Maybe<Scalars['String']>;
   details?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   isCompleted?: Maybe<Scalars['Boolean']>;
   outcomes?: Maybe<Scalars['String']>;
   project?: Maybe<Project>;
@@ -103,10 +93,27 @@ export type Task = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type CreateProjectMutationVariables = Exact<{
+  title: Scalars['String'];
+  details?: Maybe<Scalars['String']>;
+  tasksId?: Maybe<Array<Maybe<Scalars['Int']>> | Maybe<Scalars['Int']>>;
+  createdDate: Scalars['String'];
+  endDate: Scalars['String'];
+  isCompleted: Scalars['Boolean'];
+}>;
+
+
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', title: string } };
+
+export type AllProjectsWithTasksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: string, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined } | null | undefined> | null | undefined }> };
+
 export type AllProjectsTaskFormQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllProjectsTaskFormQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: string, title?: string | null | undefined, endDate?: string | null | undefined }> };
+export type AllProjectsTaskFormQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: string, title: string, endDate: string }> };
 
 export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
@@ -118,15 +125,66 @@ export type CreateTaskMutationVariables = Exact<{
 }>;
 
 
-export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined } };
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
 
 export type AllTasksLimitQueryVariables = Exact<{
   limit: Scalars['Int'];
 }>;
 
 
-export type AllTasksLimitQuery = { __typename?: 'Query', allTasksLimit: Array<{ __typename?: 'Task', id: string, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title?: string | null | undefined } | null | undefined }> };
+export type AllTasksLimitQuery = { __typename?: 'Query', allTasksLimit: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> };
 
+export type AllTasksProjectFormQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllTasksProjectFormQuery = { __typename?: 'Query', allOrphanTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined }> };
+
+export const CreateProjectDocument = gql`
+    mutation createProject($title: String!, $details: String, $tasksId: [Int], $createdDate: String!, $endDate: String!, $isCompleted: Boolean!) {
+  createProject(
+    createProjectDto: {title: $title, tasksId: $tasksId, details: $details, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted}
+  ) {
+    title
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateProjectGQL extends Apollo.Mutation<CreateProjectMutation, CreateProjectMutationVariables> {
+    document = CreateProjectDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AllProjectsWithTasksDocument = gql`
+    query allProjectsWithTasks {
+  allProjects {
+    id
+    title
+    details
+    isCompleted
+    createdDate
+    endDate
+    tasks {
+      title
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AllProjectsWithTasksGQL extends Apollo.Query<AllProjectsWithTasksQuery, AllProjectsWithTasksQueryVariables> {
+    document = AllProjectsWithTasksDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const AllProjectsTaskFormDocument = gql`
     query allProjectsTaskForm {
   allProjects {
@@ -199,6 +257,26 @@ export const AllTasksLimitDocument = gql`
   })
   export class AllTasksLimitGQL extends Apollo.Query<AllTasksLimitQuery, AllTasksLimitQueryVariables> {
     document = AllTasksLimitDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AllTasksProjectFormDocument = gql`
+    query allTasksProjectForm {
+  allOrphanTasks {
+    id
+    title
+    endDate
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AllTasksProjectFormGQL extends Apollo.Query<AllTasksProjectFormQuery, AllTasksProjectFormQueryVariables> {
+    document = AllTasksProjectFormDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
