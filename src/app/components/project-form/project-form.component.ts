@@ -21,6 +21,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     isCompleted: false,
     createdDate: this.todaysDate(),
     endDate: '',
+    tasksId: [],
   };
   private subscriptions: Array<Subscription> = [];
   public tasks: AllTasksProjectFormQuery['allOrphanTasks'];
@@ -45,9 +46,16 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     return this.myForm.get('tasksId');
   }
   saveProject() {
-    const project = { ...this.project, ...this.myForm.value };
-    console.log(project);
-    this.projectService.createProject(project);
+    const newProject: CreateProjectDto = {
+      ...this.project,
+      ...this.myForm.value,
+    };
+    newProject.endDate = newProject.endDate.substring(0, 10);
+    newProject.tasksId === null
+      ? (newProject.tasksId = [])
+      : (newProject.tasksId = newProject.tasksId);
+    console.log(newProject);
+    this.projectService.createProject(newProject);
   }
   todaysDate() {
     const today = new Date();

@@ -4,16 +4,9 @@
   </ion-toolbar>
 </ion-header>
 <ion-fab slot="fixed" horizontal="end" vertical="top">
-  <ion-fab-button><ion-icon name="add-outline"></ion-icon></ion-fab-button>
-  <ion-fab-list side="bottom">
-    <!-- <ion-button shape="round" (click)="goToAddTask()" color="primary"
-      >method Task</ion-button
-    > -->
-    <ion-button shape="round" [routerLink]="['add-task']" color="primary"
-      >Task</ion-button
-    >
-    <ion-button shape="round" color="secondary">Task & Project</ion-button>
-  </ion-fab-list>
+  <ion-fab-button [routerLink]="['add-task']"
+    ><ion-icon name="add-outline"></ion-icon
+  ></ion-fab-button>
 </ion-fab>
 <ion-content>
   <task-card [tasks]="tasks"></task-card>

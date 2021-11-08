@@ -44,6 +44,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
   saveTask() {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
+    newTask.endDate = newTask.endDate.substring(0, 10);
     this.taskService.createTask(newTask);
   }
   todaysDate() {

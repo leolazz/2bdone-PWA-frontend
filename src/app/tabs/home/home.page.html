@@ -2,7 +2,17 @@
   <ion-icon name="wifi" slot="start"></ion-icon>
   <ion-label>Card Link Item 1 activated</ion-label>
 </ion-item>
-
+<ion-fab slot="fixed" horizontal="end" vertical="top">
+  <ion-fab-button><ion-icon name="add-outline"></ion-icon></ion-fab-button>
+  <ion-fab-list side="bottom">
+    <ion-button shape="round" [routerLink]="['add-task']" color="primary"
+      >Task</ion-button
+    >
+    <ion-button shape="round" color="secondary" [routerLink]="['add-task']"
+      >Project</ion-button
+    >
+  </ion-fab-list>
+</ion-fab>
 <ion-card>
   <ion-card-header>
     <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
