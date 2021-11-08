@@ -3,9 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IonSelect } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
-  AllTasksProjectFormQuery,
   CreateProjectDto,
-} from '../../../generated/graphql';
+  AllTasksProjectFormQuery,
+} from '../../../graphql/generated/graphql';
+
 import { ProjectService } from '../../services/projects/project.service';
 import { TaskService } from '../../services/task/task.service';
 

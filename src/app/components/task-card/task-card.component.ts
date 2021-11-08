@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AllTasksLimitQuery } from '../../../generated/graphql';
+import { AllTasksLimitQuery } from '../../../graphql/generated/graphql';
 
 @Component({
   selector: 'task-card',

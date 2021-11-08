@@ -5,6 +5,7 @@ mutation createTask(
   $isCompleted: Boolean = false
   $details: String
   $outcomes: String
+  $projectId: Int
 ) {
   createTask(
     createTaskDto: {
@@ -14,6 +15,7 @@ mutation createTask(
       isCompleted: $isCompleted
       details: $details
       outcomes: $outcomes
+      projectId: $projectId
     }
   ) {
     id

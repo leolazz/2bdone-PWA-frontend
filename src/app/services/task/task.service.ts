@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
   AllTasksLimitGQL,
+  AllTasksProjectFormGQL,
   CreateTaskGQL,
   CreateTaskInput,
-  AllTasksProjectFormGQL,
-} from '../../../generated/graphql';
+} from '../../../graphql/generated/graphql';
 
 @Injectable({
   providedIn: 'root',

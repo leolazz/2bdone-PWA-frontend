@@ -2,7 +2,7 @@ overwrite: true
 schema: "http://localhost:3000/graphql"
 documents: "src/graphql/**/*.graphql"
 generates:
-  src/generated/graphql.ts:
+  src/graphql/generated/graphql.ts:
     plugins:
       - add:
           content: "/* tslint:disable */"

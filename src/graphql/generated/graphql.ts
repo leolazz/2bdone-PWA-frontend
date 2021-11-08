@@ -55,7 +55,7 @@ export type Project = {
   createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
   endDate: Scalars['String'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   isCompleted: Scalars['Boolean'];
   tasks?: Maybe<Array<Maybe<Task>>>;
   title: Scalars['String'];
@@ -108,12 +108,12 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type AllProjectsWithTasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: string, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined } | null | undefined> | null | undefined }> };
+export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined } | null | undefined> | null | undefined }> };
 
 export type AllProjectsTaskFormQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllProjectsTaskFormQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: string, title: string, endDate: string }> };
+export type AllProjectsTaskFormQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, endDate: string }> };
 
 export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
@@ -122,6 +122,7 @@ export type CreateTaskMutationVariables = Exact<{
   isCompleted?: Maybe<Scalars['Boolean']>;
   details?: Maybe<Scalars['String']>;
   outcomes?: Maybe<Scalars['String']>;
+  projectId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -206,9 +207,9 @@ export const AllProjectsTaskFormDocument = gql`
     }
   }
 export const CreateTaskDocument = gql`
-    mutation createTask($title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean = false, $details: String, $outcomes: String) {
+    mutation createTask($title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean = false, $details: String, $outcomes: String, $projectId: Int) {
   createTask(
-    createTaskDto: {title: $title, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted, details: $details, outcomes: $outcomes}
+    createTaskDto: {title: $title, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted, details: $details, outcomes: $outcomes, projectId: $projectId}
   ) {
     id
     title

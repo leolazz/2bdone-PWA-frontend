@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonSelect } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
-  AllProjectsTaskFormQuery,
   CreateTaskInput,
-} from '../../../generated/graphql';
+  AllProjectsTaskFormQuery,
+} from '../../../graphql/generated/graphql';
 import { ProjectService } from '../../services/projects/project.service';
 import { TaskService } from '../../services/task/task.service';
 
@@ -45,6 +45,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   saveTask() {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
     newTask.endDate = newTask.endDate.substring(0, 10);
+    console.log(newTask);
     this.taskService.createTask(newTask);
   }
   todaysDate() {

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
   AllProjectsTaskFormGQL,
-  CreateProjectDto,
   CreateProjectGQL,
-} from '../../../generated/graphql';
+  AllProjectsWithTasksGQL,
+  CreateProjectDto,
+} from '../../../graphql/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +12,17 @@ import {
 export class ProjectService {
   constructor(
     private readonly allProjectsTaskFormService: AllProjectsTaskFormGQL,
-    private readonly createProjectService: CreateProjectGQL
+    private readonly createProjectService: CreateProjectGQL,
+    private readonly allProjectsWithTasksService: AllProjectsWithTasksGQL
   ) {}
 
   async getProjectsTaskForm() {
     const tasks = await this.allProjectsTaskFormService.fetch().toPromise();
-
     return tasks?.data?.allProjects;
+  }
+
+  getProjectWithTasks() {
+    return this.allProjectsWithTasksService.fetch();
   }
   getProjectsTaskFormObservable() {
     return this.allProjectsTaskFormService.fetch();

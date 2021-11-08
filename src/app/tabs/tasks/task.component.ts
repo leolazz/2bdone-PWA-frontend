@@ -1,15 +1,8 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { AllTasksLimitQuery } from '../../../generated/graphql';
-
+import { AllTasksLimitQuery } from '../../../graphql/generated/graphql';
 import { TaskService } from '../../services/task/task.service';
 
 @Component({

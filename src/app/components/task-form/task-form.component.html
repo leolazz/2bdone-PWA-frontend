@@ -64,7 +64,7 @@
             >
               <ion-select-option
                 *ngFor="let project of projects"
-                value="{{ project?.id }}"
+                [value]="project?.id"
                 >{{ project?.title }} Deadline: {{ project?.endDate }}
               </ion-select-option>
             </ion-select>
