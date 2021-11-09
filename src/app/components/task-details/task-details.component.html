@@ -1,13 +1,24 @@
-<ion-list>
-  <ion-card *ngFor="let task of tasks">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button
+        text="Tasks"
+        icon="chevron-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
     <ion-item
       color="secondary"
       routerLink="details/{{ task?.id }}"
       class="ion-activated"
     >
       <ion-card-header>
-        <ion-card-subtitle
-          ><ion-text class="text-dark">{{ task?.project?.title }}</ion-text>
+        <ion-card-subtitle>
+          <!-- <ion-text class="text-dark">{{ task?.project?.title }}</ion-text> -->
         </ion-card-subtitle>
         <ion-card-title
           ><ion-text class="text-dark">{{
@@ -36,4 +47,5 @@
       </ion-col>
     </ion-row>
   </ion-card>
-</ion-list>
+  <task-form></task-form>
+</ion-content>

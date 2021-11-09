@@ -16,7 +16,10 @@ const routes: Routes = [
   },
   {
     path: 'add-project',
-    loadChildren: () => import('./pages/add-project/add-project.module').then( m => m.AddProjectPageModule)
+    loadChildren: () =>
+      import('./pages/add-project/add-project.module').then(
+        (m) => m.AddProjectPageModule
+      ),
   },
 ];
 @NgModule({

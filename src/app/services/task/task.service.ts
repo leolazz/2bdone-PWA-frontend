@@ -4,6 +4,7 @@ import {
   AllTasksProjectFormGQL,
   CreateTaskGQL,
   CreateTaskInput,
+  GetTaskByIdGQL,
 } from '../../../graphql/generated/graphql';
 
 @Injectable({
@@ -13,7 +14,8 @@ export class TaskService {
   constructor(
     private readonly createTaskGQlService: CreateTaskGQL,
     private readonly allTasksLimitService: AllTasksLimitGQL,
-    private readonly allTasksProjectFormService: AllTasksProjectFormGQL
+    private readonly allTasksProjectFormService: AllTasksProjectFormGQL,
+    private readonly getTaskByid: GetTaskByIdGQL
   ) {}
 
   async getTasks(limit: number) {
@@ -23,6 +25,10 @@ export class TaskService {
       .toPromise();
 
     return tasks?.data?.allTasksLimit;
+  }
+
+  getOneById(id: number) {
+    return this.getTaskByid.fetch({ id });
   }
   getTasksObservable(limit: number) {
     return this.allTasksLimitService.fetch({ limit });

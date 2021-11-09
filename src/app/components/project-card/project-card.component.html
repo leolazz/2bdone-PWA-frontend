@@ -2,34 +2,31 @@
   <ion-card *ngFor="let project of projects">
     <ion-item color="secondary" href="#" class="ion-activated">
       <ion-card-header>
-        <ion-card-subtitle
-          ><ion-text class="text-dark">{{ project?.title }}</ion-text>
-        </ion-card-subtitle>
         <ion-card-title
           ><ion-text class="text-dark">{{
             project?.title?.toUpperCase()
           }}</ion-text></ion-card-title
         >
       </ion-card-header>
-      <ion-card-content>
-        <!-- <ion-text class="text-dark">{{ project?.details }}</ion-text> -->
+      <ion-card-content slot="end">
+        <ion-text class="text-dark">{{ project?.details }}</ion-text>
       </ion-card-content>
     </ion-item>
-    <ion-item *ngFor="let task of project.tasks" href="#" class="ion-activated">
-      <ion-icon name="wifi" slot="start"></ion-icon>
-      <ion-label
-        ><ion-row
-          ><ion-col>
-            {{ task.title }}
-          </ion-col></ion-row
-        ></ion-label
-      >
-    </ion-item>
     <ion-row>
-      <ion-col center text-center>
-        <ion-icon name="alert-outline"></ion-icon>
-        <!-- <div>{{ project?.tasks }}</div> -->
-      </ion-col>
+      <ion-item
+        *ngFor="let task of project.tasks"
+        href="#"
+        class="ion-activated"
+      >
+        <ion-icon size="small" name="pencil-outline" slot="start"></ion-icon>
+        <ion-label>
+          <ion-col
+            ><ion-row> {{ task.title }}</ion-row> Deadline: {{ task.endDate }}
+          </ion-col>
+        </ion-label>
+      </ion-item>
+    </ion-row>
+    <ion-row>
       <ion-col>
         <ion-icon name="time"></ion-icon>
         <div>Created: {{ project?.createdDate }}</div>

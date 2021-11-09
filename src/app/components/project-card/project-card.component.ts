@@ -11,7 +11,5 @@ export class ProjectCardComponent implements OnInit {
   public projects: AllProjectsWithTasksQuery['allProjects'] = [];
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.projects);
-  }
+  ngOnInit() {}
 }

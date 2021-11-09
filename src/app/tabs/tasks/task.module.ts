@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { TaskPage } from './task.component';
 import { TaskTabRoutingModule } from './tasks.tab-routing.module';
 import { ComponentsModule } from '../../components/components.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [

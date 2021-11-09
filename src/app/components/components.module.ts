@@ -6,6 +6,8 @@ import { TaskFormComponent } from './task-form/task-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectCardComponent } from './project-card/project-card.component';
+import { TaskDetailsComponent } from './task-details/task-details.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,13 +15,15 @@ import { ProjectCardComponent } from './project-card/project-card.component';
     TaskFormComponent,
     ProjectFormComponent,
     ProjectCardComponent,
+    TaskDetailsComponent,
   ],
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, RouterModule],
   exports: [
     TaskCardComponent,
     TaskFormComponent,
     ProjectFormComponent,
     ProjectCardComponent,
+    TaskDetailsComponent,
   ],
 })
 export class ComponentsModule {}

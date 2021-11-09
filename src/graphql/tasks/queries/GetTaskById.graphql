@@ -1,0 +1,15 @@
+query getTaskById($id: Int!) {
+  findOneTaskById(id: $id) {
+    id
+    title
+    details
+    outcomes
+    createdDate
+    endDate
+    projectId
+    project {
+      title
+      endDate
+    }
+  }
+}

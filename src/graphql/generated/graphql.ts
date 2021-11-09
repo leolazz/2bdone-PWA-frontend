@@ -68,6 +68,7 @@ export type Query = {
   allTasks: Array<Task>;
   allTasksLimit: Array<Task>;
   findOneProjectById: Project;
+  findOneTaskById: Task;
 };
 
 
@@ -78,6 +79,11 @@ export type QueryAllTasksLimitArgs = {
 
 export type QueryFindOneProjectByIdArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryFindOneTaskByIdArgs = {
+  id: Scalars['Int'];
 };
 
 export type Task = {
@@ -108,7 +114,7 @@ export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { 
 export type AllProjectsWithTasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined } | null | undefined> | null | undefined }> };
+export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> };
 
 export type AllProjectsTaskFormQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -127,6 +133,13 @@ export type CreateTaskMutationVariables = Exact<{
 
 
 export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
+
+export type GetTaskByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetTaskByIdQuery = { __typename?: 'Query', findOneTaskById: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, outcomes?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, projectId?: number | null | undefined, project?: { __typename?: 'Project', title: string, endDate: string } | null | undefined } };
 
 export type AllTasksLimitQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -171,6 +184,7 @@ export const AllProjectsWithTasksDocument = gql`
     endDate
     tasks {
       title
+      endDate
     }
   }
 }
@@ -230,6 +244,34 @@ export const CreateTaskDocument = gql`
   })
   export class CreateTaskGQL extends Apollo.Mutation<CreateTaskMutation, CreateTaskMutationVariables> {
     document = CreateTaskDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetTaskByIdDocument = gql`
+    query getTaskById($id: Int!) {
+  findOneTaskById(id: $id) {
+    id
+    title
+    details
+    outcomes
+    createdDate
+    endDate
+    projectId
+    project {
+      title
+      endDate
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetTaskByIdGQL extends Apollo.Query<GetTaskByIdQuery, GetTaskByIdQueryVariables> {
+    document = GetTaskByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
