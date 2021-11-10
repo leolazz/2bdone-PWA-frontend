@@ -10,7 +10,10 @@
 </ion-fab>
 <ion-content>
   <task-card [tasks]="tasks"></task-card>
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="loadDataInfinite($event)"
+  >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."

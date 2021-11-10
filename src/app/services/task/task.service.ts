@@ -32,6 +32,9 @@ export class TaskService {
   getTasks(limit?: number, offset?: number) {
     return this.getTasksService.fetch({ limit, offset });
   }
+  getTasksWatch(limit?: number, offset?: number) {
+    return this.getTasksService.watch({ limit, offset });
+  }
   getTasksGQl() {
     return this.getTasksService;
   }
