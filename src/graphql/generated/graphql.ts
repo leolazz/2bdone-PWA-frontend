@@ -69,6 +69,7 @@ export type Query = {
   allTasksLimit: Array<Task>;
   findOneProjectById: Project;
   findOneTaskById: Task;
+  getTasks: Array<Task>;
 };
 
 
@@ -84,6 +85,12 @@ export type QueryFindOneProjectByIdArgs = {
 
 export type QueryFindOneTaskByIdArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryGetTasksArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 export type Task = {
@@ -152,6 +159,14 @@ export type AllTasksProjectFormQueryVariables = Exact<{ [key: string]: never; }>
 
 
 export type AllTasksProjectFormQuery = { __typename?: 'Query', allOrphanTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined }> };
+
+export type GetTasksQueryVariables = Exact<{
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type GetTasksQuery = { __typename?: 'Query', getTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> };
 
 export const CreateProjectDocument = gql`
     mutation createProject($title: String!, $details: String, $tasksId: [Int], $createdDate: String!, $endDate: String!, $isCompleted: Boolean!) {
@@ -320,6 +335,34 @@ export const AllTasksProjectFormDocument = gql`
   })
   export class AllTasksProjectFormGQL extends Apollo.Query<AllTasksProjectFormQuery, AllTasksProjectFormQueryVariables> {
     document = AllTasksProjectFormDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetTasksDocument = gql`
+    query getTasks($limit: Int, $offset: Int) {
+  getTasks(limit: $limit, offset: $offset) {
+    id
+    title
+    createdDate
+    endDate
+    isCompleted
+    projectId
+    outcomes
+    details
+    project {
+      title
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetTasksGQL extends Apollo.Query<GetTasksQuery, GetTasksQueryVariables> {
+    document = GetTasksDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

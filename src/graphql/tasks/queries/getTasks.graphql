@@ -1,0 +1,15 @@
+query getTasks($limit: Int, $offset: Int) {
+  getTasks(limit: $limit, offset: $offset) {
+    id
+    title
+    createdDate
+    endDate
+    isCompleted
+    projectId
+    outcomes
+    details
+    project {
+      title
+    }
+  }
+}
