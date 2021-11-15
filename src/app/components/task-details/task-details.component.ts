@@ -12,7 +12,7 @@ import { TaskService } from '../../services/task/task.service';
 })
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   private taskLoading: boolean = false;
-  public task: GetTaskByIdQuery['findOneTaskById'];
+  // public task: ;
   private subscriptions: Array<Subscription> = [];
   constructor(
     private route: ActivatedRoute,
@@ -23,12 +23,12 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    let id: any = this.route.snapshot.paramMap.get('id');
-    id = +id;
-    this.subscriptions.push(
-      this.taskService.getOneById(id).subscribe((x) => {
-        (this.taskLoading = true), (this.task = x?.data?.findOneTaskById);
-      })
-    );
+    // let id: any = this.route.snapshot.paramMap.get('id');
+    // id = +id;
+    // this.subscriptions.push(
+    //   this.taskService.getOneById(id).subscribe((x) => {
+    //     (this.taskLoading = true), (this.task = x?.data?.findOneTaskById);
+    //   })
+    // );
   }
 }

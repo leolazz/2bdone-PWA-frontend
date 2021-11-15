@@ -1,0 +1,32 @@
+mutation updateTask(
+  $id: Int!
+  $title: String!
+  $createdDate: String!
+  $endDate: String!
+  $isCompleted: Boolean!
+  $details: String
+  $outcomes: String
+) {
+  updateTask(
+    createTaskDto: {
+      id: $id
+      title: $title
+      createdDate: $createdDate
+      endDate: $endDate
+      isCompleted: $isCompleted
+      details: $details
+      outcomes: $outcomes
+    }
+  ) {
+    id
+    title
+    details
+    createdDate
+    endDate
+    outcomes
+    isCompleted
+    project {
+      title
+    }
+  }
+}

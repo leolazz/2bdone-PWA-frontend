@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 import {
   AllTasksLimitQuery,
   Exact,
-  GetTasksQuery,
+  Fields,
+  PaginatedTasksQuery,
+  PaginatedTasksQueryVariables,
 } from '../../../graphql/generated/graphql';
 import { TaskService } from '../../services/task/task.service';
 import { take } from 'rxjs/operators';
@@ -23,21 +25,31 @@ export class TaskPage implements OnInit, OnDestroy {
   public limit: number = 10;
   public offset: number = 0;
   private queryRef: QueryRef<
-    GetTasksQuery,
+    PaginatedTasksQuery,
     Exact<{
-      limit?: number;
-      offset?: number;
+      limit: number;
+      offset: number;
+      field: Fields;
+      ascending: boolean;
     }>
   >;
+
+  pageableOptions: PaginatedTasksQueryVariables;
 
   constructor(private taskService: TaskService) {}
 
   ngOnInit() {
-    this.queryRef = this.taskService.getTasksWatch(this.limit, this.offset);
+    this.pageableOptions = {
+      limit: 20,
+      offset: 0,
+      field: Fields.Createddate,
+      ascending: false,
+    };
+    this.queryRef = this.taskService.getPaginatedTasks(this.pageableOptions);
     this.subscriptions.push(
       this.queryRef.valueChanges.subscribe((x) => {
         this.tasksLoading = x.loading;
-        this.tasks = x?.data?.getTasks;
+        this.tasks = x?.data?.paginatedTasks.items;
       })
     );
   }
@@ -53,7 +65,10 @@ export class TaskPage implements OnInit, OnDestroy {
           return previousResult;
         }
         Object.assign({}, previousResult, {
-          feed: [...previousResult.getTasks, ...fetchMoreResult.getTasks],
+          feed: [
+            ...previousResult?.paginatedTasks.items,
+            ...fetchMoreResult?.paginatedTasks.items,
+          ],
         });
       },
     });
@@ -61,7 +76,7 @@ export class TaskPage implements OnInit, OnDestroy {
 
   loadDataInfinite(event) {
     this.getMoreTasks().then((x) => {
-      let data = x?.data?.getTasks;
+      let data = x?.data?.paginatedTasks.items;
       this.tasks = this.tasks.concat(data);
       event.target.complete();
     });

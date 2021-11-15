@@ -8,6 +8,7 @@ import { ProjectFormComponent } from './project-form/project-form.component';
 import { ProjectCardComponent } from './project-card/project-card.component';
 import { TaskDetailsComponent } from './task-details/task-details.component';
 import { RouterModule } from '@angular/router';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
     ProjectFormComponent,
     ProjectCardComponent,
     TaskDetailsComponent,
+    ProjectDetailsComponent,
   ],
   imports: [CommonModule, IonicModule, ReactiveFormsModule, RouterModule],
   exports: [
@@ -24,6 +26,7 @@ import { RouterModule } from '@angular/router';
     ProjectFormComponent,
     ProjectCardComponent,
     TaskDetailsComponent,
+    ProjectDetailsComponent,
   ],
 })
 export class ComponentsModule {}

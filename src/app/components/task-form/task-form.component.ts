@@ -22,6 +22,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     isCompleted: false,
     createdDate: this.todaysDate(),
   };
+
   private subscriptions: Array<Subscription> = [];
   public projects: AllProjectsTaskFormQuery['allProjects'];
   private projectsLoading: boolean = false;

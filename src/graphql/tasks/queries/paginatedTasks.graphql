@@ -1,0 +1,29 @@
+query paginatedTasks(
+  $limit: Int!
+  $offset: Int!
+  $field: Fields!
+  $ascending: Boolean!
+) {
+  paginatedTasks(
+    pageableOptions: {
+      limit: $limit
+      offset: $offset
+      sortOptions: { field: $field, ascending: $ascending }
+    }
+  ) {
+    items {
+      id
+      title
+      createdDate
+      endDate
+      isCompleted
+      projectId
+      outcomes
+      details
+      project {
+        title
+      }
+    }
+    total
+  }
+}

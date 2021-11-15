@@ -24,6 +24,18 @@ export type CreateProjectDto = {
   title: Scalars['String'];
 };
 
+export type CreateTaskDto = {
+  createdDate: Scalars['String'];
+  details?: Maybe<Scalars['String']>;
+  endDate: Scalars['String'];
+  id?: Maybe<Scalars['Int']>;
+  isCompleted: Scalars['Boolean'];
+  outcomes?: Maybe<Scalars['String']>;
+  project?: Maybe<CreateProjectDto>;
+  projectId?: Maybe<Scalars['Int']>;
+  title: Scalars['String'];
+};
+
 export type CreateTaskInput = {
   createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
@@ -34,10 +46,21 @@ export type CreateTaskInput = {
   title: Scalars['String'];
 };
 
+/** fields to sort by */
+export enum Fields {
+  Createddate = 'CREATEDDATE',
+  Enddate = 'ENDDATE',
+  Id = 'ID',
+  Iscompleted = 'ISCOMPLETED',
+  Projectid = 'PROJECTID',
+  Title = 'TITLE'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   createProject: Project;
   createTask: Task;
+  updateTask: Task;
 };
 
 
@@ -48,6 +71,23 @@ export type MutationCreateProjectArgs = {
 
 export type MutationCreateTaskArgs = {
   createTaskDto: CreateTaskInput;
+};
+
+
+export type MutationUpdateTaskArgs = {
+  createTaskDto: CreateTaskDto;
+};
+
+export type PageableOptionsTasks = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  sortOptions?: Maybe<SortOptionsTasksInput>;
+};
+
+export type PaginatedTasksResponse = {
+  __typename?: 'PaginatedTasksResponse';
+  items: Array<Task>;
+  total: Scalars['Int'];
 };
 
 export type Project = {
@@ -69,7 +109,7 @@ export type Query = {
   allTasksLimit: Array<Task>;
   findOneProjectById: Project;
   findOneTaskById: Task;
-  getTasks: Array<Task>;
+  paginatedTasks: PaginatedTasksResponse;
 };
 
 
@@ -88,9 +128,13 @@ export type QueryFindOneTaskByIdArgs = {
 };
 
 
-export type QueryGetTasksArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+export type QueryPaginatedTasksArgs = {
+  pageableOptions?: Maybe<PageableOptionsTasks>;
+};
+
+export type SortOptionsTasksInput = {
+  ascending: Scalars['Boolean'];
+  field: Fields;
 };
 
 export type Task = {
@@ -141,6 +185,19 @@ export type CreateTaskMutationVariables = Exact<{
 
 export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
 
+export type UpdateTaskMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  createdDate: Scalars['String'];
+  endDate: Scalars['String'];
+  isCompleted: Scalars['Boolean'];
+  details?: Maybe<Scalars['String']>;
+  outcomes?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
+
 export type GetTaskByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -160,13 +217,15 @@ export type AllTasksProjectFormQueryVariables = Exact<{ [key: string]: never; }>
 
 export type AllTasksProjectFormQuery = { __typename?: 'Query', allOrphanTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined }> };
 
-export type GetTasksQueryVariables = Exact<{
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+export type PaginatedTasksQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  field: Fields;
+  ascending: Scalars['Boolean'];
 }>;
 
 
-export type GetTasksQuery = { __typename?: 'Query', getTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> };
+export type PaginatedTasksQuery = { __typename?: 'Query', paginatedTasks: { __typename?: 'PaginatedTasksResponse', total: number, items: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> } };
 
 export const CreateProjectDocument = gql`
     mutation createProject($title: String!, $details: String, $tasksId: [Int], $createdDate: String!, $endDate: String!, $isCompleted: Boolean!) {
@@ -264,6 +323,35 @@ export const CreateTaskDocument = gql`
       super(apollo);
     }
   }
+export const UpdateTaskDocument = gql`
+    mutation updateTask($id: Int!, $title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean!, $details: String, $outcomes: String) {
+  updateTask(
+    createTaskDto: {id: $id, title: $title, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted, details: $details, outcomes: $outcomes}
+  ) {
+    id
+    title
+    details
+    createdDate
+    endDate
+    outcomes
+    isCompleted
+    project {
+      title
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateTaskGQL extends Apollo.Mutation<UpdateTaskMutation, UpdateTaskMutationVariables> {
+    document = UpdateTaskDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetTaskByIdDocument = gql`
     query getTaskById($id: Int!) {
   findOneTaskById(id: $id) {
@@ -340,20 +428,25 @@ export const AllTasksProjectFormDocument = gql`
       super(apollo);
     }
   }
-export const GetTasksDocument = gql`
-    query getTasks($limit: Int, $offset: Int) {
-  getTasks(limit: $limit, offset: $offset) {
-    id
-    title
-    createdDate
-    endDate
-    isCompleted
-    projectId
-    outcomes
-    details
-    project {
+export const PaginatedTasksDocument = gql`
+    query paginatedTasks($limit: Int!, $offset: Int!, $field: Fields!, $ascending: Boolean!) {
+  paginatedTasks(
+    pageableOptions: {limit: $limit, offset: $offset, sortOptions: {field: $field, ascending: $ascending}}
+  ) {
+    items {
+      id
       title
+      createdDate
+      endDate
+      isCompleted
+      projectId
+      outcomes
+      details
+      project {
+        title
+      }
     }
+    total
   }
 }
     `;
@@ -361,8 +454,8 @@ export const GetTasksDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class GetTasksGQL extends Apollo.Query<GetTasksQuery, GetTasksQueryVariables> {
-    document = GetTasksDocument;
+  export class PaginatedTasksGQL extends Apollo.Query<PaginatedTasksQuery, PaginatedTasksQueryVariables> {
+    document = PaginatedTasksDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
