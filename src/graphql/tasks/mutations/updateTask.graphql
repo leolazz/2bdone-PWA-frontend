@@ -6,6 +6,7 @@ mutation updateTask(
   $isCompleted: Boolean!
   $details: String
   $outcomes: String
+  $projectId: Int
 ) {
   updateTask(
     createTaskDto: {
@@ -14,6 +15,7 @@ mutation updateTask(
       createdDate: $createdDate
       endDate: $endDate
       isCompleted: $isCompleted
+      projectId: $projectId
       details: $details
       outcomes: $outcomes
     }

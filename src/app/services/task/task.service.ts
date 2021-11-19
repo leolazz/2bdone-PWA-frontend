@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import {
   AllTasksLimitGQL,
   AllTasksProjectFormGQL,
+  CreateTaskDto,
   CreateTaskGQL,
   CreateTaskInput,
   GetTaskByIdGQL,
-  // GetTasksGQL,
   PaginatedTasksGQL,
   PaginatedTasksQueryVariables,
   UpdateTaskGQL,
@@ -20,42 +20,17 @@ export class TaskService {
     private readonly allTasksLimitService: AllTasksLimitGQL,
     private readonly allTasksProjectFormService: AllTasksProjectFormGQL,
     private readonly getTaskByid: GetTaskByIdGQL,
-    // private readonly getTasksService: GetTasksGQL,
     private readonly updateTaskService: UpdateTaskGQL,
     private readonly paginatedTasksService: PaginatedTasksGQL
   ) {}
-  // async getTasks(limit: number) {
-  //   // return this.allTasksLimit.fetch({ limit: limit }).toPromise().then(x => x?.data?.allTasksLimit);
-  //   const tasks = await this.allTasksLimitService
-  //     .fetch({ limit: limit })
-  //     .toPromise();
 
-  //   return tasks?.data?.allTasksLimit;
-  // }
-
-  updateTask(task: {
-    id: number;
-    title: string;
-    createdDate: string;
-    endDate: string;
-    isCompleted: boolean;
-    details?: string;
-    outcomes?: string;
-  }) {
-    return this.updateTaskService.mutate(task).toPromise();
+  async updateTask(task: CreateTaskDto) {
+    let taskInput = { ...task, id: task.id };
+    return await this.updateTaskService.mutate(taskInput).toPromise();
   }
   getPaginatedTasks(pageableOptions: PaginatedTasksQueryVariables) {
     return this.paginatedTasksService.watch(pageableOptions);
   }
-  // getTasks(limit?: number, offset?: number) {
-  //   return this.getTasksService.fetch({ limit, offset });
-  // }
-  // getTasksWatch(limit?: number, offset?: number) {
-  //   return this.getTasksService.watch({ limit, offset });
-  // }
-  // getTasksGQl() {
-  //   return this.getTasksService;
-  // }
 
   getOneById(id: number) {
     return this.getTaskByid.fetch({ id });

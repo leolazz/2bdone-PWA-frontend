@@ -1,5 +1,5 @@
-query allProjectsTaskForm {
-  allProjects {
+query allProjectsTaskForm($isCompleted: Boolean = false) {
+  allProjects(isCompleted: $isCompleted) {
     id
     title
     endDate

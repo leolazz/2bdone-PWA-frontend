@@ -1,6 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   AllTasksLimitQuery,
@@ -10,7 +8,6 @@ import {
   PaginatedTasksQueryVariables,
 } from '../../../graphql/generated/graphql';
 import { TaskService } from '../../services/task/task.service';
-import { take } from 'rxjs/operators';
 import { QueryRef } from 'apollo-angular';
 
 @Component({

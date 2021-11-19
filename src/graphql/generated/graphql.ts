@@ -113,6 +113,11 @@ export type Query = {
 };
 
 
+export type QueryAllProjectsArgs = {
+  isCompleted: Scalars['Boolean'];
+};
+
+
 export type QueryAllTasksLimitArgs = {
   limit: Scalars['Int'];
 };
@@ -162,12 +167,16 @@ export type CreateProjectMutationVariables = Exact<{
 
 export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', title: string } };
 
-export type AllProjectsWithTasksQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllProjectsWithTasksQueryVariables = Exact<{
+  isCompleted?: Maybe<Scalars['Boolean']>;
+}>;
 
 
 export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> };
 
-export type AllProjectsTaskFormQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllProjectsTaskFormQueryVariables = Exact<{
+  isCompleted?: Maybe<Scalars['Boolean']>;
+}>;
 
 
 export type AllProjectsTaskFormQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, endDate: string }> };
@@ -193,6 +202,7 @@ export type UpdateTaskMutationVariables = Exact<{
   isCompleted: Scalars['Boolean'];
   details?: Maybe<Scalars['String']>;
   outcomes?: Maybe<Scalars['String']>;
+  projectId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -203,7 +213,7 @@ export type GetTaskByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTaskByIdQuery = { __typename?: 'Query', findOneTaskById: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, outcomes?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, projectId?: number | null | undefined, project?: { __typename?: 'Project', title: string, endDate: string } | null | undefined } };
+export type GetTaskByIdQuery = { __typename?: 'Query', findOneTaskById: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, outcomes?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, projectId?: number | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string, endDate: string } | null | undefined } };
 
 export type AllTasksLimitQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -248,8 +258,8 @@ export const CreateProjectDocument = gql`
     }
   }
 export const AllProjectsWithTasksDocument = gql`
-    query allProjectsWithTasks {
-  allProjects {
+    query allProjectsWithTasks($isCompleted: Boolean = false) {
+  allProjects(isCompleted: $isCompleted) {
     id
     title
     details
@@ -275,8 +285,8 @@ export const AllProjectsWithTasksDocument = gql`
     }
   }
 export const AllProjectsTaskFormDocument = gql`
-    query allProjectsTaskForm {
-  allProjects {
+    query allProjectsTaskForm($isCompleted: Boolean = false) {
+  allProjects(isCompleted: $isCompleted) {
     id
     title
     endDate
@@ -324,9 +334,9 @@ export const CreateTaskDocument = gql`
     }
   }
 export const UpdateTaskDocument = gql`
-    mutation updateTask($id: Int!, $title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean!, $details: String, $outcomes: String) {
+    mutation updateTask($id: Int!, $title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean!, $details: String, $outcomes: String, $projectId: Int) {
   updateTask(
-    createTaskDto: {id: $id, title: $title, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted, details: $details, outcomes: $outcomes}
+    createTaskDto: {id: $id, title: $title, createdDate: $createdDate, endDate: $endDate, isCompleted: $isCompleted, projectId: $projectId, details: $details, outcomes: $outcomes}
   ) {
     id
     title
@@ -362,6 +372,7 @@ export const GetTaskByIdDocument = gql`
     createdDate
     endDate
     projectId
+    isCompleted
     project {
       title
       endDate

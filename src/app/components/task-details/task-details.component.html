@@ -11,14 +11,10 @@
 </ion-header>
 <ion-content>
   <ion-card>
-    <ion-item
-      color="secondary"
-      routerLink="details/{{ task?.id }}"
-      class="ion-activated"
-    >
+    <ion-item color="secondary">
       <ion-card-header>
         <ion-card-subtitle>
-          <ion-text class="text-dark">{{ task?.project?.title }}</ion-text>
+          <ion-text class="text-dark">{{ task?.project?.title }} </ion-text>
         </ion-card-subtitle>
         <ion-card-title
           ><ion-text class="text-dark">{{
@@ -47,5 +43,91 @@
       </ion-col>
     </ion-row>
   </ion-card>
-  <task-form></task-form>
+  <form [formGroup]="myForm" (ngSubmit)="updateTask()" method="post">
+    <ion-row
+      ><ion-col>
+        <ion-item-group>
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-row>
+                <ion-col>
+                  <ion-text><h1>Title</h1></ion-text>
+                  <ion-text *ngIf="taskTitle?.invalid" color="danger"
+                    ><h2>Required</h2></ion-text
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-label>
+            <ion-input
+              type="text"
+              formControlName="title"
+              value="{{ task?.title }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item-divider></ion-item-divider>
+          <ion-item>
+            <ion-textarea
+              type="text"
+              formControlName="details"
+              rows="2"
+              placeholder="Details"
+              value="{{ task?.details }}"
+            >
+            </ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-input
+              type="text"
+              formControlName="outcomes"
+              placeholder="Outcomes"
+              value="{{ task?.outcomes }}"
+            ></ion-input>
+          </ion-item>
+          <ion-item-divider></ion-item-divider>
+          <ion-item>
+            <ion-label position="stacked">
+              <ion-row>
+                <ion-col>
+                  <!-- CHANGE TO HANDLE DATE -->
+                  <ion-text *ngIf="taskEndDate.invalid" color="danger"
+                    ><h2>Required</h2></ion-text
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-label>
+            <ion-datetime
+              type="date"
+              formControlName="endDate"
+              placeholder="Task deadline"
+              min="{{ todaysDate() }}"
+              max="{{ maxDate() }}"
+              displayFormat="D / M / YY"
+              value="{{ formatDate(task?.endDate) }}"
+            ></ion-datetime>
+          </ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-select
+                formControlName="projectId"
+                okText="Add Task to New Project?"
+                cancelText="Dont resign task to new Project"
+                placeholder="Assigned to {{ task?.project?.title }}"
+                class="select-full-width"
+              >
+                <ion-select-option
+                  *ngFor="let project of projects"
+                  [value]="project?.id"
+                  >{{ project?.title }} Deadline: {{ project?.endDate }}
+                </ion-select-option>
+              </ion-select>
+              <ion-button (click)="resetProject()"> clear </ion-button>
+            </ion-item>
+          </ion-list>
+          <ion-button [disabled]="myForm.invalid" type="submit" expand="block"
+            >Add Task</ion-button
+          >
+        </ion-item-group>
+      </ion-col></ion-row
+    >
+  </form>
 </ion-content>

@@ -16,16 +16,19 @@ export class ProjectService {
     private readonly allProjectsWithTasksService: AllProjectsWithTasksGQL
   ) {}
 
-  async getProjectsTaskForm() {
-    const tasks = await this.allProjectsTaskFormService.fetch().toPromise();
+  async getProjectsTaskForm(isCompleted?: boolean) {
+    // graphql query has default value of false
+    const tasks = await this.allProjectsTaskFormService
+      .fetch({ isCompleted: isCompleted })
+      .toPromise();
     return tasks?.data?.allProjects;
   }
 
   getProjectWithTasks() {
     return this.allProjectsWithTasksService.fetch();
   }
-  getProjectsTaskFormObservable() {
-    return this.allProjectsTaskFormService.fetch();
+  getProjectsTaskFormObservable(isCompleted?: boolean) {
+    return this.allProjectsTaskFormService.fetch({ isCompleted: isCompleted });
   }
   createProject(project: CreateProjectDto) {
     return this.createProjectService.mutate(project).toPromise();
