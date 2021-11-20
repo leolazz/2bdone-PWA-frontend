@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 import {
   AllTasksLimitQuery,
   Exact,
-  Fields,
   PaginatedTasksQuery,
   PaginatedTasksQueryVariables,
 } from '../../../graphql/generated/graphql';
@@ -26,7 +25,7 @@ export class TaskPage implements OnInit, OnDestroy {
     Exact<{
       limit: number;
       offset: number;
-      field: Fields;
+      field: string;
       ascending: boolean;
     }>
   >;
@@ -39,7 +38,7 @@ export class TaskPage implements OnInit, OnDestroy {
     this.pageableOptions = {
       limit: 20,
       offset: 0,
-      field: Fields.Createddate,
+      field: 'createdDate',
       ascending: false,
     };
     this.queryRef = this.taskService.getPaginatedTasks(this.pageableOptions);

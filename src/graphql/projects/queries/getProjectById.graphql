@@ -1,0 +1,15 @@
+query getProjectById($id: Int!) {
+  findOneProjectById(id: $id) {
+    id
+    title
+    details
+    createdDate
+    endDate
+    tasks {
+      id
+      title
+      endDate
+    }
+    isCompleted
+  }
+}

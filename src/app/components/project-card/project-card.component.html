@@ -1,6 +1,10 @@
 <ion-list>
   <ion-card *ngFor="let project of projects">
-    <ion-item color="secondary" href="#" class="ion-activated">
+    <ion-item
+      color="secondary"
+      routerLink="details/{{ project?.id }}"
+      class="ion-activated"
+    >
       <ion-card-header>
         <ion-card-title
           ><ion-text class="text-dark">{{

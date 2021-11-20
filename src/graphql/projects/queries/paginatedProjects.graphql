@@ -1,11 +1,11 @@
-query paginatedTasks(
+query paginatedProjects(
   $limit: Int!
   $offset: Int!
   $field: String!
   $isCompleted: Boolean = false
   $ascending: Boolean!
 ) {
-  paginatedTasks(
+  paginatedProjects(
     pageableOptions: {
       limit: $limit
       offset: $offset
@@ -19,12 +19,10 @@ query paginatedTasks(
       createdDate
       endDate
       isCompleted
-      projectId
-      outcomes
-      details
-      project {
+      tasks {
         title
       }
+      details
     }
     total
   }
