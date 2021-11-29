@@ -68,7 +68,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   async taskUpdatedToast() {
     const updateSucessful = await this.toastController.create({
       header: 'Task Updated!',
-      position: 'middle',
+      position: 'top',
       animated: true,
       duration: 4000,
 

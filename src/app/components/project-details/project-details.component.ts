@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IonSelect, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -7,6 +12,7 @@ import {
   CreateProjectDto,
   AllTasksProjectFormQuery,
   GetProjectByIdQuery,
+  UpdateProjectDto,
 } from '../../../graphql/generated/graphql';
 import { ProjectService } from '../../services/projects/project.service';
 import { TaskService } from '../../services/task/task.service';
@@ -24,6 +30,7 @@ export class ProjectDetailsComponent implements OnInit {
   public tasks: AllTasksProjectFormQuery['allOrphanTasks'];
   private projectLoading: boolean = false;
   private tasksLoading: boolean = false;
+  clearExistingProjects: boolean;
   @ViewChild('tasksSelect', { static: false }) tasksSelect: IonSelect;
   constructor(
     private route: ActivatedRoute,
@@ -31,8 +38,33 @@ export class ProjectDetailsComponent implements OnInit {
     private projectService: ProjectService,
     private taskService: TaskService,
     public toastController: ToastController
-  ) {}
+  ) {
+    this.myForm = this.fb.group({
+      title: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      details: [''],
+      tasksId: [],
+      isCompleted: [false],
+      removeExistingTasks: [false],
+    });
+  }
+  async projectUpdatedToast() {
+    const updateSucessful = await this.toastController.create({
+      header: 'Task Updated!',
+      position: 'top',
+      animated: true,
+      duration: 4000,
 
+      color: 'secondary',
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel',
+        },
+      ],
+    });
+    await updateSucessful.present();
+  }
   resetTasks() {
     this.tasksSelect.value = '';
   }
@@ -43,19 +75,27 @@ export class ProjectDetailsComponent implements OnInit {
     return this.myForm.get('endDate');
   }
   get projectTasks() {
-    return this.myForm.get('tasksId');
+    return this.myForm.get('tasksId').value;
   }
-  saveProject() {
-    const newProject: CreateProjectDto = {
-      ...this.project,
-      ...this.myForm.value,
-    };
-    newProject.endDate = newProject.endDate.substring(0, 10);
-    newProject.tasksId === null
-      ? (newProject.tasksId = [])
-      : (newProject.tasksId = newProject.tasksId);
-    console.log(newProject);
-    this.projectService.createProject(newProject);
+  async updateProject() {
+    let updatedProject: UpdateProjectDto;
+    this.myForm.controls['removeExistingTasks'].disabled
+      ? (updatedProject = {
+          ...this.project,
+          ...this.myForm.value,
+          removeExistingTasks: false,
+        })
+      : (updatedProject = {
+          ...this.project,
+          tasksId: [],
+          ...this.myForm.value,
+        });
+    updatedProject.endDate = updatedProject.endDate.substring(0, 10);
+    if (updatedProject.tasksId === null) updatedProject.tasksId = [];
+    const returnedProject = await this.projectService.updateProject(
+      updatedProject
+    );
+    if (returnedProject) this.projectUpdatedToast();
   }
   todaysDate() {
     const today = new Date();
@@ -72,8 +112,13 @@ export class ProjectDetailsComponent implements OnInit {
       this.projectService.getOneById(+this.id).subscribe((x) => {
         this.projectLoading = true;
         this.project = x?.data?.findOneProjectById;
-        this.myForm.patchValue({ endDate: this.project.endDate });
-        this.myForm.patchValue({ title: this.project.title });
+        this.myForm.patchValue({ endDate: this.project?.endDate });
+        this.myForm.patchValue({ title: this.project?.title });
+        this.myForm.patchValue({ details: this.project?.details });
+        this.myForm.patchValue({ isCompleted: this.project?.isCompleted });
+        x?.data?.findOneProjectById.tasks?.length <= 0
+          ? this.myForm.controls['removeExistingTasks'].disable()
+          : this.myForm.controls['removeExistingTasks'].enable();
       })
     );
     this.subscriptions.push(
@@ -82,13 +127,6 @@ export class ProjectDetailsComponent implements OnInit {
         this.tasks = x?.data?.allOrphanTasks;
       })
     );
-
-    this.myForm = this.fb.group({
-      title: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
-      details: [],
-      tasksId: [],
-    });
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((x) => x.unsubscribe());

@@ -52,9 +52,12 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       ...this.myForm.value,
     };
     newProject.endDate = newProject.endDate.substring(0, 10);
-    newProject.tasksId === null
-      ? (newProject.tasksId = [])
-      : (newProject.tasksId = newProject.tasksId);
+    /**
+     * not sure why this was added. No effect when disabled.
+     */
+    // newProject.tasksId === null
+    //   ? (newProject.tasksId = [])
+    //   : (newProject.tasksId = newProject.tasksId);
     console.log(newProject);
     this.projectService.createProject(newProject);
   }

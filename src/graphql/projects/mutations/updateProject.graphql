@@ -1,0 +1,34 @@
+mutation updateProject(
+  $id: Int!
+  $title: String!
+  $createdDate: String!
+  $endDate: String!
+  $isCompleted: Boolean!
+  $removeExistingTasks: Boolean!
+  $details: String
+  $tasksId: [Int]
+) {
+  updateProject(
+    updateProjectDto: {
+      id: $id
+      title: $title
+      createdDate: $createdDate
+      removeExistingTasks: $removeExistingTasks
+      endDate: $endDate
+      isCompleted: $isCompleted
+      tasksId: $tasksId
+      details: $details
+    }
+  ) {
+    id
+    title
+    details
+    createdDate
+    endDate
+    isCompleted
+    tasks {
+      id
+      title
+    }
+  }
+}

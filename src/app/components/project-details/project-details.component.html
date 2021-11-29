@@ -1,3 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button
+        text="Projects"
+        icon="chevron-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <ion-card>
     <ion-item color="secondary" class="ion-activated">
@@ -39,7 +50,7 @@
       </ion-col>
     </ion-row>
   </ion-card>
-  <form [formGroup]="myForm" (ngSubmit)="saveProject()" method="post">
+  <form [formGroup]="myForm" (ngSubmit)="updateProject()" method="post">
     <ion-row
       ><ion-col>
         <ion-item-group>
@@ -85,24 +96,47 @@
               displayFormat="D / M / YY"
             ></ion-datetime>
           </ion-item>
+          <ion-item
+            ><ion-label>Remove All Existing Projects?</ion-label>
+            <ion-checkbox
+              formControlName="removeExistingTasks"
+              class="form-control"
+              slot="end"
+            ></ion-checkbox
+          ></ion-item>
           <ion-list>
             <ion-item>
               <ion-select
                 formControlName="tasksId"
-                okText="Add Task to Project"
+                okText="Add Tasks to Project"
                 cancelText="Cancel"
                 #tasksSelect
-                placeholder="Add Tasks?"
+                placeholder="Add Tasks"
                 multiple="true"
                 class="select-full-width"
               >
                 <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
                   >{{ task?.title }} Deadline: {{ task?.endDate }}
                 </ion-select-option>
+                <ion-label
+                  ><ion-text
+                    >Reselect existing tasks when adding additional
+                    tasks</ion-text
+                  ></ion-label
+                >
               </ion-select>
               <ion-button (click)="resetTasks()"> clear </ion-button>
             </ion-item>
           </ion-list>
+          <ion-item
+            ><ion-label>Mark As Completed?</ion-label>
+            <ion-checkbox
+              formControlName="isCompleted"
+              class="form-control"
+              slot="end"
+              checked="{{ this.project?.isCompleted }}"
+            ></ion-checkbox
+          ></ion-item>
           <ion-button [disabled]="myForm.invalid" type="submit" expand="block"
             >Add Task</ion-button
           >

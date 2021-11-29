@@ -50,6 +50,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createProject: Project;
   createTask: Task;
+  updateProject: Project;
   updateTask: Task;
 };
 
@@ -61,6 +62,11 @@ export type MutationCreateProjectArgs = {
 
 export type MutationCreateTaskArgs = {
   createTaskDto: CreateTaskInput;
+};
+
+
+export type MutationUpdateProjectArgs = {
+  updateProjectDto: UpdateProjectDto;
 };
 
 
@@ -158,6 +164,17 @@ export type Task = {
   title?: Maybe<Scalars['String']>;
 };
 
+export type UpdateProjectDto = {
+  createdDate: Scalars['String'];
+  details?: Maybe<Scalars['String']>;
+  endDate: Scalars['String'];
+  id: Scalars['Int'];
+  isCompleted: Scalars['Boolean'];
+  removeExistingTasks: Scalars['Boolean'];
+  tasksId?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  title: Scalars['String'];
+};
+
 export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
   details?: Maybe<Scalars['String']>;
@@ -169,6 +186,20 @@ export type CreateProjectMutationVariables = Exact<{
 
 
 export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', title: string } };
+
+export type UpdateProjectMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  createdDate: Scalars['String'];
+  endDate: Scalars['String'];
+  isCompleted: Scalars['Boolean'];
+  removeExistingTasks: Scalars['Boolean'];
+  details?: Maybe<Scalars['String']>;
+  tasksId?: Maybe<Array<Maybe<Scalars['Int']>> | Maybe<Scalars['Int']>>;
+}>;
+
+
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, isCompleted: boolean, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined } | null | undefined> | null | undefined } };
 
 export type AllProjectsWithTasksQueryVariables = Exact<{
   isCompleted?: Maybe<Scalars['Boolean']>;
@@ -274,6 +305,35 @@ export const CreateProjectDocument = gql`
   })
   export class CreateProjectGQL extends Apollo.Mutation<CreateProjectMutation, CreateProjectMutationVariables> {
     document = CreateProjectDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateProjectDocument = gql`
+    mutation updateProject($id: Int!, $title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean!, $removeExistingTasks: Boolean!, $details: String, $tasksId: [Int]) {
+  updateProject(
+    updateProjectDto: {id: $id, title: $title, createdDate: $createdDate, removeExistingTasks: $removeExistingTasks, endDate: $endDate, isCompleted: $isCompleted, tasksId: $tasksId, details: $details}
+  ) {
+    id
+    title
+    details
+    createdDate
+    endDate
+    isCompleted
+    tasks {
+      id
+      title
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateProjectGQL extends Apollo.Mutation<UpdateProjectMutation, UpdateProjectMutationVariables> {
+    document = UpdateProjectDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

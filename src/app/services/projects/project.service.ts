@@ -5,6 +5,8 @@ import {
   AllProjectsWithTasksGQL,
   CreateProjectDto,
   GetProjectByIdGQL,
+  UpdateProjectGQL,
+  UpdateProjectDto,
 } from '../../../graphql/generated/graphql';
 
 @Injectable({
@@ -15,7 +17,8 @@ export class ProjectService {
     private readonly allProjectsTaskFormService: AllProjectsTaskFormGQL,
     private readonly createProjectService: CreateProjectGQL,
     private readonly allProjectsWithTasksService: AllProjectsWithTasksGQL,
-    private readonly getProjectByIdService: GetProjectByIdGQL
+    private readonly getProjectByIdService: GetProjectByIdGQL,
+    private readonly updateProjectService: UpdateProjectGQL
   ) {}
 
   async getProjectsTaskForm(isCompleted?: boolean) {
@@ -28,9 +31,11 @@ export class ProjectService {
   getOneById(id: number) {
     return this.getProjectByIdService.fetch({ id });
   }
-
-  getProjectWithTasks() {
-    return this.allProjectsWithTasksService.fetch();
+  async updateProject(project: UpdateProjectDto) {
+    return await this.updateProjectService.mutate(project).toPromise();
+  }
+  getProjectWithTasks(isCompleted?: boolean) {
+    return this.allProjectsWithTasksService.fetch({ isCompleted });
   }
   getProjectsTaskFormObservable(isCompleted?: boolean) {
     return this.allProjectsTaskFormService.fetch({ isCompleted: isCompleted });

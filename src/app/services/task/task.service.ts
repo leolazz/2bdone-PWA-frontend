@@ -25,8 +25,9 @@ export class TaskService {
   ) {}
 
   async updateTask(task: CreateTaskDto) {
-    let taskInput = { ...task, id: task.id };
-    return await this.updateTaskService.mutate(taskInput).toPromise();
+    return await this.updateTaskService
+      .mutate({ ...task, id: task.id })
+      .toPromise();
   }
   getPaginatedTasks(pageableOptions: PaginatedTasksQueryVariables) {
     return this.paginatedTasksService.watch(pageableOptions);
