@@ -48,9 +48,9 @@ export class ProjectDetailsComponent implements OnInit {
       removeExistingTasks: [false],
     });
   }
-  async projectUpdatedToast() {
-    const updateSucessful = await this.toastController.create({
-      header: 'Task Updated!',
+  async Toast(message: string) {
+    const toast = await this.toastController.create({
+      header: message,
       position: 'top',
       animated: true,
       duration: 4000,
@@ -63,7 +63,7 @@ export class ProjectDetailsComponent implements OnInit {
         },
       ],
     });
-    await updateSucessful.present();
+    await toast.present();
   }
   resetTasks() {
     this.tasksSelect.value = '';
@@ -93,7 +93,8 @@ export class ProjectDetailsComponent implements OnInit {
     updatedProject.endDate = updatedProject.endDate.substring(0, 10);
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
     const result = await this.projectService.updateProject(updatedProject);
-    if (result?.data?.updateProject) this.projectUpdatedToast();
+    if (result?.data?.updateProject) this.Toast('Project Updated!');
+    else this.Toast('Something Went Wrong.');
   }
   todaysDate() {
     const today = new Date();

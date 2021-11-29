@@ -65,9 +65,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  async taskUpdatedToast() {
+  async Toast(message: string) {
     const updateSucessful = await this.toastController.create({
-      header: 'Task Updated!',
+      header: message,
       position: 'top',
       animated: true,
       duration: 4000,
@@ -109,7 +109,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     }
     updatedTask.endDate = updatedTask.endDate.substring(0, 10);
     const result = await this.taskService.updateTask({ ...updatedTask });
-    if (result?.data?.updateTask) this.taskUpdatedToast();
+    if (result?.data?.updateTask) this.Toast('Task Updated!');
+    else this.Toast('Something Went Wrong');
   }
   formatDate(date: string) {
     const today = new Date(date);
