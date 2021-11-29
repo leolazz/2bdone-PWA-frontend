@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonSelect } from '@ionic/angular';
+import { IonSelect, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   CreateTaskInput,
@@ -30,8 +30,27 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    public toastController: ToastController
   ) {}
+
+  async taskCreatedToast() {
+    const created = await this.toastController.create({
+      header: 'Task Updated!',
+      position: 'top',
+      animated: true,
+      duration: 4000,
+
+      color: 'secondary',
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel',
+        },
+      ],
+    });
+    await created.present();
+  }
 
   resetProject() {
     this.projectSelect.value = '';
@@ -43,10 +62,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   get taskEndDate() {
     return this.myForm.get('endDate');
   }
-  saveTask() {
+  async saveTask() {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
     newTask.endDate = newTask.endDate.substring(0, 10);
-    this.taskService.createTask(newTask);
+    const result = await this.taskService.createTask(newTask);
+    if (result?.data?.createTask) this.taskCreatedToast();
   }
   todaysDate() {
     const today = new Date();

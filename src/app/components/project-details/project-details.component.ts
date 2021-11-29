@@ -92,10 +92,8 @@ export class ProjectDetailsComponent implements OnInit {
         });
     updatedProject.endDate = updatedProject.endDate.substring(0, 10);
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
-    const returnedProject = await this.projectService.updateProject(
-      updatedProject
-    );
-    if (returnedProject) this.projectUpdatedToast();
+    const result = await this.projectService.updateProject(updatedProject);
+    if (result?.data?.updateProject) this.projectUpdatedToast();
   }
   todaysDate() {
     const today = new Date();

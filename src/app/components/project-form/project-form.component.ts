@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IonSelect } from '@ionic/angular';
+import { IonSelect, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   CreateProjectDto,
@@ -31,9 +31,26 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    public toastController: ToastController
   ) {}
+  async projectCreatedToast() {
+    const created = await this.toastController.create({
+      header: 'Project Added!',
+      position: 'top',
+      animated: true,
+      duration: 4000,
 
+      color: 'secondary',
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel',
+        },
+      ],
+    });
+    await created.present();
+  }
   resetTasks() {
     this.tasksSelect.value = '';
   }
@@ -46,20 +63,14 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   get projectTasks() {
     return this.myForm.get('tasksId');
   }
-  saveProject() {
+  async saveProject() {
     const newProject: CreateProjectDto = {
       ...this.project,
       ...this.myForm.value,
     };
     newProject.endDate = newProject.endDate.substring(0, 10);
-    /**
-     * not sure why this was added. No effect when disabled.
-     */
-    // newProject.tasksId === null
-    //   ? (newProject.tasksId = [])
-    //   : (newProject.tasksId = newProject.tasksId);
-    console.log(newProject);
-    this.projectService.createProject(newProject);
+    const result = await this.projectService.createProject(newProject);
+    if (result?.data?.createProject) this.projectCreatedToast();
   }
   todaysDate() {
     const today = new Date();

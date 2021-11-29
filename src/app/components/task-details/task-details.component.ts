@@ -108,8 +108,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       updatedTask = { ...this.task, ...this.myForm.value };
     }
     updatedTask.endDate = updatedTask.endDate.substring(0, 10);
-    const returnedTask = await this.taskService.updateTask({ ...updatedTask });
-    if (returnedTask) this.taskUpdatedToast();
+    const result = await this.taskService.updateTask({ ...updatedTask });
+    if (result?.data?.updateTask) this.taskUpdatedToast();
   }
   formatDate(date: string) {
     const today = new Date(date);
