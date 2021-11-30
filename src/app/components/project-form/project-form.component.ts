@@ -34,14 +34,16 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     public toastController: ToastController
   ) {}
-  async projectCreatedToast() {
+  async Toast(header: string, error: boolean) {
+    let color;
+    error ? (color = 'danger') : (color = 'secondary');
     const created = await this.toastController.create({
-      header: 'Project Added!',
+      header,
       position: 'top',
       animated: true,
       duration: 4000,
 
-      color: 'secondary',
+      color,
       buttons: [
         {
           text: 'Close',
@@ -70,7 +72,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     };
     newProject.endDate = newProject.endDate.substring(0, 10);
     const result = await this.projectService.createProject(newProject);
-    if (result?.data?.createProject) this.projectCreatedToast();
+    if (result?.data?.createProject) this.Toast('Project Added!', false);
+    else this.Toast('Something Went Wrong', true);
   }
   todaysDate() {
     const today = new Date();

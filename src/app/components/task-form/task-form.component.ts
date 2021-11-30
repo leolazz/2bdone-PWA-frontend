@@ -34,14 +34,16 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     public toastController: ToastController
   ) {}
 
-  async taskCreatedToast() {
+  async Toast(header: string, error: boolean) {
+    let color;
+    error ? (color = 'danger') : (color = 'secondary');
     const created = await this.toastController.create({
-      header: 'Task Updated!',
+      header,
       position: 'top',
       animated: true,
       duration: 4000,
 
-      color: 'secondary',
+      color,
       buttons: [
         {
           text: 'Close',
@@ -66,7 +68,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
     newTask.endDate = newTask.endDate.substring(0, 10);
     const result = await this.taskService.createTask(newTask);
-    if (result?.data?.createTask) this.taskCreatedToast();
+    if (result?.data?.createTask) this.Toast('Task Added!', false);
+    else this.Toast('Something Went Wrong', true);
   }
   todaysDate() {
     const today = new Date();

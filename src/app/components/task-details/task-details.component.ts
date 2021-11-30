@@ -65,14 +65,16 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  async Toast(message: string) {
+  async Toast(header: string, error: boolean) {
+    let color;
+    error ? (color = 'danger') : (color = 'secondary');
     const updateSucessful = await this.toastController.create({
-      header: message,
+      header,
       position: 'top',
       animated: true,
       duration: 4000,
 
-      color: 'secondary',
+      color: color,
       buttons: [
         {
           text: 'Close',
@@ -109,8 +111,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     }
     updatedTask.endDate = updatedTask.endDate.substring(0, 10);
     const result = await this.taskService.updateTask({ ...updatedTask });
-    if (result?.data?.updateTask) this.Toast('Task Updated!');
-    else this.Toast('Something Went Wrong');
+    if (result?.data?.updateTask) this.Toast('Task Updated!', false);
+    else this.Toast('Something Went Wrong', true);
   }
   formatDate(date: string) {
     const today = new Date(date);

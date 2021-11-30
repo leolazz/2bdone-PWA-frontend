@@ -48,14 +48,16 @@ export class ProjectDetailsComponent implements OnInit {
       removeExistingTasks: [false],
     });
   }
-  async Toast(message: string) {
+  async Toast(header: string, error: boolean) {
+    let color;
+    error ? (color = 'danger') : (color = 'secondary');
     const toast = await this.toastController.create({
-      header: message,
+      header,
       position: 'top',
       animated: true,
       duration: 4000,
 
-      color: 'secondary',
+      color,
       buttons: [
         {
           text: 'Close',
@@ -93,8 +95,8 @@ export class ProjectDetailsComponent implements OnInit {
     updatedProject.endDate = updatedProject.endDate.substring(0, 10);
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
     const result = await this.projectService.updateProject(updatedProject);
-    if (result?.data?.updateProject) this.Toast('Project Updated!');
-    else this.Toast('Something Went Wrong.');
+    if (result?.data?.updateProject) this.Toast('Project Updated!', false);
+    else this.Toast('Something Went Wrong.', true);
   }
   todaysDate() {
     const today = new Date();
