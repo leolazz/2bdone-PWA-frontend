@@ -50,6 +50,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   createProject: Project;
   createTask: Task;
+  deleteProject: Project;
+  deleteTask: Task;
   updateProject: Project;
   updateTask: Task;
 };
@@ -62,6 +64,16 @@ export type MutationCreateProjectArgs = {
 
 export type MutationCreateTaskArgs = {
   createTaskDto: CreateTaskInput;
+};
+
+
+export type MutationDeleteProjectArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationDeleteTaskArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -187,6 +199,13 @@ export type CreateProjectMutationVariables = Exact<{
 
 export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', title: string } };
 
+export type DeleteProjectMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteProjectMutation = { __typename?: 'Mutation', deleteProject: { __typename?: 'Project', title: string } };
+
 export type UpdateProjectMutationVariables = Exact<{
   id: Scalars['Int'];
   title: Scalars['String'];
@@ -245,6 +264,13 @@ export type CreateTaskMutationVariables = Exact<{
 
 
 export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
+
+export type DeleteTaskMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: { __typename?: 'Task', title?: string | null | undefined } };
 
 export type UpdateTaskMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -305,6 +331,24 @@ export const CreateProjectDocument = gql`
   })
   export class CreateProjectGQL extends Apollo.Mutation<CreateProjectMutation, CreateProjectMutationVariables> {
     document = CreateProjectDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteProjectDocument = gql`
+    mutation deleteProject($id: Float!) {
+  deleteProject(id: $id) {
+    title
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteProjectGQL extends Apollo.Mutation<DeleteProjectMutation, DeleteProjectMutationVariables> {
+    document = DeleteProjectDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -469,6 +513,24 @@ export const CreateTaskDocument = gql`
   })
   export class CreateTaskGQL extends Apollo.Mutation<CreateTaskMutation, CreateTaskMutationVariables> {
     document = CreateTaskDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteTaskDocument = gql`
+    mutation deleteTask($id: Float!) {
+  deleteTask(id: $id) {
+    title
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteTaskGQL extends Apollo.Mutation<DeleteTaskMutation, DeleteTaskMutationVariables> {
+    document = DeleteTaskDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

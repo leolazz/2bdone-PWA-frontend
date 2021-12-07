@@ -65,6 +65,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  async deleteTask() {}
+
   async Toast(header: string, error: boolean) {
     let color;
     error ? (color = 'danger') : (color = 'secondary');

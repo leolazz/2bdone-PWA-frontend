@@ -79,6 +79,16 @@ export class ProjectDetailsComponent implements OnInit {
   get projectTasks() {
     return this.myForm.get('tasksId').value;
   }
+
+  async deleteProject() {
+    const deletedProject = await this.projectService.deleteProject(+this.id);
+    deletedProject?.data?.deleteProject
+      ? this.Toast(
+          `'${deletedProject?.data?.deleteProject?.title}' Deleted`,
+          false
+        )
+      : this.Toast('Something Went Wrong', true);
+  }
   async updateProject() {
     let updatedProject: UpdateProjectDto;
     this.myForm.controls['removeExistingTasks'].disabled

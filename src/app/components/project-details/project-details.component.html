@@ -1,11 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Details</ion-title>
     <ion-buttons slot="start">
       <ion-back-button
         text="Projects"
         icon="chevron-back-outline"
       ></ion-back-button>
+      <ion-title>Details</ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="deleteProject()" fill="solid" color="danger"
+        >Delete Project?</ion-button
+      >
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -138,7 +143,7 @@
             ></ion-checkbox
           ></ion-item>
           <ion-button [disabled]="myForm.invalid" type="submit" expand="block"
-            >Add Task</ion-button
+            >Update Project</ion-button
           >
         </ion-item-group>
       </ion-col></ion-row

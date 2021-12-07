@@ -17,7 +17,7 @@ export class ProjectPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.projectService.getProjectWithTasks(true).subscribe((x) => {
+      this.projectService.getProjectWithTasks().subscribe((x) => {
         this.projectsLoading = x.loading;
         this.projects = x?.data.allProjects;
       })
