@@ -8,6 +8,7 @@ import {
   UpdateProjectGQL,
   UpdateProjectDto,
   DeleteProjectGQL,
+  DeleteProjectInput,
 } from '../../../graphql/generated/graphql';
 
 @Injectable({
@@ -23,8 +24,8 @@ export class ProjectService {
     private readonly deleteProjectSerice: DeleteProjectGQL
   ) {}
 
-  deleteProject(id: number) {
-    return this.deleteProjectSerice.mutate({ id }).toPromise();
+  deleteProject(deleteProjectInput: DeleteProjectInput) {
+    return this.deleteProjectSerice.mutate(deleteProjectInput).toPromise();
   }
 
   async getProjectsTaskForm(isCompleted?: boolean) {

@@ -6,7 +6,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonSelect, ToastController } from '@ionic/angular';
+import { AlertController, IonSelect, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   CreateProjectDto,
@@ -37,7 +37,8 @@ export class ProjectDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private projectService: ProjectService,
     private taskService: TaskService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public alertController: AlertController
   ) {
     this.myForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -80,8 +81,29 @@ export class ProjectDetailsComponent implements OnInit {
     return this.myForm.get('tasksId').value;
   }
 
-  async deleteProject() {
-    const deletedProject = await this.projectService.deleteProject(+this.id);
+  async deleteProjectAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Delete Options',
+      message: 'Are you sure you want to delete this Project?',
+      buttons: [
+        { text: 'Cancel' },
+        { text: 'Delete Project Only', handler: () => this.deleteProject() },
+        {
+          text: 'Delete All Tasks & Project',
+          handler: () => this.deleteProject(true),
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async deleteProject(deleteTasks: boolean = false) {
+    const deletedProject = await this.projectService.deleteProject({
+      id: +this.id,
+      deleteTasks: deleteTasks,
+    });
     deletedProject?.data?.deleteProject
       ? this.Toast(
           `'${deletedProject?.data?.deleteProject?.title}' Deleted`,

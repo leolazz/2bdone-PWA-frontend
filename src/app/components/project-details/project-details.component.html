@@ -8,8 +8,8 @@
       <ion-title>Details</ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="deleteProject()" fill="solid" color="danger"
-        >Delete Project?</ion-button
+      <ion-button (click)="deleteProjectAlert()" fill="solid" color="danger"
+        >Delete Project</ion-button
       >
     </ion-buttons>
   </ion-toolbar>
@@ -102,7 +102,7 @@
             ></ion-datetime>
           </ion-item>
           <ion-item
-            ><ion-label>Remove All Existing Projects?</ion-label>
+            ><ion-label>Remove All Existing Tasks?</ion-label>
             <ion-checkbox
               formControlName="removeExistingTasks"
               class="form-control"

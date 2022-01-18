@@ -1,5 +1,5 @@
-mutation deleteProject($id: Float!) {
-  deleteProject(id: $id) {
+mutation deleteProject($deleteTasks: Boolean = false, $id: Int!) {
+  deleteProject(deleteProjectInput: { deleteTasks: $deleteTasks, id: $id }) {
     title
   }
 }

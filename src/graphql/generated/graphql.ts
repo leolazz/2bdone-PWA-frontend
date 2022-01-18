@@ -46,6 +46,11 @@ export type CreateTaskInput = {
   title: Scalars['String'];
 };
 
+export type DeleteProjectInput = {
+  deleteTasks: Scalars['Boolean'];
+  id: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createProject: Project;
@@ -68,7 +73,7 @@ export type MutationCreateTaskArgs = {
 
 
 export type MutationDeleteProjectArgs = {
-  id: Scalars['Float'];
+  deleteProjectInput: DeleteProjectInput;
 };
 
 
@@ -200,7 +205,8 @@ export type CreateProjectMutationVariables = Exact<{
 export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', title: string } };
 
 export type DeleteProjectMutationVariables = Exact<{
-  id: Scalars['Float'];
+  deleteTasks?: Maybe<Scalars['Boolean']>;
+  id: Scalars['Int'];
 }>;
 
 
@@ -337,8 +343,8 @@ export const CreateProjectDocument = gql`
     }
   }
 export const DeleteProjectDocument = gql`
-    mutation deleteProject($id: Float!) {
-  deleteProject(id: $id) {
+    mutation deleteProject($deleteTasks: Boolean = false, $id: Int!) {
+  deleteProject(deleteProjectInput: {deleteTasks: $deleteTasks, id: $id}) {
     title
   }
 }
