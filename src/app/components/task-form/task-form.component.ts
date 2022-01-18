@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonSelect, ToastController } from '@ionic/angular';
+import { IonSelect, NavController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   CreateTaskInput,
@@ -31,7 +31,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private projectService: ProjectService,
     private taskService: TaskService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public navCtrl: NavController
   ) {}
 
   async Toast(header: string, error: boolean) {
@@ -68,8 +69,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
     newTask.endDate = newTask.endDate.substring(0, 10);
     const result = await this.taskService.createTask(newTask);
-    if (result?.data?.createTask) this.Toast('Task Added!', false);
-    else this.Toast('Something Went Wrong', true);
+    if (result?.data?.createTask) {
+      this.Toast('Task Added!', false);
+      this.navCtrl.back();
+    } else this.Toast('Something Went Wrong', true);
   }
   todaysDate() {
     const today = new Date();
