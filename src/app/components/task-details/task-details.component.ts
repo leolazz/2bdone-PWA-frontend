@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonInput, IonSelect } from '@ionic/angular';
+import { AlertController, IonInput, IonSelect } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   AllProjectsTaskFormQuery,
@@ -34,7 +34,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private fb: FormBuilder,
     private projectService: ProjectService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public alertController: AlertController
   ) {
     this.myForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -65,8 +66,29 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       })
     );
   }
+  async deleteTaskAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Delete Options',
+      message: 'Are you sure you want to delete this Task?',
+      buttons: [
+        { text: 'Cancel' },
+        {
+          text: 'Delete Task',
+          handler: () => this.deleteTask(),
+        },
+      ],
+    });
 
-  async deleteTask() {}
+    await alert.present();
+  }
+
+  async deleteTask() {
+    const deletedTask = await this.taskService.deleteTask(+this.id);
+    deletedTask?.data?.deleteTask?.title
+      ? this.Toast(`'${deletedTask?.data?.deleteTask?.title}' Deleted`, false)
+      : this.Toast('Something Went Wrong', true);
+  }
 
   async Toast(header: string, error: boolean) {
     let color;

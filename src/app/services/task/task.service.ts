@@ -5,6 +5,7 @@ import {
   CreateTaskDto,
   CreateTaskGQL,
   CreateTaskInput,
+  DeleteTaskGQL,
   GetTaskByIdGQL,
   PaginatedTasksGQL,
   PaginatedTasksQueryVariables,
@@ -21,9 +22,13 @@ export class TaskService {
     private readonly allTasksProjectFormService: AllTasksProjectFormGQL,
     private readonly getTaskByid: GetTaskByIdGQL,
     private readonly updateTaskService: UpdateTaskGQL,
-    private readonly paginatedTasksService: PaginatedTasksGQL
+    private readonly paginatedTasksService: PaginatedTasksGQL,
+    private readonly deleteTaskService: DeleteTaskGQL
   ) {}
 
+  async deleteTask(id: number) {
+    return this.deleteTaskService.mutate({ id }).toPromise();
+  }
   async updateTask(task: CreateTaskDto) {
     return await this.updateTaskService
       .mutate({ ...task, id: task.id })
