@@ -9,6 +9,8 @@ import {
   UpdateProjectDto,
   DeleteProjectGQL,
   DeleteProjectInput,
+  PaginatedProjectsGQL,
+  PaginatedProjectsQueryVariables,
 } from '../../../graphql/generated/graphql';
 
 @Injectable({
@@ -21,8 +23,15 @@ export class ProjectService {
     private readonly allProjectsWithTasksService: AllProjectsWithTasksGQL,
     private readonly getProjectByIdService: GetProjectByIdGQL,
     private readonly updateProjectService: UpdateProjectGQL,
-    private readonly deleteProjectSerice: DeleteProjectGQL
+    private readonly deleteProjectSerice: DeleteProjectGQL,
+    private readonly paginatedProjectsService: PaginatedProjectsGQL
   ) {}
+
+  getPaginatedProjects(pageableOptions: PaginatedProjectsQueryVariables) {
+    return this.paginatedProjectsService.watch(pageableOptions, {
+      pollInterval: 500,
+    });
+  }
 
   deleteProject(deleteProjectInput: DeleteProjectInput) {
     return this.deleteProjectSerice.mutate(deleteProjectInput).toPromise();

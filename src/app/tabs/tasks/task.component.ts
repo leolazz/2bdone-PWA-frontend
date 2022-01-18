@@ -78,25 +78,7 @@ export class TaskPage implements OnInit, OnDestroy {
     });
   }
 
-  // async getTasks() {
-  //   this.offset = this.offset + 10;
-  //   this.taskService
-  //     .getTasks(this.limit, this.offset)
-  //     .pipe(take(1))
-  //     .subscribe((x) => {
-  //       this.tasksLoading = x.loading;
-  //       this.tasks = this.tasks.concat(x?.data?.getTasks);
-  //     });
-  // }
-  // loadData(event) {
-  //   this.getTasks().finally(() => {
-  //     event.target.complete();
-  //   });
-  // }
   ngOnDestroy(): void {
     this.subscriptions.forEach((x) => x.unsubscribe());
   }
-  // goToAddTask() {
-  //   this.navCtrl.navigateForward('add-task');
-  // }
 }
