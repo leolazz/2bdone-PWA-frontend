@@ -1,7 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, IonInput, IonSelect } from '@ionic/angular';
+import {
+  AlertController,
+  IonInput,
+  IonSelect,
+  NavController,
+} from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   AllProjectsTaskFormQuery,
@@ -35,7 +40,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private projectService: ProjectService,
     public toastController: ToastController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public navCtrl: NavController
   ) {
     this.myForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -85,9 +91,10 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
   async deleteTask() {
     const deletedTask = await this.taskService.deleteTask(+this.id);
-    deletedTask?.data?.deleteTask?.title
-      ? this.Toast(`'${deletedTask?.data?.deleteTask?.title}' Deleted`, false)
-      : this.Toast('Something Went Wrong', true);
+    if (deletedTask?.data?.deleteTask?.title) {
+      this.Toast(`'${deletedTask?.data?.deleteTask?.title}' Deleted`, false);
+      this.navCtrl.back();
+    } else this.Toast('Something Went Wrong', true);
   }
 
   async Toast(header: string, error: boolean) {
@@ -136,8 +143,10 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     }
     updatedTask.endDate = updatedTask.endDate.substring(0, 10);
     const result = await this.taskService.updateTask({ ...updatedTask });
-    if (result?.data?.updateTask) this.Toast('Task Updated!', false);
-    else this.Toast('Something Went Wrong', true);
+    if (result?.data?.updateTask) {
+      this.Toast('Task Updated!', false);
+      this.navCtrl.back();
+    } else this.Toast('Something Went Wrong', true);
   }
   formatDate(date: string) {
     const today = new Date(date);

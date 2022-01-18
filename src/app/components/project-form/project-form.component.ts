@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IonSelect, ToastController } from '@ionic/angular';
+import { IonSelect, NavController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   CreateProjectDto,
@@ -32,7 +32,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private projectService: ProjectService,
     private taskService: TaskService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public navCtrl: NavController
   ) {}
   async Toast(header: string, error: boolean) {
     let color;
@@ -70,10 +71,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       ...this.project,
       ...this.myForm.value,
     };
+    if (newProject.tasksId == null) {
+      newProject.tasksId = [];
+    }
     newProject.endDate = newProject.endDate.substring(0, 10);
     const result = await this.projectService.createProject(newProject);
-    if (result?.data?.createProject) this.Toast('Project Added!', false);
-    else this.Toast('Something Went Wrong', true);
+    if (result?.data?.createProject) {
+      this.Toast('Project Added!', false);
+      this.navCtrl.back();
+    } else this.Toast('Something Went Wrong', true);
   }
   todaysDate() {
     const today = new Date();

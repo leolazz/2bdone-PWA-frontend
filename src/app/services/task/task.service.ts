@@ -35,7 +35,9 @@ export class TaskService {
       .toPromise();
   }
   getPaginatedTasks(pageableOptions: PaginatedTasksQueryVariables) {
-    return this.paginatedTasksService.watch(pageableOptions);
+    return this.paginatedTasksService.watch(pageableOptions, {
+      pollInterval: 500,
+    });
   }
 
   getOneById(id: number) {

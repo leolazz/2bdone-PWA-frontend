@@ -6,7 +6,13 @@ import {
   FormControl,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, IonSelect, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  IonSelect,
+  NavComponentWithProps,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
   CreateProjectDto,
@@ -38,7 +44,8 @@ export class ProjectDetailsComponent implements OnInit {
     private projectService: ProjectService,
     private taskService: TaskService,
     public toastController: ToastController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public navCtrl: NavController
   ) {
     this.myForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -82,20 +89,32 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   async deleteProjectAlert() {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Delete Options',
-      message: 'Are you sure you want to delete this Project?',
-      buttons: [
-        { text: 'Cancel' },
-        { text: 'Delete Project Only', handler: () => this.deleteProject() },
-        {
-          text: 'Delete All Tasks & Project',
-          handler: () => this.deleteProject(true),
-        },
-      ],
-    });
-
+    let alert: HTMLIonAlertElement;
+    if (this.project.tasks.length) {
+      alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Delete Options',
+        message: 'Are you sure you want to delete this Project?',
+        buttons: [
+          { text: 'Cancel' },
+          { text: 'Delete Project Only', handler: () => this.deleteProject() },
+          {
+            text: 'Delete All Tasks & Project',
+            handler: () => this.deleteProject(true),
+          },
+        ],
+      });
+    } else {
+      alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Delete Project',
+        message: 'Are you sure you want to delete this Project?',
+        buttons: [
+          { text: 'Cancel' },
+          { text: 'Confirm', handler: () => this.deleteProject() },
+        ],
+      });
+    }
     await alert.present();
   }
 
@@ -104,12 +123,15 @@ export class ProjectDetailsComponent implements OnInit {
       id: +this.id,
       deleteTasks: deleteTasks,
     });
-    deletedProject?.data?.deleteProject
-      ? this.Toast(
-          `'${deletedProject?.data?.deleteProject?.title}' Deleted`,
-          false
-        )
-      : this.Toast('Something Went Wrong', true);
+    if (deletedProject?.data?.deleteProject) {
+      this.Toast(
+        `'${deletedProject?.data?.deleteProject?.title}' Deleted`,
+        false
+      );
+      this.navCtrl.back();
+    } else {
+      this.Toast('Something Went Wrong', true);
+    }
   }
   async updateProject() {
     let updatedProject: UpdateProjectDto;
@@ -127,8 +149,12 @@ export class ProjectDetailsComponent implements OnInit {
     updatedProject.endDate = updatedProject.endDate.substring(0, 10);
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
     const result = await this.projectService.updateProject(updatedProject);
-    if (result?.data?.updateProject) this.Toast('Project Updated!', false);
-    else this.Toast('Something Went Wrong.', true);
+    if (result?.data?.updateProject) {
+      this.Toast('Project Updated!', false);
+      this.navCtrl.back();
+    } else {
+      this.Toast('Something Went Wrong.', true);
+    }
   }
   todaysDate() {
     const today = new Date();
