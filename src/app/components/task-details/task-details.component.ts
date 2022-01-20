@@ -49,6 +49,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       details: [''],
       outcomes: [''],
       projectId: [],
+      isCompleted: [false],
     });
   }
   ngOnDestroy() {
@@ -117,10 +118,6 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     await updateSucessful.present();
   }
 
-  resetProject() {
-    this.projectSelect.value = '';
-  }
-
   get taskTitle() {
     return this.myForm.get('title');
   }
@@ -130,16 +127,20 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   get taskEndDate() {
     return this.myForm.get('endDate');
   }
-  compareWithFn(project1, project2) {
-    return project1 === project2;
-  }
-
   async updateTask() {
     let updatedTask: CreateTaskDto;
     if (this.taskProject() === null) {
-      updatedTask = { ...this.myForm.value, ...this.task };
+      updatedTask = {
+        ...this.task,
+        ...this.myForm.value,
+        projectId: this.task.projectId,
+      };
     } else {
-      updatedTask = { ...this.task, ...this.myForm.value };
+      updatedTask = {
+        ...this.task,
+        ...this.myForm.value,
+        projectId: this.taskProject(),
+      };
     }
     updatedTask.endDate = updatedTask.endDate.substring(0, 10);
     const result = await this.taskService.updateTask({ ...updatedTask });

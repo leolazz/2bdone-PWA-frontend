@@ -125,9 +125,17 @@
                   >{{ project?.title }} Deadline: {{ project?.endDate }}
                 </ion-select-option>
               </ion-select>
-              <ion-button (click)="resetProject()"> clear </ion-button>
             </ion-item>
           </ion-list>
+          <ion-item
+            ><ion-label>Mark As Completed?</ion-label>
+            <ion-checkbox
+              formControlName="isCompleted"
+              class="form-control"
+              slot="end"
+              checked="{{ this.task?.isCompleted }}"
+            ></ion-checkbox
+          ></ion-item>
           <ion-button [disabled]="myForm.invalid" type="submit" expand="block"
             >Update Task</ion-button
           >
