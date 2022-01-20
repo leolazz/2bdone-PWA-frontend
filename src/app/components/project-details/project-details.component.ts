@@ -1,21 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl,
-} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
   IonSelect,
-  NavComponentWithProps,
   NavController,
   ToastController,
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import {
-  CreateProjectDto,
   AllTasksProjectFormQuery,
   GetProjectByIdQuery,
   UpdateProjectDto,
@@ -134,11 +127,15 @@ export class ProjectDetailsComponent implements OnInit {
     }
   }
   async updateProject() {
+    const existingTaskIds = this.project.tasks.map((t) => {
+      return t.id;
+    });
     let updatedProject: UpdateProjectDto;
     this.myForm.controls['removeExistingTasks'].disabled
       ? (updatedProject = {
           ...this.project,
           ...this.myForm.value,
+          tasksId: [...existingTaskIds, ...this.projectTasks()],
           removeExistingTasks: false,
         })
       : (updatedProject = {

@@ -19,7 +19,7 @@
     <ion-row>
       <ion-item
         *ngFor="let task of project?.tasks"
-        href="#"
+        routerLink="/tabs/tasks/details/{{ task.id }}"
         class="ion-activated"
       >
         <ion-icon size="small" name="pencil-outline" slot="start"></ion-icon>

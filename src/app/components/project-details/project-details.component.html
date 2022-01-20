@@ -31,7 +31,7 @@
     <ion-row>
       <ion-item
         *ngFor="let task of project?.tasks"
-        href="#"
+        routerLink="/tabs/tasks/details/{{ task.id }}"
         class="ion-activated"
       >
         <ion-icon size="small" name="pencil-outline" slot="start"></ion-icon>
@@ -123,12 +123,7 @@
                 <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
                   >{{ task?.title }} Deadline: {{ task?.endDate }}
                 </ion-select-option>
-                <ion-label
-                  ><ion-text
-                    >Reselect existing tasks when adding additional
-                    tasks</ion-text
-                  ></ion-label
-                >
+                <ion-label><ion-text>Available Tasks</ion-text></ion-label>
               </ion-select>
               <ion-button (click)="resetTasks()"> clear </ion-button>
             </ion-item>
