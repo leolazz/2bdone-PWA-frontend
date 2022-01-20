@@ -2,38 +2,39 @@
   <ion-menu contentId="projects" menu-Id="projects">
     <ion-header>
       <ion-toolbar>
-        <ion-title> Task Options</ion-title>
+        <ion-title> Project Options</ion-title>
       </ion-toolbar>
     </ion-header>
   </ion-menu>
-  <ion-router-outlet id="projects"
-    ><ion-content>
+  <ion-router-outlet id="projects">
+    <ion-content>
       <ion-menu-toggle auto-hide="false" menu-Id="projects">
         <ion-header>
           <ion-toolbar>
             <ion-buttons>
               <ion-menu-button></ion-menu-button>
             </ion-buttons>
-            <ion-title>projects</ion-title>
+            <ion-title>Projects</ion-title>
           </ion-toolbar>
         </ion-header>
-        <ion-header>
-          <project-card [projects]="projects"></project-card>
-          <ion-infinite-scroll
-            threshold="100px"
-            (ionInfinite)="loadDataInfinite($event)"
+
+        <project-card [projects]="projects"></project-card>
+        <ion-infinite-scroll
+          threshold="100px"
+          (ionInfinite)="loadDataInfinite($event)"
+        >
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data..."
           >
-            <ion-infinite-scroll-content
-              loadingSpinner="bubbles"
-              loadingText="Loading more data..."
-            >
-            </ion-infinite-scroll-content>
-          </ion-infinite-scroll>
-      </ion-menu-toggle></ion-content></ion-router-outlet
-      ></ion-split-pane>
-      <ion-fab slot="fixed" horizontal="end" vertical="top">
-        <ion-fab-button [routerLink]="['add-project']"
-          ><ion-icon name="add-outline"></ion-icon
-        ></ion-fab-button>
-      </ion-fab>
-      
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-menu-toggle>
+    </ion-content>
+  </ion-router-outlet>
+</ion-split-pane>
+<ion-fab slot="fixed" horizontal="end" vertical="top">
+  <ion-fab-button [routerLink]="['add-project']"
+    ><ion-icon name="add-outline"></ion-icon
+  ></ion-fab-button>
+</ion-fab>

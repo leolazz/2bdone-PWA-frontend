@@ -40,7 +40,7 @@ export class ProjectPage implements OnInit, OnDestroy {
 
   async ionViewWillEnter() {
     this.paneEnabled = true;
-    this.menuCtrl.enable(true, 'tasks');
+    this.menuCtrl.enable(true, 'projects');
   }
   ionViewWillLeave() {
     this.paneEnabled = false;
