@@ -8,6 +8,7 @@ import {
 } from '../../../graphql/generated/graphql';
 import { TaskService } from '../../services/task/task.service';
 import { QueryRef } from 'apollo-angular';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-task',
@@ -31,8 +32,19 @@ export class TaskPage implements OnInit, OnDestroy {
   >;
 
   pageableOptions: PaginatedTasksQueryVariables;
+  paneEnabled = true;
+  constructor(
+    private taskService: TaskService,
+    private menuCtrl: MenuController
+  ) {}
 
-  constructor(private taskService: TaskService) {}
+  async ionViewWillEnter() {
+    this.paneEnabled = true;
+    this.menuCtrl.enable(true, 'tasks');
+  }
+  ionViewWillLeave() {
+    this.paneEnabled = false;
+  }
 
   ngOnInit() {
     this.pageableOptions = {

@@ -1,26 +1,61 @@
-<ion-item href="#" class="ion-activated">
-  <ion-icon name="wifi" slot="start"></ion-icon>
-  <ion-label>Card Link Item 1 activated</ion-label>
-</ion-item>
-<ion-fab slot="fixed" horizontal="end" vertical="top">
-  <ion-fab-button><ion-icon name="add-outline"></ion-icon></ion-fab-button>
-  <ion-fab-list side="bottom">
-    <ion-button shape="round" [routerLink]="['add-task']" color="primary"
-      >Task</ion-button
-    >
-    <ion-button shape="round" color="secondary" [routerLink]="['add-task']"
-      >Project</ion-button
-    >
-  </ion-fab-list>
-</ion-fab>
-<ion-card>
-  <ion-card-header>
-    <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-    <ion-card-title>Card Title</ion-card-title>
-  </ion-card-header>
+<ion-split-pane contentId="second" [disabled]="!paneEnabled">
+  <!--  the side menu  -->
+  <ion-menu contentId="second" menu-Id="home">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Home Options</ion-title>
+      </ion-toolbar>
+    </ion-header>
+  </ion-menu>
 
-  <ion-card-content>
-    Keep close to Nature's heart... and break clear away, once in awhile, and
-    climb a mountain or spend a week in the woods. Wash your spirit clean.
-  </ion-card-content>
-</ion-card>
+  <!-- the second content -->
+  <ion-router-outlet id="second">
+    <ion-content>
+      <ion-menu-toggle auto-hide="false" menu-Id="home">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons>
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-title>Home</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-item href="#" class="ion-activated">
+          <ion-icon name="wifi" slot="start"></ion-icon>
+          <ion-label>Card Link Item 1 activated</ion-label>
+        </ion-item>
+        <ion-fab slot="fixed" horizontal="end" vertical="top">
+          <ion-fab-button
+            ><ion-icon name="add-outline"></ion-icon
+          ></ion-fab-button>
+          <ion-fab-list side="bottom">
+            <ion-button
+              shape="round"
+              [routerLink]="['add-task']"
+              color="primary"
+              >Task</ion-button
+            >
+            <ion-button
+              shape="round"
+              color="secondary"
+              [routerLink]="['add-task']"
+              >Project</ion-button
+            >
+          </ion-fab-list>
+        </ion-fab>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card-title>Card Title</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in
+            awhile, and climb a mountain or spend a week in the woods. Wash your
+            spirit clean.
+          </ion-card-content>
+        </ion-card>
+      </ion-menu-toggle>
+    </ion-content>
+  </ion-router-outlet>
+</ion-split-pane>

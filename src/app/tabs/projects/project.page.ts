@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 import { QueryRef } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import {
@@ -31,7 +32,19 @@ export class ProjectPage implements OnInit, OnDestroy {
     }>
   >;
   pageableOptions: PaginatedProjectsQueryVariables;
-  constructor(private projectService: ProjectService) {}
+  paneEnabled = true;
+  constructor(
+    private projectService: ProjectService,
+    private menuCtrl: MenuController
+  ) {}
+
+  async ionViewWillEnter() {
+    this.paneEnabled = true;
+    this.menuCtrl.enable(true, 'tasks');
+  }
+  ionViewWillLeave() {
+    this.paneEnabled = false;
+  }
 
   ngOnInit() {
     this.pageableOptions = {
