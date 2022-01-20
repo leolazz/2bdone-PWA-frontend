@@ -231,7 +231,7 @@ export type AllProjectsWithTasksQueryVariables = Exact<{
 }>;
 
 
-export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> };
+export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> };
 
 export type AllProjectsTaskFormQueryVariables = Exact<{
   isCompleted?: Maybe<Scalars['Boolean']>;
@@ -256,7 +256,7 @@ export type PaginatedProjectsQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedProjectsQuery = { __typename?: 'Query', paginatedProjects: { __typename?: 'PaginatedProjectsResponse', total: number, items: Array<{ __typename?: 'Project', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, details?: string | null | undefined, tasks?: Array<{ __typename?: 'Task', title?: string | null | undefined } | null | undefined> | null | undefined }> } };
+export type PaginatedProjectsQuery = { __typename?: 'Query', paginatedProjects: { __typename?: 'PaginatedProjectsResponse', total: number, items: Array<{ __typename?: 'Project', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, details?: string | null | undefined, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined } | null | undefined> | null | undefined }> } };
 
 export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
@@ -399,6 +399,7 @@ export const AllProjectsWithTasksDocument = gql`
     createdDate
     endDate
     tasks {
+      id
       title
       endDate
     }
@@ -476,6 +477,7 @@ export const PaginatedProjectsDocument = gql`
       endDate
       isCompleted
       tasks {
+        id
         title
       }
       details

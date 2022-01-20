@@ -20,6 +20,7 @@ query paginatedProjects(
       endDate
       isCompleted
       tasks {
+        id
         title
       }
       details
