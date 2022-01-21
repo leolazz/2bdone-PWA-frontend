@@ -1,7 +1,7 @@
 <ion-list>
   <ion-card *ngFor="let task of tasks">
     <ion-item
-      color="secondary"
+      [color]="task.isCompleted ? '' : 'secondary'"
       routerLink="details/{{ task?.id }}"
       class="ion-activated"
     >

@@ -95,6 +95,7 @@ export type PageableOptions = {
   isCompleted?: Maybe<Scalars['Boolean']>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
+  search?: Maybe<Scalars['String']>;
   sortOptions?: Maybe<SortOptions>;
 };
 
@@ -312,6 +313,7 @@ export type AllTasksProjectFormQueryVariables = Exact<{ [key: string]: never; }>
 export type AllTasksProjectFormQuery = { __typename?: 'Query', allOrphanTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined }> };
 
 export type PaginatedTasksQueryVariables = Exact<{
+  search?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   field: Scalars['String'];
@@ -651,9 +653,9 @@ export const AllTasksProjectFormDocument = gql`
     }
   }
 export const PaginatedTasksDocument = gql`
-    query paginatedTasks($limit: Int!, $offset: Int!, $field: String!, $isCompleted: Boolean!, $ascending: Boolean!) {
+    query paginatedTasks($search: String, $limit: Int!, $offset: Int!, $field: String!, $isCompleted: Boolean!, $ascending: Boolean!) {
   paginatedTasks(
-    pageableOptions: {limit: $limit, offset: $offset, isCompleted: $isCompleted, sortOptions: {field: $field, ascending: $ascending}}
+    pageableOptions: {search: $search, limit: $limit, offset: $offset, isCompleted: $isCompleted, sortOptions: {field: $field, ascending: $ascending}}
   ) {
     items {
       id

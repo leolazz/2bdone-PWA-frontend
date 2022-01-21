@@ -9,6 +9,7 @@ import {
 import { TaskService } from '../../services/task/task.service';
 import { QueryRef } from 'apollo-angular';
 import { MenuController } from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-task',
@@ -22,6 +23,7 @@ export class TaskPage implements OnInit, OnDestroy {
   private subscriptions: Array<Subscription> = [];
   public limit: number = 10;
   public offset: number = 0;
+  public searchForm: FormGroup;
   private queryRef: QueryRef<
     PaginatedTasksQuery,
     Exact<{
@@ -42,7 +44,8 @@ export class TaskPage implements OnInit, OnDestroy {
   paneEnabled = true;
   constructor(
     private taskService: TaskService,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private fb: FormBuilder
   ) {}
 
   async ionViewWillEnter() {
@@ -68,18 +71,28 @@ export class TaskPage implements OnInit, OnDestroy {
         this.tasks = x?.data?.paginatedTasks.items;
       })
     );
+    this.searchForm = this.fb.group({
+      search: ['', [Validators.required]],
+    });
   }
 
   async search() {
-    this.searchedTasks = this.tasks.filter(
-      (t) =>
-        t.title.toLowerCase().startsWith(this.searchValue.toLowerCase()) &&
-        t.isCompleted == this.pageableOptions.isCompleted
-    );
+    this.pageableOptions.search = this.searchForm.controls['search'].value;
+    this.queryRef.refetch(this.pageableOptions);
   }
 
-  updateOptions() {
-    this.queryRef.refetch(this.pageableOptions);
+  updateOptions(reset?: boolean) {
+    const options = { ...this.pageableOptions, search: undefined };
+    if (this.searchForm.controls['search'].invalid) {
+      this.queryRef.refetch(options);
+    }
+    if (reset) {
+      this.searchForm.controls['search'].reset();
+      this.pageableOptions.search = undefined;
+      this.queryRef.refetch(this.pageableOptions);
+    } else {
+      this.queryRef.refetch(this.pageableOptions);
+    }
   }
 
   getMoreTasks() {

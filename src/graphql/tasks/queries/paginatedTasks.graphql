@@ -1,4 +1,5 @@
 query paginatedTasks(
+  $search: String
   $limit: Int!
   $offset: Int!
   $field: String!
@@ -7,6 +8,7 @@ query paginatedTasks(
 ) {
   paginatedTasks(
     pageableOptions: {
+      search: $search
       limit: $limit
       offset: $offset
       isCompleted: $isCompleted
