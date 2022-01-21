@@ -2,7 +2,7 @@ query paginatedTasks(
   $limit: Int!
   $offset: Int!
   $field: String!
-  $isCompleted: Boolean = false
+  $isCompleted: Boolean!
   $ascending: Boolean!
 ) {
   paginatedTasks(

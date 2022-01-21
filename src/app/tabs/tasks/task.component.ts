@@ -18,6 +18,7 @@ import { MenuController } from '@ionic/angular';
 export class TaskPage implements OnInit, OnDestroy {
   private tasksLoading: boolean = false;
   public tasks: AllTasksLimitQuery['allTasksLimit'] = [];
+  public searchedTasks: AllTasksLimitQuery['allTasksLimit'] = [];
   private subscriptions: Array<Subscription> = [];
   public limit: number = 10;
   public offset: number = 0;
@@ -28,8 +29,14 @@ export class TaskPage implements OnInit, OnDestroy {
       offset: number;
       field: string;
       ascending: boolean;
+      isCompleted: boolean;
     }>
   >;
+  filterFields = [
+    { display: 'Date Created', value: 'createdDate' },
+    { display: 'Deadline', value: 'endDate' },
+  ];
+  searchValue = '';
 
   pageableOptions: PaginatedTasksQueryVariables;
   paneEnabled = true;
@@ -52,6 +59,7 @@ export class TaskPage implements OnInit, OnDestroy {
       offset: 0,
       field: 'createdDate',
       ascending: false,
+      isCompleted: false,
     };
     this.queryRef = this.taskService.getPaginatedTasks(this.pageableOptions);
     this.subscriptions.push(
@@ -60,6 +68,18 @@ export class TaskPage implements OnInit, OnDestroy {
         this.tasks = x?.data?.paginatedTasks.items;
       })
     );
+  }
+
+  async search() {
+    this.searchedTasks = this.tasks.filter(
+      (t) =>
+        t.title.toLowerCase().startsWith(this.searchValue.toLowerCase()) &&
+        t.isCompleted == this.pageableOptions.isCompleted
+    );
+  }
+
+  updateOptions() {
+    this.queryRef.refetch(this.pageableOptions);
   }
 
   getMoreTasks() {
@@ -88,6 +108,7 @@ export class TaskPage implements OnInit, OnDestroy {
       this.tasks = this.tasks.concat(data);
       event.target.complete();
     });
+    console.log(this.tasks);
   }
 
   ngOnDestroy(): void {

@@ -315,7 +315,7 @@ export type PaginatedTasksQueryVariables = Exact<{
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   field: Scalars['String'];
-  isCompleted?: Maybe<Scalars['Boolean']>;
+  isCompleted: Scalars['Boolean'];
   ascending: Scalars['Boolean'];
 }>;
 
@@ -651,7 +651,7 @@ export const AllTasksProjectFormDocument = gql`
     }
   }
 export const PaginatedTasksDocument = gql`
-    query paginatedTasks($limit: Int!, $offset: Int!, $field: String!, $isCompleted: Boolean = false, $ascending: Boolean!) {
+    query paginatedTasks($limit: Int!, $offset: Int!, $field: String!, $isCompleted: Boolean!, $ascending: Boolean!) {
   paginatedTasks(
     pageableOptions: {limit: $limit, offset: $offset, isCompleted: $isCompleted, sortOptions: {field: $field, ascending: $ascending}}
   ) {
