@@ -83,14 +83,7 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <div class="ion-text-wrap ion-no-padding ion-no-margin">
-          <div *ngIf="!searchValue.trim().length; else showSearch">
-            <task-card [tasks]="tasks"></task-card>
-          </div>
-          <ng-template #showSearch>
-            <task-card [tasks]="searchedTasks"></task-card
-          ></ng-template>
-        </div>
+        <task-card [tasks]="tasks"></task-card>
         <ion-infinite-scroll
           threshold="100px"
           (ionInfinite)="loadDataInfinite($event)"
