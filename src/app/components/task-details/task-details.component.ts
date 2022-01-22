@@ -63,7 +63,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((x) => x.unsubscribe);
   }
-
+  ionViewWillEnter() {
+    this.queryRef.refetch();
+  }
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.subscriptions.push(
