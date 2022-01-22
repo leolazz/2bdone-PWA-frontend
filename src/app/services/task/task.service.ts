@@ -51,7 +51,7 @@ export class TaskService {
     return this.createTaskGQlService.mutate(task).toPromise();
   }
 
-  getTasksProjectFormObservable() {
-    return this.allTasksProjectFormService.fetch();
+  getTasksProjectForm() {
+    return this.allTasksProjectFormService.watch();
   }
 }

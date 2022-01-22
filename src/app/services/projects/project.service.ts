@@ -37,13 +37,6 @@ export class ProjectService {
     return this.deleteProjectSerice.mutate(deleteProjectInput).toPromise();
   }
 
-  async getProjectsTaskForm(isCompleted?: boolean) {
-    // graphql query has default value of false
-    const tasks = await this.allProjectsTaskFormService
-      .fetch({ isCompleted: isCompleted })
-      .toPromise();
-    return tasks?.data?.allProjects;
-  }
   getOneById(id: number) {
     return this.getProjectByIdService.fetch({ id });
   }
@@ -53,8 +46,8 @@ export class ProjectService {
   getProjectWithTasks(isCompleted?: boolean) {
     return this.allProjectsWithTasksService.fetch({ isCompleted });
   }
-  getProjectsTaskFormObservable(isCompleted?: boolean) {
-    return this.allProjectsTaskFormService.fetch({ isCompleted: isCompleted });
+  getProjectsTaskForm(isCompleted?: boolean) {
+    return this.allProjectsTaskFormService.watch({ isCompleted: isCompleted });
   }
   createProject(project: CreateProjectDto) {
     return this.createProjectService.mutate(project).toPromise();

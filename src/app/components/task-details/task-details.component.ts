@@ -11,11 +11,13 @@ import { Subscription } from 'rxjs';
 import {
   AllProjectsTaskFormQuery,
   CreateTaskDto,
+  Exact,
   GetTaskByIdQuery,
 } from '../../../graphql/generated/graphql';
 import { ProjectService } from '../../services/projects/project.service';
 import { TaskService } from '../../services/task/task.service';
 import { ToastController } from '@ionic/angular';
+import { QueryRef } from 'apollo-angular';
 
 @Component({
   selector: 'task-details',
@@ -31,6 +33,12 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   public projects: AllProjectsTaskFormQuery['allProjects'];
   private projectsLoading: boolean = false;
   public updateSucessful: boolean = false;
+  public queryRef: QueryRef<
+    AllProjectsTaskFormQuery,
+    Exact<{
+      isCompleted?: boolean;
+    }>
+  >;
   @ViewChild('projectSelect', { static: false }) projectSelect: IonSelect;
   @ViewChild('titleInput', { static: false }) titleInput: IonInput;
 
@@ -66,8 +74,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         this.myForm.patchValue({ title: this.task.title });
       })
     );
+    this.queryRef = this.projectService.getProjectsTaskForm();
     this.subscriptions.push(
-      this.projectService.getProjectsTaskFormObservable().subscribe((x) => {
+      this.queryRef.valueChanges.subscribe((x) => {
         this.projectsLoading = x.loading;
         this.projects = x?.data?.allProjects;
       })
@@ -94,7 +103,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     const deletedTask = await this.taskService.deleteTask(+this.id);
     if (deletedTask?.data?.deleteTask?.title) {
       this.Toast(`'${deletedTask?.data?.deleteTask?.title}' Deleted`, false);
-      this.navCtrl.back();
+      this.navCtrl.navigateBack('/tabs/tasks');
     } else this.Toast('Something Went Wrong', true);
   }
 
@@ -146,7 +155,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     const result = await this.taskService.updateTask({ ...updatedTask });
     if (result?.data?.updateTask) {
       this.Toast('Task Updated!', false);
-      this.navCtrl.back();
+      this.navCtrl.navigateBack('/tabs/tasks');
     } else this.Toast('Something Went Wrong', true);
   }
   formatDate(date: string) {
