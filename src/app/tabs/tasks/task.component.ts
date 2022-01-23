@@ -38,8 +38,6 @@ export class TaskPage implements OnInit, OnDestroy {
     { display: 'Date Created', value: 'createdDate' },
     { display: 'Deadline', value: 'endDate' },
   ];
-  searchValue = '';
-
   pageableOptions: PaginatedTasksQueryVariables;
   paneEnabled = true;
   constructor(

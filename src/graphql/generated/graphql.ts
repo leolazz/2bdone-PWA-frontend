@@ -249,10 +249,11 @@ export type GetProjectByIdQueryVariables = Exact<{
 export type GetProjectByIdQuery = { __typename?: 'Query', findOneProjectById: { __typename?: 'Project', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, isCompleted: boolean, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined } };
 
 export type PaginatedProjectsQueryVariables = Exact<{
+  search?: Maybe<Scalars['String']>;
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   field: Scalars['String'];
-  isCompleted?: Maybe<Scalars['Boolean']>;
+  isCompleted: Scalars['Boolean'];
   ascending: Scalars['Boolean'];
 }>;
 
@@ -468,9 +469,9 @@ export const GetProjectByIdDocument = gql`
     }
   }
 export const PaginatedProjectsDocument = gql`
-    query paginatedProjects($limit: Int!, $offset: Int!, $field: String!, $isCompleted: Boolean = false, $ascending: Boolean!) {
+    query paginatedProjects($search: String, $limit: Int!, $offset: Int!, $field: String!, $isCompleted: Boolean!, $ascending: Boolean!) {
   paginatedProjects(
-    pageableOptions: {limit: $limit, offset: $offset, isCompleted: $isCompleted, sortOptions: {field: $field, ascending: $ascending}}
+    pageableOptions: {search: $search, limit: $limit, offset: $offset, isCompleted: $isCompleted, sortOptions: {field: $field, ascending: $ascending}}
   ) {
     items {
       id

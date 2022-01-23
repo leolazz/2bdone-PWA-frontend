@@ -1,12 +1,14 @@
 query paginatedProjects(
+  $search: String
   $limit: Int!
   $offset: Int!
   $field: String!
-  $isCompleted: Boolean = false
+  $isCompleted: Boolean!
   $ascending: Boolean!
 ) {
   paginatedProjects(
     pageableOptions: {
+      search: $search
       limit: $limit
       offset: $offset
       isCompleted: $isCompleted
