@@ -1,7 +1,7 @@
 <ion-list>
   <ion-card *ngFor="let project of projects">
     <ion-item
-      color="secondary"
+      [color]="project.isCompleted ? '' : 'secondary'"
       routerLink="details/{{ project?.id }}"
       class="ion-activated"
     >

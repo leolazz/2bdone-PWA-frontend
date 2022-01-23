@@ -188,8 +188,8 @@ export type UpdateProjectDto = {
   endDate: Scalars['String'];
   id: Scalars['Int'];
   isCompleted: Scalars['Boolean'];
-  removeExistingTasks: Scalars['Boolean'];
   tasksId?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  tasksToRemoveId?: Maybe<Array<Maybe<Scalars['Int']>>>;
   title: Scalars['String'];
 };
 
@@ -219,7 +219,7 @@ export type UpdateProjectMutationVariables = Exact<{
   createdDate: Scalars['String'];
   endDate: Scalars['String'];
   isCompleted: Scalars['Boolean'];
-  removeExistingTasks: Scalars['Boolean'];
+  tasksToRemoveId?: Maybe<Array<Maybe<Scalars['Int']>> | Maybe<Scalars['Int']>>;
   details?: Maybe<Scalars['String']>;
   tasksId?: Maybe<Array<Maybe<Scalars['Int']>> | Maybe<Scalars['Int']>>;
 }>;
@@ -363,9 +363,9 @@ export const DeleteProjectDocument = gql`
     }
   }
 export const UpdateProjectDocument = gql`
-    mutation updateProject($id: Int!, $title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean!, $removeExistingTasks: Boolean!, $details: String, $tasksId: [Int]) {
+    mutation updateProject($id: Int!, $title: String!, $createdDate: String!, $endDate: String!, $isCompleted: Boolean!, $tasksToRemoveId: [Int], $details: String, $tasksId: [Int]) {
   updateProject(
-    updateProjectDto: {id: $id, title: $title, createdDate: $createdDate, removeExistingTasks: $removeExistingTasks, endDate: $endDate, isCompleted: $isCompleted, tasksId: $tasksId, details: $details}
+    updateProjectDto: {id: $id, title: $title, createdDate: $createdDate, tasksToRemoveId: $tasksToRemoveId, endDate: $endDate, isCompleted: $isCompleted, tasksId: $tasksId, details: $details}
   ) {
     id
     title

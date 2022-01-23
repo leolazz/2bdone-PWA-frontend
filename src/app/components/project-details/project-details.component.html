@@ -101,33 +101,54 @@
               displayFormat="D / M / YY"
             ></ion-datetime>
           </ion-item>
-          <ion-item
-            ><ion-label>Remove All Existing Tasks?</ion-label>
-            <ion-checkbox
-              formControlName="removeExistingTasks"
-              class="form-control"
-              slot="end"
-            ></ion-checkbox
-          ></ion-item>
-          <ion-list>
-            <ion-item>
-              <ion-select
-                formControlName="tasksId"
-                okText="Add Tasks to Project"
-                cancelText="Cancel"
-                #tasksSelect
-                placeholder="Add Tasks"
-                multiple="true"
-                class="select-full-width"
-              >
-                <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
-                  >{{ task?.title }} Deadline: {{ task?.endDate }}
-                </ion-select-option>
-                <ion-label><ion-text>Available Tasks</ion-text></ion-label>
-              </ion-select>
-              <ion-button (click)="resetTasks()"> clear </ion-button>
-            </ion-item>
-          </ion-list>
+          <ion-item>
+            <ion-select
+              formControlName="tasksToRemoveId"
+              okText="Remove Tasks From Project"
+              cancelText="Cancel"
+              #tasksToRemove
+              placeholder="Remove Tasks"
+              multiple="true"
+              class="select-full-width"
+            >
+              <ion-select-option
+                *ngFor="let task of project?.tasks"
+                [value]="task?.id"
+                >{{ task?.title }} Deadline: {{ task?.endDate }}
+              </ion-select-option>
+              <ion-label><ion-text>Current Tasks</ion-text></ion-label>
+            </ion-select>
+            <ion-button
+              [disabled]="!myForm.controls['tasksToRemoveId'].value"
+              (click)="resetTasksToRemove()"
+            >
+              clear
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-select
+              formControlName="tasksId"
+              okText="Add Tasks to Project"
+              cancelText="Cancel"
+              #tasksSelect
+              placeholder="Add Tasks"
+              multiple="true"
+              class="select-full-width"
+            >
+              <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
+                >{{ task?.title }} Deadline: {{ task?.endDate }}
+              </ion-select-option>
+              <ion-label><ion-text>Available Tasks</ion-text></ion-label>
+            </ion-select>
+            <ion-button
+              [disabled]="!myForm.controls['tasksId'].value"
+              (click)="resetTasks()"
+            >
+              clear
+            </ion-button>
+          </ion-item>
+
           <ion-item
             ><ion-label>Mark As Completed?</ion-label>
             <ion-checkbox

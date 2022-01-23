@@ -72,7 +72,12 @@
                   >{{ task?.title }} Deadline: {{ task?.endDate }}
                 </ion-select-option>
               </ion-select>
-              <ion-button (click)="resetTasks()"> clear </ion-button>
+              <ion-button
+                [disabled]="!myForm.controls['tasksId'].value"
+                (click)="resetTasks()"
+              >
+                clear
+              </ion-button>
             </ion-item>
           </ion-list>
           <ion-button [disabled]="myForm.invalid" type="submit" expand="block"

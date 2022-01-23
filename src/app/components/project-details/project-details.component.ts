@@ -7,9 +7,11 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
+import { QueryRef } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import {
   AllTasksProjectFormQuery,
+  Exact,
   GetProjectByIdQuery,
   UpdateProjectDto,
 } from '../../../graphql/generated/graphql';
@@ -27,10 +29,16 @@ export class ProjectDetailsComponent implements OnInit {
   project: GetProjectByIdQuery['findOneProjectById'];
   private subscriptions: Array<Subscription> = [];
   public tasks: AllTasksProjectFormQuery['allOrphanTasks'];
+  public queryRef: QueryRef<
+    AllTasksProjectFormQuery,
+    Exact<{
+      [key: string]: never;
+    }>
+  >;
   private projectLoading: boolean = false;
   private tasksLoading: boolean = false;
-  clearExistingProjects: boolean;
   @ViewChild('tasksSelect', { static: false }) tasksSelect: IonSelect;
+  @ViewChild('tasksToRemove', { static: false }) tasksToRemove: IonSelect;
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -45,8 +53,8 @@ export class ProjectDetailsComponent implements OnInit {
       endDate: ['', [Validators.required]],
       details: [''],
       tasksId: [],
+      tasksToRemoveId: [],
       isCompleted: [false],
-      removeExistingTasks: [false],
     });
   }
   async Toast(header: string, error: boolean) {
@@ -71,11 +79,17 @@ export class ProjectDetailsComponent implements OnInit {
   resetTasks() {
     this.tasksSelect.value = '';
   }
+  resetTasksToRemove() {
+    this.tasksToRemove.value = '';
+  }
   get projectTitle() {
     return this.myForm.get('title');
   }
   get projectEndDate() {
     return this.myForm.get('endDate');
+  }
+  get projectTasksToRemove() {
+    return this.myForm.get('tasksToRemoveId').value;
   }
   get projectTasks() {
     return this.myForm.get('tasksId').value;
@@ -121,34 +135,25 @@ export class ProjectDetailsComponent implements OnInit {
         `'${deletedProject?.data?.deleteProject?.title}' Deleted`,
         false
       );
-      this.navCtrl.back();
+      this.navCtrl.navigateBack('/tabs/projects');
     } else {
       this.Toast('Something Went Wrong', true);
     }
   }
   async updateProject() {
-    const existingTaskIds = this.project.tasks.map((t) => {
-      return t.id;
-    });
-    let updatedProject: UpdateProjectDto;
-    this.myForm.controls['removeExistingTasks'].disabled
-      ? (updatedProject = {
-          ...this.project,
-          ...this.myForm.value,
-          tasksId: [...existingTaskIds, ...this.projectTasks()],
-          removeExistingTasks: false,
-        })
-      : (updatedProject = {
-          ...this.project,
-          tasksId: [],
-          ...this.myForm.value,
-        });
+    const updatedProject: UpdateProjectDto = {
+      ...this.project,
+      ...this.myForm.value,
+    };
     updatedProject.endDate = updatedProject.endDate.substring(0, 10);
+    console.log(updatedProject);
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
+    if (updatedProject.tasksToRemoveId === null)
+      updatedProject.tasksToRemoveId = [];
     const result = await this.projectService.updateProject(updatedProject);
     if (result?.data?.updateProject) {
       this.Toast('Project Updated!', false);
-      this.navCtrl.back();
+      this.navCtrl.navigateBack('/tabs/projects');
     } else {
       this.Toast('Something Went Wrong.', true);
     }
@@ -162,6 +167,9 @@ export class ProjectDetailsComponent implements OnInit {
       .toISOString()
       .substring(0, 4);
   }
+  ionViewWillEnter() {
+    this.queryRef.refetch();
+  }
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.subscriptions.push(
@@ -172,13 +180,11 @@ export class ProjectDetailsComponent implements OnInit {
         this.myForm.patchValue({ title: this.project?.title });
         this.myForm.patchValue({ details: this.project?.details });
         this.myForm.patchValue({ isCompleted: this.project?.isCompleted });
-        x?.data?.findOneProjectById.tasks?.length <= 0
-          ? this.myForm.controls['removeExistingTasks'].disable()
-          : this.myForm.controls['removeExistingTasks'].enable();
       })
     );
+    this.queryRef = this.taskService.getTasksProjectForm();
     this.subscriptions.push(
-      this.taskService.getTasksProjectFormObservable().subscribe((x) => {
+      this.queryRef.valueChanges.subscribe((x) => {
         this.tasksLoading = x.loading;
         this.tasks = x?.data?.allOrphanTasks;
       })

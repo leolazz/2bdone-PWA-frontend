@@ -4,7 +4,7 @@ mutation updateProject(
   $createdDate: String!
   $endDate: String!
   $isCompleted: Boolean!
-  $removeExistingTasks: Boolean!
+  $tasksToRemoveId: [Int]
   $details: String
   $tasksId: [Int]
 ) {
@@ -13,7 +13,7 @@ mutation updateProject(
       id: $id
       title: $title
       createdDate: $createdDate
-      removeExistingTasks: $removeExistingTasks
+      tasksToRemoveId: $tasksToRemoveId
       endDate: $endDate
       isCompleted: $isCompleted
       tasksId: $tasksId

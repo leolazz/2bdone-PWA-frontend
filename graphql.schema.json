@@ -1455,14 +1455,14 @@
             "deprecationReason": null
           },
           {
-            "name": "removeExistingTasks",
+            "name": "tasksId",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Boolean",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -1471,7 +1471,7 @@
             "deprecationReason": null
           },
           {
-            "name": "tasksId",
+            "name": "tasksToRemoveId",
             "description": null,
             "type": {
               "kind": "LIST",
