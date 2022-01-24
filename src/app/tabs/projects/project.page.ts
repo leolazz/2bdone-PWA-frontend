@@ -52,6 +52,7 @@ export class ProjectPage implements OnInit, OnDestroy {
   }
   ionViewWillLeave() {
     this.paneEnabled = false;
+    this.menuCtrl.close();
   }
 
   ngOnInit() {

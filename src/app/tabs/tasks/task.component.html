@@ -1,5 +1,5 @@
 <ion-split-pane contentId="tasks" [disabled]="!paneEnabled">
-  <ion-menu contentId="tasks" menu-Id="tasks">
+  <ion-menu (ionWillOpen)="test()" contentId="tasks" menuId="tasks">
     <ion-header>
       <ion-toolbar>
         <ion-title> Task Options</ion-title>
@@ -72,28 +72,26 @@
     </ion-header>
   </ion-menu>
   <ion-router-outlet id="tasks"
-    ><ion-content>
-      <ion-menu-toggle auto-hide="false" menu-Id="tasks">
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons>
-              <ion-menu-button></ion-menu-button>
-              <ion-title>Tasks</ion-title>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <task-card [tasks]="tasks"></task-card>
-        <ion-infinite-scroll
-          threshold="100px"
-          (ionInfinite)="loadDataInfinite($event)"
+    ><ion-content class="fullWidth">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+            <ion-title>Tasks</ion-title>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <task-card [tasks]="tasks"></task-card>
+      <ion-infinite-scroll
+        threshold="100px"
+        (ionInfinite)="loadDataInfinite($event)"
+      >
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data..."
         >
-          <ion-infinite-scroll-content
-            loadingSpinner="bubbles"
-            loadingText="Loading more data..."
-          >
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-menu-toggle> </ion-content
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll> </ion-content
   ></ion-router-outlet>
 </ion-split-pane>
 <ion-fab slot="fixed" horizontal="end" vertical="top">

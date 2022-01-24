@@ -4,6 +4,7 @@
       <ion-toolbar>
         <ion-title> Project Options</ion-title>
       </ion-toolbar>
+
       <ion-list>
         <form [formGroup]="searchForm" (ngSubmit)="search()" method="post">
           <ion-item>
@@ -37,7 +38,6 @@
         </form>
         <ion-item>
           <ion-label>View Completed</ion-label>
-
           <ion-toggle
             [(ngModel)]="pageableOptions.isCompleted"
             (ionChange)="updateOptions()"
@@ -74,27 +74,25 @@
   </ion-menu>
   <ion-router-outlet id="projects">
     <ion-content>
-      <ion-menu-toggle auto-hide="false" menu-Id="projects">
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons>
-              <ion-menu-button></ion-menu-button>
-              <ion-title>Projects</ion-title>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <project-card [projects]="projects"></project-card>
-        <ion-infinite-scroll
-          threshold="100px"
-          (ionInfinite)="loadDataInfinite($event)"
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+            <ion-title>Projects</ion-title>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <project-card [projects]="projects"></project-card>
+      <ion-infinite-scroll
+        threshold="100px"
+        (ionInfinite)="loadDataInfinite($event)"
+      >
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data..."
         >
-          <ion-infinite-scroll-content
-            loadingSpinner="bubbles"
-            loadingText="Loading more data..."
-          >
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-menu-toggle>
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-content>
   </ion-router-outlet>
 </ion-split-pane>

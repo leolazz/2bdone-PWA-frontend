@@ -46,12 +46,13 @@ export class TaskPage implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) {}
 
-  async ionViewWillEnter() {
+  ionViewWillEnter() {
     this.paneEnabled = true;
     this.menuCtrl.enable(true, 'tasks');
   }
   ionViewWillLeave() {
     this.paneEnabled = false;
+    this.menuCtrl.close();
   }
 
   ngOnInit() {
@@ -119,7 +120,6 @@ export class TaskPage implements OnInit, OnDestroy {
       this.tasks = this.tasks.concat(data);
       event.target.complete();
     });
-    console.log(this.tasks);
   }
 
   ngOnDestroy(): void {
