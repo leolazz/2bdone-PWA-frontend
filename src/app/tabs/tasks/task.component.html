@@ -7,31 +7,32 @@
       <ion-list>
         <form [formGroup]="searchForm" (ngSubmit)="search()" method="post">
           <ion-item>
-            <ion-input formControlName="search" clearInput> </ion-input>
+            <ion-input
+              formControlName="search"
+              placeholder="Search By Title"
+              clearInput
+            >
+            </ion-input>
           </ion-item>
           <ion-row>
-            <ion-col>
-              <ion-item>
-                <ion-button
-                  [disabled]="searchForm.invalid"
-                  color="success"
-                  type="submit"
-                  expand="block"
-                  >Search</ion-button
-                >
-              </ion-item>
+            <ion-col size="6">
+              <ion-button
+                [disabled]="searchForm.invalid"
+                color="success"
+                type="submit"
+                expand="block"
+                >Search</ion-button
+              >
             </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-button
-                  [disabled]="!pageableOptions.search"
-                  type="reset"
-                  color="danger"
-                  expand="block"
-                  (click)="updateOptions(true)"
-                  >Clear Search</ion-button
-                >
-              </ion-item>
+            <ion-col size="6">
+              <ion-button
+                [disabled]="!pageableOptions.search"
+                type="reset"
+                color="danger"
+                expand="block"
+                (click)="updateOptions(true)"
+                >Clear Search</ion-button
+              >
             </ion-col>
           </ion-row>
         </form>
