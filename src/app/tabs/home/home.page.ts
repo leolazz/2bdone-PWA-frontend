@@ -17,6 +17,7 @@ export class HomePage implements OnInit {
     endTime: '',
     allDay: false,
   };
+  today;
   eventSource = [];
   calendar = {
     mode: 'month',
@@ -37,6 +38,7 @@ export class HomePage implements OnInit {
     this.paneEnabled = false;
     this.menuCtrl.close();
   }
+
   next() {
     var swiper = document.querySelector('.swiper-container')['swiper'];
     swiper.slideNext();
@@ -51,6 +53,8 @@ export class HomePage implements OnInit {
   onCurrentDateChanged() {}
   reloadSource(startTime, endTime) {}
   onEventSelected() {}
-  onViewTitleChanged() {}
+  onViewTitleChanged(title) {
+    this.today = title;
+  }
   onTimeSelected() {}
 }
