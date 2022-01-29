@@ -15,6 +15,12 @@ export type Scalars = {
   Float: number;
 };
 
+export type Calendar = {
+  __typename?: 'Calendar';
+  projects?: Maybe<Array<Maybe<Project>>>;
+  tasks?: Maybe<Array<Maybe<Task>>>;
+};
+
 export type CreateProjectDto = {
   createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
@@ -130,6 +136,7 @@ export type Query = {
   allTasksLimit: Array<Task>;
   findOneProjectById: Project;
   findOneTaskById: Task;
+  getMonth: Calendar;
   paginatedProjects: PaginatedProjectsResponse;
   paginatedTasks: PaginatedTasksResponse;
 };
@@ -152,6 +159,11 @@ export type QueryFindOneProjectByIdArgs = {
 
 export type QueryFindOneTaskByIdArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryGetMonthArgs = {
+  yearMonth: Scalars['String'];
 };
 
 
