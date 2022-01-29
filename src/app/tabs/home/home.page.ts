@@ -53,7 +53,7 @@ export class HomePage implements OnInit {
   onCurrentDateChanged() {}
   reloadSource(startTime, endTime) {}
   onEventSelected() {}
-  onViewTitleChanged(title) {
+  onMonthChange(title) {
     this.today = title;
   }
   onTimeSelected() {}
