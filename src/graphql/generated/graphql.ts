@@ -205,6 +205,13 @@ export type UpdateProjectDto = {
   title: Scalars['String'];
 };
 
+export type GetMonthQueryVariables = Exact<{
+  yearMonth: Scalars['String'];
+}>;
+
+
+export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'Task', id: number, projectId?: number | null | undefined, title?: string | null | undefined, details?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, endDate: string, isCompleted: boolean } | null | undefined> | null | undefined } };
+
 export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
   details?: Maybe<Scalars['String']>;
@@ -337,6 +344,38 @@ export type PaginatedTasksQueryVariables = Exact<{
 
 export type PaginatedTasksQuery = { __typename?: 'Query', paginatedTasks: { __typename?: 'PaginatedTasksResponse', total: number, items: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> } };
 
+export const GetMonthDocument = gql`
+    query getMonth($yearMonth: String!) {
+  getMonth(yearMonth: $yearMonth) {
+    tasks {
+      id
+      projectId
+      title
+      details
+      endDate
+      isCompleted
+    }
+    projects {
+      id
+      title
+      details
+      endDate
+      isCompleted
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetMonthGQL extends Apollo.Query<GetMonthQuery, GetMonthQueryVariables> {
+    document = GetMonthDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const CreateProjectDocument = gql`
     mutation createProject($title: String!, $details: String, $tasksId: [Int], $createdDate: String!, $endDate: String!, $isCompleted: Boolean!) {
   createProject(
