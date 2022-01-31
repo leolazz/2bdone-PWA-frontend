@@ -106,8 +106,9 @@
               placeholder="Task deadline"
               min="{{ todaysDate() }}"
               max="{{ maxDate() }}"
-              displayFormat="D / M / YY"
-              value="{{ formatDate(task?.endDate) }}"
+              minute-values="0,15,30,45"
+              size="cover"
+              value="{{ task?.endDate }}"
             ></ion-datetime>
           </ion-item>
           <ion-list>

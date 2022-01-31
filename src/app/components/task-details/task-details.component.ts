@@ -153,7 +153,6 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
         projectId: this.taskProject(),
       };
     }
-    updatedTask.endDate = updatedTask.endDate.substring(0, 10);
     const result = await this.taskService.updateTask({ ...updatedTask });
     if (result?.data?.updateTask) {
       this.Toast('Task Updated!', false);
@@ -162,7 +161,7 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
   }
   formatDate(date: string) {
     const today = new Date(date);
-    return today.toISOString().substring(0, 10);
+    return today.toISOString();
   }
   todaysDate() {
     const today = new Date();

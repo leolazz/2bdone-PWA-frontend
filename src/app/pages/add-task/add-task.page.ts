@@ -75,8 +75,8 @@ export class AddTaskPage implements OnInit {
   }
   async saveTask() {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
-    newTask.endDate = newTask.endDate.substring(0, 10);
     const result = await this.taskService.createTask(newTask);
+
     if (result?.data?.createTask) {
       this.Toast('Task Added!', false);
       this.navCtrl.navigateBack('/tabs/tasks');
@@ -93,7 +93,6 @@ export class AddTaskPage implements OnInit {
   }
   ionViewWillEnter() {
     this.queryRef.refetch();
-    console.log('refresh');
   }
   ngOnInit() {
     this.queryRef = this.projectService.getProjectsTaskForm();

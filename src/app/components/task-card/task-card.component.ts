@@ -11,5 +11,9 @@ export class TaskCardComponent implements OnInit {
   public tasks: AllTasksLimitQuery['allTasksLimit'] = [];
   constructor() {}
 
+  formatDate(date: string) {
+    const endDate = new Date(date).toUTCString();
+    return endDate.substring(0, 13);
+  }
   ngOnInit() {}
 }
