@@ -99,10 +99,10 @@
               max="{{ maxDate() }}"
               minute-values="0,15,30,45"
               size="cover"
-              value="{{ project.endDate }}"
+              value="{{ project?.endDate }}"
             ></ion-datetime>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf(project.tasks)>
             <ion-select
               formControlName="tasksToRemoveId"
               okText="Remove Tasks From Project"
@@ -126,7 +126,6 @@
               clear
             </ion-button>
           </ion-item>
-
           <ion-item>
             <ion-select
               formControlName="tasksId"
