@@ -13,12 +13,14 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  DateTime: any;
 };
 
 export type Calendar = {
   __typename?: 'Calendar';
-  projects?: Maybe<Array<Maybe<Project>>>;
-  tasks?: Maybe<Array<Maybe<Task>>>;
+  projects?: Maybe<Array<Maybe<ProjectEvent>>>;
+  tasks?: Maybe<Array<Maybe<TaskEvent>>>;
 };
 
 export type CreateProjectDto = {
@@ -128,6 +130,17 @@ export type Project = {
   title: Scalars['String'];
 };
 
+export type ProjectEvent = {
+  __typename?: 'ProjectEvent';
+  details?: Maybe<Scalars['String']>;
+  endDate: Scalars['DateTime'];
+  id: Scalars['Int'];
+  isCompleted: Scalars['Boolean'];
+  startTime: Scalars['DateTime'];
+  taskIds?: Maybe<Array<Scalars['Int']>>;
+  title: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   allOrphanTasks: Array<Task>;
@@ -194,6 +207,18 @@ export type Task = {
   title: Scalars['String'];
 };
 
+export type TaskEvent = {
+  __typename?: 'TaskEvent';
+  details?: Maybe<Scalars['String']>;
+  endDate: Scalars['DateTime'];
+  id: Scalars['Int'];
+  isCompleted: Scalars['Boolean'];
+  outcomes?: Maybe<Scalars['String']>;
+  projectId?: Maybe<Scalars['Int']>;
+  startTime: Scalars['DateTime'];
+  title: Scalars['String'];
+};
+
 export type UpdateProjectDto = {
   createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
@@ -210,7 +235,7 @@ export type GetMonthQueryVariables = Exact<{
 }>;
 
 
-export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'Task', id: number, projectId?: number | null | undefined, title: string, details?: string | null | undefined, endDate: string, isCompleted: boolean } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, endDate: string, isCompleted: boolean } | null | undefined> | null | undefined } };
+export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'TaskEvent', id: number, title: string, startTime: any, endDate: any, isCompleted: boolean, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'ProjectEvent', id: number, title: string, startTime: any, endDate: any, isCompleted: boolean, taskIds?: Array<number> | null | undefined, details?: string | null | undefined } | null | undefined> | null | undefined } };
 
 export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -349,18 +374,22 @@ export const GetMonthDocument = gql`
   getMonth(yearMonth: $yearMonth) {
     tasks {
       id
-      projectId
       title
-      details
+      startTime
       endDate
       isCompleted
+      projectId
+      outcomes
+      details
     }
     projects {
       id
       title
-      details
+      startTime
       endDate
       isCompleted
+      taskIds
+      details
     }
   }
 }
