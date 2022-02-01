@@ -67,6 +67,8 @@
         (onEventSelected)="onEventSelected()"
         (onTitleChanged)="onMonthChange($event)"
         (onTimeSelected)="onTimeSelected()"
+        [queryMode]="calendar.queryMode"
+        (onRangeChanged)="onRangeChanged($event)"
         [step]="calendar.step"
       >
       </calendar>

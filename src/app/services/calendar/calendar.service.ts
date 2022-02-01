@@ -6,4 +6,7 @@ import { GetMonthGQL } from '../../../graphql/generated/graphql';
 })
 export class CalendarService {
   constructor(private readonly getMonthService: GetMonthGQL) {}
+  getMonth(yearMonth: string) {
+    return this.getMonthService.watch({ yearMonth });
+  }
 }
