@@ -183,15 +183,15 @@ export type SortOptions = {
 
 export type Task = {
   __typename?: 'Task';
-  createdDate?: Maybe<Scalars['String']>;
+  createdDate: Scalars['String'];
   details?: Maybe<Scalars['String']>;
-  endDate?: Maybe<Scalars['String']>;
+  endDate: Scalars['String'];
   id: Scalars['Int'];
-  isCompleted?: Maybe<Scalars['Boolean']>;
+  isCompleted: Scalars['Boolean'];
   outcomes?: Maybe<Scalars['String']>;
   project?: Maybe<Project>;
   projectId?: Maybe<Scalars['Int']>;
-  title?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type UpdateProjectDto = {
@@ -210,7 +210,7 @@ export type GetMonthQueryVariables = Exact<{
 }>;
 
 
-export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'Task', id: number, projectId?: number | null | undefined, title?: string | null | undefined, details?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, endDate: string, isCompleted: boolean } | null | undefined> | null | undefined } };
+export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'Task', id: number, projectId?: number | null | undefined, title: string, details?: string | null | undefined, endDate: string, isCompleted: boolean } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, endDate: string, isCompleted: boolean } | null | undefined> | null | undefined } };
 
 export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -244,14 +244,14 @@ export type UpdateProjectMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, isCompleted: boolean, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined } | null | undefined> | null | undefined } };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, isCompleted: boolean, tasks?: Array<{ __typename?: 'Task', id: number, title: string } | null | undefined> | null | undefined } };
 
 export type AllProjectsWithTasksQueryVariables = Exact<{
   isCompleted?: Maybe<Scalars['Boolean']>;
 }>;
 
 
-export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> };
+export type AllProjectsWithTasksQuery = { __typename?: 'Query', allProjects: Array<{ __typename?: 'Project', id: number, title: string, details?: string | null | undefined, isCompleted: boolean, createdDate: string, endDate: string, tasks?: Array<{ __typename?: 'Task', id: number, title: string, endDate: string } | null | undefined> | null | undefined }> };
 
 export type AllProjectsTaskFormQueryVariables = Exact<{
   isCompleted?: Maybe<Scalars['Boolean']>;
@@ -265,7 +265,7 @@ export type GetProjectByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectByIdQuery = { __typename?: 'Query', findOneProjectById: { __typename?: 'Project', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, isCompleted: boolean, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined } };
+export type GetProjectByIdQuery = { __typename?: 'Query', findOneProjectById: { __typename?: 'Project', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, isCompleted: boolean, tasks?: Array<{ __typename?: 'Task', id: number, title: string, endDate: string } | null | undefined> | null | undefined } };
 
 export type PaginatedProjectsQueryVariables = Exact<{
   search?: Maybe<Scalars['String']>;
@@ -277,7 +277,7 @@ export type PaginatedProjectsQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedProjectsQuery = { __typename?: 'Query', paginatedProjects: { __typename?: 'PaginatedProjectsResponse', total: number, items: Array<{ __typename?: 'Project', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, details?: string | null | undefined, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> } };
+export type PaginatedProjectsQuery = { __typename?: 'Query', paginatedProjects: { __typename?: 'PaginatedProjectsResponse', total: number, items: Array<{ __typename?: 'Project', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, details?: string | null | undefined, tasks?: Array<{ __typename?: 'Task', id: number, title: string, endDate: string } | null | undefined> | null | undefined }> } };
 
 export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
@@ -290,14 +290,14 @@ export type CreateTaskMutationVariables = Exact<{
 }>;
 
 
-export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, outcomes?: string | null | undefined, isCompleted: boolean, project?: { __typename?: 'Project', title: string } | null | undefined } };
 
 export type DeleteTaskMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
 
 
-export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: { __typename?: 'Task', title?: string | null | undefined } };
+export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: { __typename?: 'Task', title: string } };
 
 export type UpdateTaskMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -311,26 +311,26 @@ export type UpdateTaskMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, outcomes?: string | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined } };
+export type UpdateTaskMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', id: number, title: string, details?: string | null | undefined, createdDate: string, endDate: string, outcomes?: string | null | undefined, isCompleted: boolean, project?: { __typename?: 'Project', title: string } | null | undefined } };
 
 export type GetTaskByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetTaskByIdQuery = { __typename?: 'Query', findOneTaskById: { __typename?: 'Task', id: number, title?: string | null | undefined, details?: string | null | undefined, outcomes?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, projectId?: number | null | undefined, isCompleted?: boolean | null | undefined, project?: { __typename?: 'Project', title: string, endDate: string } | null | undefined } };
+export type GetTaskByIdQuery = { __typename?: 'Query', findOneTaskById: { __typename?: 'Task', id: number, title: string, details?: string | null | undefined, outcomes?: string | null | undefined, createdDate: string, endDate: string, projectId?: number | null | undefined, isCompleted: boolean, project?: { __typename?: 'Project', title: string, endDate: string } | null | undefined } };
 
 export type AllTasksLimitQueryVariables = Exact<{
   limit: Scalars['Int'];
 }>;
 
 
-export type AllTasksLimitQuery = { __typename?: 'Query', allTasksLimit: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> };
+export type AllTasksLimitQuery = { __typename?: 'Query', allTasksLimit: Array<{ __typename?: 'Task', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> };
 
 export type AllTasksProjectFormQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllTasksProjectFormQuery = { __typename?: 'Query', allOrphanTasks: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined }> };
+export type AllTasksProjectFormQuery = { __typename?: 'Query', allOrphanTasks: Array<{ __typename?: 'Task', id: number, title: string, endDate: string }> };
 
 export type PaginatedTasksQueryVariables = Exact<{
   search?: Maybe<Scalars['String']>;
@@ -342,7 +342,7 @@ export type PaginatedTasksQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedTasksQuery = { __typename?: 'Query', paginatedTasks: { __typename?: 'PaginatedTasksResponse', total: number, items: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, createdDate?: string | null | undefined, endDate?: string | null | undefined, isCompleted?: boolean | null | undefined, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> } };
+export type PaginatedTasksQuery = { __typename?: 'Query', paginatedTasks: { __typename?: 'PaginatedTasksResponse', total: number, items: Array<{ __typename?: 'Task', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> } };
 
 export const GetMonthDocument = gql`
     query getMonth($yearMonth: String!) {
