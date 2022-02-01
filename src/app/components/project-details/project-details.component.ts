@@ -141,9 +141,11 @@ export class ProjectDetailsComponent implements OnInit {
     }
   }
   async updateProject() {
+    const projectTasks = this.project.tasks.map((x) => x.id);
     const updatedProject: UpdateProjectDto = {
       ...this.project,
       ...this.myForm.value,
+      tasksId: [...projectTasks, ...this.myForm.controls['tasksId'].value],
     };
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
     if (updatedProject.tasksToRemoveId === null)
