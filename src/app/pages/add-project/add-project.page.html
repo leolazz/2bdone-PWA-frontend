@@ -54,7 +54,7 @@
               placeholder="Project Deadline"
               min="{{ todaysDate() }}"
               max="{{ maxDate() }}"
-              displayFormat="D / M / YY"
+              size="cover"
             ></ion-datetime>
           </ion-item>
           <ion-list>
@@ -66,6 +66,7 @@
                 #tasksSelect
                 placeholder="Add Tasks?"
                 multiple="true"
+                minute-values="0,15,30,45"
                 class="select-full-width"
               >
                 <ion-select-option *ngFor="let task of tasks" [value]="task?.id"

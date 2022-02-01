@@ -145,8 +145,7 @@ export class ProjectDetailsComponent implements OnInit {
       ...this.project,
       ...this.myForm.value,
     };
-    updatedProject.endDate = updatedProject.endDate.substring(0, 10);
-    console.log(updatedProject);
+
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
     if (updatedProject.tasksToRemoveId === null)
       updatedProject.tasksToRemoveId = [];
@@ -161,6 +160,10 @@ export class ProjectDetailsComponent implements OnInit {
   todaysDate() {
     const today = new Date();
     return today.toISOString().substring(0, 10);
+  }
+  formatDate(date: string) {
+    const endDate = new Date(date).toUTCString();
+    return endDate.substring(0, 13);
   }
   maxDate() {
     return new Date(new Date().setFullYear(new Date().getFullYear() + 5))

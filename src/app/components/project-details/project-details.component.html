@@ -37,7 +37,8 @@
         <ion-icon size="small" name="pencil-outline" slot="start"></ion-icon>
         <ion-label>
           <ion-col
-            ><ion-row> {{ task?.title }}</ion-row> Deadline: {{ task?.endDate }}
+            ><ion-row> {{ task?.title }}</ion-row> Deadline:
+            {{ formatDate(task?.endDate) }}
           </ion-col>
         </ion-label>
       </ion-item>
@@ -50,7 +51,7 @@
       <ion-col center text-center>
         <ion-icon name="alarm-outline"></ion-icon>
         <div>
-          <div>Deadline: {{ project?.endDate }}</div>
+          <div>Deadline: {{ formatDate(project?.endDate) }}</div>
         </div>
       </ion-col>
     </ion-row>
@@ -98,7 +99,8 @@
               placeholder="Project Deadline"
               min="{{ todaysDate() }}"
               max="{{ maxDate() }}"
-              displayFormat="D / M / YY"
+              minute-values="0,15,30,45"
+              size="cover"
             ></ion-datetime>
           </ion-item>
           <ion-item>

@@ -277,7 +277,7 @@ export type PaginatedProjectsQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedProjectsQuery = { __typename?: 'Query', paginatedProjects: { __typename?: 'PaginatedProjectsResponse', total: number, items: Array<{ __typename?: 'Project', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, details?: string | null | undefined, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined } | null | undefined> | null | undefined }> } };
+export type PaginatedProjectsQuery = { __typename?: 'Query', paginatedProjects: { __typename?: 'PaginatedProjectsResponse', total: number, items: Array<{ __typename?: 'Project', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, details?: string | null | undefined, tasks?: Array<{ __typename?: 'Task', id: number, title?: string | null | undefined, endDate?: string | null | undefined } | null | undefined> | null | undefined }> } };
 
 export type CreateTaskMutationVariables = Exact<{
   title: Scalars['String'];
@@ -533,6 +533,7 @@ export const PaginatedProjectsDocument = gql`
       tasks {
         id
         title
+        endDate
       }
       details
     }

@@ -160,8 +160,8 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     } else this.Toast('Something Went Wrong', true);
   }
   formatDate(date: string) {
-    const today = new Date(date);
-    return today.toISOString();
+    const endDate = new Date(date).toUTCString();
+    return endDate.substring(0, 13);
   }
   todaysDate() {
     const today = new Date();

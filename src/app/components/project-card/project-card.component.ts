@@ -11,5 +11,18 @@ export class ProjectCardComponent implements OnInit {
   public projects: AllProjectsWithTasksQuery['allProjects'] = [];
   constructor() {}
 
+  formatDate(date: string) {
+    const endDate = new Date(date).toUTCString();
+    return endDate.substring(0, 13);
+  }
+  test(test) {
+    console.log(test);
+  }
+  formatDateTest(date: string) {
+    const endDate = new Date(date).toUTCString();
+    console.log(date);
+    return endDate.substring(0, 13);
+  }
+
   ngOnInit() {}
 }

@@ -81,7 +81,6 @@ export class AddProjectPage implements OnInit {
     if (newProject.tasksId == null) {
       newProject.tasksId = [];
     }
-    newProject.endDate = newProject.endDate.substring(0, 10);
     const result = await this.projectService.createProject(newProject);
     if (result?.data?.createProject) {
       this.Toast('Project Added!', false);
