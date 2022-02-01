@@ -100,11 +100,9 @@
                 </ion-col>
               </ion-row>
             </ion-label>
+            <h2>Deadline</h2>
             <ion-datetime
-              type="date"
               formControlName="endDate"
-              placeholder="Task deadline"
-              min="{{ todaysDate() }}"
               max="{{ maxDate() }}"
               minute-values="0,15,30,45"
               size="cover"

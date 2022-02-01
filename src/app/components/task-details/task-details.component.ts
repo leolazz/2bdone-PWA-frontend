@@ -163,10 +163,6 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
     const endDate = new Date(date).toUTCString();
     return endDate.substring(0, 13);
   }
-  todaysDate() {
-    const today = new Date();
-    return today.toISOString().substring(0, 10);
-  }
   maxDate() {
     return new Date(new Date().setFullYear(new Date().getFullYear() + 5))
       .toISOString()

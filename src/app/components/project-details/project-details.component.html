@@ -93,14 +93,13 @@
                 </ion-col>
               </ion-row>
             </ion-label>
+            <h2>Deadline</h2>
             <ion-datetime
-              type="date"
               formControlName="endDate"
-              placeholder="Project Deadline"
-              min="{{ todaysDate() }}"
               max="{{ maxDate() }}"
               minute-values="0,15,30,45"
               size="cover"
+              value="{{ project.endDate }}"
             ></ion-datetime>
           </ion-item>
           <ion-item>
@@ -139,7 +138,7 @@
               class="select-full-width"
             >
               <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
-                >{{ task?.title }} Deadline: {{ task?.endDate }}
+                >{{ task?.title }} Deadline: {{ formatDate(task?.endDate) }}
               </ion-select-option>
               <ion-label><ion-text>Available Tasks</ion-text></ion-label>
             </ion-select>

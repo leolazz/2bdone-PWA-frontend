@@ -48,18 +48,15 @@
             <ion-label position="stacked">
               <ion-row>
                 <ion-col>
-                  <!-- CHANGE TO HANDLE DATE -->
                   <ion-text *ngIf="taskEndDate.invalid" color="danger"
                     ><h2>Required</h2></ion-text
                   >
                 </ion-col>
               </ion-row>
             </ion-label>
+            <h2>Deadline</h2>
             <ion-datetime
-              type="date"
               formControlName="endDate"
-              placeholder="Task deadline"
-              min="{{ todaysDate() }}"
               max="{{ maxDate() }}"
               minute-values="0,15,30,45"
               size="cover"

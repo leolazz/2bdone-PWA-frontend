@@ -84,7 +84,7 @@ export class AddTaskPage implements OnInit {
   }
   todaysDate() {
     const today = new Date();
-    return today.toISOString().substring(0, 10);
+    return today.toISOString();
   }
   maxDate() {
     return new Date(new Date().setFullYear(new Date().getFullYear() + 5))

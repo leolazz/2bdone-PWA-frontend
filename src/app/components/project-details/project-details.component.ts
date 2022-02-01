@@ -145,7 +145,6 @@ export class ProjectDetailsComponent implements OnInit {
       ...this.project,
       ...this.myForm.value,
     };
-
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
     if (updatedProject.tasksToRemoveId === null)
       updatedProject.tasksToRemoveId = [];
@@ -156,10 +155,6 @@ export class ProjectDetailsComponent implements OnInit {
     } else {
       this.Toast('Something Went Wrong.', true);
     }
-  }
-  todaysDate() {
-    const today = new Date();
-    return today.toISOString().substring(0, 10);
   }
   formatDate(date: string) {
     const endDate = new Date(date).toUTCString();
