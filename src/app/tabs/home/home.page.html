@@ -30,8 +30,6 @@
       </ion-list>
     </ion-header>
   </ion-menu>
-
-  <!-- the second content -->
   <ion-router-outlet id="second">
     <ion-content>
       <ion-header>
@@ -78,10 +76,16 @@
 <ion-fab horizontal="end" vertical="bottom" slot="fixed">
   <ion-fab-button><ion-icon name="add-outline"></ion-icon></ion-fab-button>
   <ion-fab-list side="start">
-    <ion-button shape="round" [routerLink]="['add-task']" color="primary"
+    <ion-button
+      shape="round"
+      [routerLink]="['/tabs/tasks/add-task']"
+      color="primary"
       >Task</ion-button
     >
-    <ion-button shape="round" color="secondary" [routerLink]="['add-task']"
+    <ion-button
+      shape="round"
+      color="secondary"
+      [routerLink]="['/tabs/projects/add-project']"
       >Project</ion-button
     >
   </ion-fab-list>

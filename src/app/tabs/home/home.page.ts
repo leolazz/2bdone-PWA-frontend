@@ -5,7 +5,12 @@ import { CalendarService } from '../../services/calendar/calendar.service';
 import { Subscription } from 'rxjs';
 import { QueryRef } from 'apollo-angular';
 import { QueryMode } from 'ionic2-calendar/calendar';
-import { GetMonthQuery, Exact } from '../../../graphql/generated/graphql';
+import {
+  GetMonthQuery,
+  Exact,
+  TaskEvent,
+  ProjectEvent,
+} from '../../../graphql/generated/graphql';
 
 @Component({
   selector: 'home-tab',
@@ -31,7 +36,6 @@ export class HomePage implements OnInit {
   >;
   yearMonth: string;
   rangeView: string;
-
   public eventSource = [];
   calendar = {
     mode: 'month',
@@ -39,48 +43,71 @@ export class HomePage implements OnInit {
     step: '30',
     queryMode: 'remote' as QueryMode,
   };
+
   @ViewChild(CalendarComponent) Cal: CalendarComponent;
+
   constructor(
     private menuCtrl: MenuController,
     private calService: CalendarService
   ) {
-    this.yearMonth = this.calendar.currentDate.toISOString().substring(0, 6);
+    this.yearMonth = this.calendar.currentDate.toISOString().substring(0, 7);
   }
-  ngOnInit() {
-    console.log(this.yearMonth);
-    this.queryRef = this.calService.getMonth(this.yearMonth);
-    this.subscriptions.push(
-      this.queryRef.valueChanges.subscribe((x) => {
-        this.eventSource = [
-          ...x.data?.getMonth?.projects,
-          ...x.data?.getMonth?.tasks,
-          console.log(x.data.getMonth),
-        ];
-      })
-    );
+
+  ionViewDidLoad() {}
+
+  async ngOnInit() {
+    let month = await this.calService.getMonth(this.yearMonth);
+    let tasks = this.assertDate(month.tasks);
+    let projects = this.assertDate(month.projects);
+    let events = [...tasks, ...projects];
+    this.eventSource = events;
+  }
+
+  assertDate(array: TaskEvent[] | ProjectEvent[]): any {
+    const dateCorrected = array.map((x) => ({ ...x }));
+    dateCorrected.map((x) => {
+      x.endTime = new Date(x.endTime);
+      x.startTime = new Date(x.startTime);
+    });
+    return dateCorrected;
   }
 
   ionViewWillEnter() {
     this.paneEnabled = true;
     this.menuCtrl.enable(true, 'home');
+    this.onRangeChanged();
   }
   ionViewWillLeave() {
     this.paneEnabled = false;
     this.menuCtrl.close();
   }
 
-  dateRangeIso(startTime: Date, endTime: Date) {
-    return {
-      startTime: new Date(startTime).toISOString(),
-      endTime: new Date(endTime).toISOString(),
-    };
+  async loadEvents(date: string) {
+    console.log('loadevents', this.yearMonth);
+    let month = await this.calService.getMonth(date);
+    let tasks = this.assertDate(month.tasks);
+    let projects = this.assertDate(month.projects);
+    let events = [...tasks, ...projects];
+    console.log('load stuff');
+    // this.eventSource = events;
+    return events;
+    console.log('cal event source', this.Cal.eventSource);
   }
 
-  onRangeChanged(ev: { startTime: Date; endTime: Date }) {
-    // const dateRange = this.dateRangeIso(ev.startTime, ev.endTime);
-    this.queryRef.refetch({ yearMonth: this.yearMonth });
-    console.log(this.eventSource);
-  }
+  onRangeChanged = (ev?: { startTime: Date; endTime: Date }) => {
+    if (ev) {
+      const endTime = ev.endTime;
+      endTime.setMonth(endTime.getUTCMonth() - 1);
+      const yearMonth = endTime.toISOString().substring(0, 7);
+      this.yearMonth = yearMonth;
+    }
+    this.loadEvents(this.yearMonth).then((x) => {
+      console.log(this.yearMonth);
+      console.log('hello', x);
+      this.eventSource = x;
+    });
+  };
+
   next() {
     var swiper = document.querySelector('.swiper-container')['swiper'];
     swiper.slideNext();
@@ -92,6 +119,7 @@ export class HomePage implements OnInit {
   changeMode(mode: string) {
     this.calendar.mode = mode;
   }
+
   resetEvent() {}
   onCurrentDateChanged() {}
   reloadSource(startTime, endTime) {}
@@ -100,7 +128,7 @@ export class HomePage implements OnInit {
     if (title.includes(',')) {
       let i = title.indexOf(',');
       return new Date(title.substring(0, i)).toISOString();
-    } else return new Date(title).toISOString();
+    } else return new Date(title).toISOString().substring(0, 7);
   }
   onMonthChange(title: string) {
     this.rangeView = title;
