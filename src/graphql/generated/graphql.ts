@@ -133,7 +133,7 @@ export type Project = {
 export type ProjectEvent = {
   __typename?: 'ProjectEvent';
   details?: Maybe<Scalars['String']>;
-  endDate: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
   id: Scalars['Int'];
   isCompleted: Scalars['Boolean'];
   startTime: Scalars['DateTime'];
@@ -210,7 +210,7 @@ export type Task = {
 export type TaskEvent = {
   __typename?: 'TaskEvent';
   details?: Maybe<Scalars['String']>;
-  endDate: Scalars['DateTime'];
+  endTime: Scalars['DateTime'];
   id: Scalars['Int'];
   isCompleted: Scalars['Boolean'];
   outcomes?: Maybe<Scalars['String']>;
@@ -235,7 +235,7 @@ export type GetMonthQueryVariables = Exact<{
 }>;
 
 
-export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'TaskEvent', id: number, title: string, startTime: any, endDate: any, isCompleted: boolean, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'ProjectEvent', id: number, title: string, startTime: any, endDate: any, isCompleted: boolean, taskIds?: Array<number> | null | undefined, details?: string | null | undefined } | null | undefined> | null | undefined } };
+export type GetMonthQuery = { __typename?: 'Query', getMonth: { __typename?: 'Calendar', tasks?: Array<{ __typename?: 'TaskEvent', id: number, projectId?: number | null | undefined, title: string, details?: string | null | undefined, startTime: any, endTime: any, isCompleted: boolean } | null | undefined> | null | undefined, projects?: Array<{ __typename?: 'ProjectEvent', id: number, title: string, details?: string | null | undefined, taskIds?: Array<number> | null | undefined, startTime: any, endTime: any, isCompleted: boolean } | null | undefined> | null | undefined } };
 
 export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -374,22 +374,21 @@ export const GetMonthDocument = gql`
   getMonth(yearMonth: $yearMonth) {
     tasks {
       id
-      title
-      startTime
-      endDate
-      isCompleted
       projectId
-      outcomes
+      title
       details
+      startTime
+      endTime
+      isCompleted
     }
     projects {
       id
       title
-      startTime
-      endDate
-      isCompleted
-      taskIds
       details
+      taskIds
+      startTime
+      endTime
+      isCompleted
     }
   }
 }

@@ -30,28 +30,34 @@ export class HomePage implements OnInit {
     }>
   >;
   yearMonth: string;
-  today;
+  rangeView: string;
 
-  public eventSource: GetMonthQuery['getMonth'];
+  public eventSource = [];
   calendar = {
     mode: 'month',
     currentDate: new Date(),
     step: '30',
     queryMode: 'remote' as QueryMode,
   };
-  minDate = new Date().toISOString();
   @ViewChild(CalendarComponent) Cal: CalendarComponent;
   constructor(
     private menuCtrl: MenuController,
     private calService: CalendarService
-  ) {}
+  ) {
+    this.yearMonth = this.calendar.currentDate.toISOString().substring(0, 6);
+  }
   ngOnInit() {
-    // this.queryRef = this.calService.getMonth(this.yearMonth);
-    // this.subscriptions.push(
-    //   this.queryRef.valueChanges.subscribe((x) => {
-    //     this.eventSource = x.data.getMonth;
-    //   })
-    // );
+    console.log(this.yearMonth);
+    this.queryRef = this.calService.getMonth(this.yearMonth);
+    this.subscriptions.push(
+      this.queryRef.valueChanges.subscribe((x) => {
+        this.eventSource = [
+          ...x.data?.getMonth?.projects,
+          ...x.data?.getMonth?.tasks,
+          console.log(x.data.getMonth),
+        ];
+      })
+    );
   }
 
   ionViewWillEnter() {
@@ -63,7 +69,18 @@ export class HomePage implements OnInit {
     this.menuCtrl.close();
   }
 
-  onRangeChanged(ev: { startTime: Date; endTime: Date }) {}
+  dateRangeIso(startTime: Date, endTime: Date) {
+    return {
+      startTime: new Date(startTime).toISOString(),
+      endTime: new Date(endTime).toISOString(),
+    };
+  }
+
+  onRangeChanged(ev: { startTime: Date; endTime: Date }) {
+    // const dateRange = this.dateRangeIso(ev.startTime, ev.endTime);
+    this.queryRef.refetch({ yearMonth: this.yearMonth });
+    console.log(this.eventSource);
+  }
   next() {
     var swiper = document.querySelector('.swiper-container')['swiper'];
     swiper.slideNext();
@@ -79,8 +96,15 @@ export class HomePage implements OnInit {
   onCurrentDateChanged() {}
   reloadSource(startTime, endTime) {}
   onEventSelected() {}
-  onMonthChange(title) {
-    this.today = title;
+  parseWeekDate(title: string) {
+    if (title.includes(',')) {
+      let i = title.indexOf(',');
+      return new Date(title.substring(0, i)).toISOString();
+    } else return new Date(title).toISOString();
+  }
+  onMonthChange(title: string) {
+    this.rangeView = title;
+    this.yearMonth = this.parseWeekDate(title);
   }
   onTimeSelected() {}
 }

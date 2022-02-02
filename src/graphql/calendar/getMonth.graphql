@@ -2,22 +2,21 @@ query getMonth($yearMonth: String!) {
   getMonth(yearMonth: $yearMonth) {
     tasks {
       id
-      title
-      startTime
-      endDate
-      isCompleted
       projectId
-      outcomes
+      title
       details
+      startTime
+      endTime
+      isCompleted
     }
     projects {
       id
       title
-      startTime
-      endDate
-      isCompleted
-      taskIds
       details
+      taskIds
+      startTime
+      endTime
+      isCompleted
     }
   }
 }

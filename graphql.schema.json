@@ -1002,7 +1002,7 @@
             "deprecationReason": null
           },
           {
-            "name": "endDate",
+            "name": "endTime",
             "description": null,
             "args": [],
             "type": {
@@ -1615,7 +1615,7 @@
             "deprecationReason": null
           },
           {
-            "name": "endDate",
+            "name": "endTime",
             "description": null,
             "args": [],
             "type": {
