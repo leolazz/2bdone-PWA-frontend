@@ -1,5 +1,5 @@
 import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
-import { AlertController, MenuController } from '@ionic/angular';
+import { AlertController, MenuController, NavController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { CalendarService } from '../../services/calendar/calendar.service';
 import { Subscription } from 'rxjs';
@@ -31,6 +31,7 @@ export class HomePage {
   };
   constructor(
     private menuCtrl: MenuController,
+    private navCtrl: NavController,
     private calService: CalendarService,
     private alertCtrl: AlertController,
     @Inject(LOCALE_ID) private locale: string
@@ -100,17 +101,34 @@ export class HomePage {
   onMonthChange(title: string) {
     this.rangeView = title;
   }
-  resetEvent() {}
+  navigateTo(id: number, isTask: boolean) {
+    if (isTask) this.navCtrl.navigateForward(`/tabs/tasks/details/${id}`);
+    else this.navCtrl.navigateForward(`/tabs/projects/details/${id}`);
+  }
   onCurrentDateChanged() {}
   async onEventSelected(event: TaskEvent | ProjectEvent) {
-    let start = formatDate(event.startTime, 'medium', this.locale);
     let end = formatDate(event.endTime, 'medium', this.locale);
     let alert: HTMLIonAlertElement;
     if (event.__typename == 'TaskEvent') {
       alert = await this.alertCtrl.create({
-        header: `Task: ${event.title}`,
-        subHeader: event.details,
-        message: 'From: ' + start + '<br><br>To: ' + end,
+        header: `Task Title: ${event.title.toUpperCase()}`,
+        message: `<b>Details:</b> ${event.details} <br><b>Deadline:</b> ${end}`,
+        buttons: [
+          { text: 'Close' },
+          { text: 'View Task', handler: () => this.navigateTo(event.id, true) },
+        ],
+      });
+    } else {
+      alert = await this.alertCtrl.create({
+        header: `Project Title: ${event.title.toUpperCase()}`,
+        message: `<b>Details:</b> ${event.details} <br><b>Deadline:</b> ${end}`,
+        buttons: [
+          { text: 'Close' },
+          {
+            text: 'View Project',
+            handler: () => this.navigateTo(event.id, false),
+          },
+        ],
       });
     }
     await alert.present();
