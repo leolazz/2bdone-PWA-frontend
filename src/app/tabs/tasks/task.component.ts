@@ -34,12 +34,12 @@ export class TaskPage implements OnInit, OnDestroy {
       isCompleted: boolean;
     }>
   >;
-  filterFields = [
+  public filterFields = [
     { display: 'Date Created', value: 'createdDate' },
     { display: 'Deadline', value: 'endDate' },
   ];
-  pageableOptions: PaginatedTasksQueryVariables;
-  paneEnabled = true;
+  public pageableOptions: PaginatedTasksQueryVariables;
+  private paneEnabled = true;
   constructor(
     private taskService: TaskService,
     private menuCtrl: MenuController,
