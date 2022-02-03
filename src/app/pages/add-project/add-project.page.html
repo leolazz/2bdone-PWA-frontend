@@ -68,7 +68,7 @@
                 class="select-full-width"
               >
                 <ion-select-option *ngFor="let task of tasks" [value]="task?.id"
-                  >{{ task?.title }} Deadline: {{ task?.endDate }}
+                  >{{ task?.title }} Deadline: {{ formatDate(task?.endDate) }}
                 </ion-select-option>
               </ion-select>
               <ion-button

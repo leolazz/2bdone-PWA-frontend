@@ -140,16 +140,26 @@ export class ProjectDetailsComponent implements OnInit {
       this.Toast('Something Went Wrong', true);
     }
   }
+  mergeTasks(): UpdateProjectDto {
+    const updatedProject = this.project.tasks.map((x) => x.id);
+    if (this.myForm.controls['tasksId'].value) {
+      return {
+        ...this.project,
+        ...this.myForm.value,
+        tasksId: [...this.myForm.controls['tasksId'].value],
+      };
+    } else
+      return {
+        ...this.project,
+        ...this.myForm.value,
+      };
+  }
   async updateProject() {
-    const projectTasks = this.project.tasks.map((x) => x.id);
-    const updatedProject: UpdateProjectDto = {
-      ...this.project,
-      ...this.myForm.value,
-      tasksId: [...projectTasks, ...this.myForm.controls['tasksId'].value],
-    };
+    const updatedProject = this.mergeTasks();
     if (updatedProject.tasksId === null) updatedProject.tasksId = [];
-    if (updatedProject.tasksToRemoveId === null)
+    if (updatedProject.tasksToRemoveId === null) {
       updatedProject.tasksToRemoveId = [];
+    }
     const result = await this.projectService.updateProject(updatedProject);
     if (result?.data?.updateProject) {
       this.Toast('Project Updated!', false);
