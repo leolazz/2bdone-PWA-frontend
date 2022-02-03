@@ -44,6 +44,7 @@ export class HomePage {
   ionViewWillEnter() {
     this.paneEnabled = true;
     this.menuCtrl.enable(true, 'home');
+    console.log(this.range);
     this.onRangeChanged(this.range);
   }
 
@@ -52,8 +53,8 @@ export class HomePage {
     this.menuCtrl.close();
   }
 
-  async loadEvents(date: string, overlap?: string) {
-    let month = await this.calService.getMonth(date, overlap);
+  async loadEvents(yearMonth: string, yearMonthOverlap?: string) {
+    let month = await this.calService.getMonth(yearMonth, yearMonthOverlap);
     let tasks = this.assertDate(month.tasks);
     let projects = this.assertDate(month.projects);
     let events = [...tasks, ...projects];
@@ -62,36 +63,20 @@ export class HomePage {
 
   parseDateRange(endTime: Date) {
     const yearMonth = new Date(endTime.valueOf());
-    const overlap = new Date(endTime.valueOf());
+    const yearMonthOverlap = new Date(endTime.valueOf());
     yearMonth.setMonth(endTime.getUTCMonth() - 1);
     return {
       yearMonth: yearMonth.toISOString().substring(0, 7),
-      overlap: overlap.toISOString().substring(0, 7),
+      yearMonthOverlap: yearMonthOverlap.toISOString().substring(0, 7),
     };
   }
 
-  onRangeChanged = (ev?: { startTime: Date; endTime: Date }) => {
-    let yearMonth;
-    let overlap;
-    if (ev) {
-      const endTime = new Date(ev.endTime.valueOf());
-
-      endTime.setMonth(endTime.getUTCMonth() - 1);
-
-      let overlapDate = new Date(endTime.valueOf());
-
-      overlapDate.setMonth(overlapDate.getUTCMonth() + 1);
-
-      const overlapString = overlapDate.toISOString().substring(0, 7);
-
-      overlap = overlapString;
-
-      yearMonth = endTime.toISOString().substring(0, 7);
-    }
-    let test = this.parseDateRange(ev.endTime);
-    this.loadEvents(yearMonth, overlap).then((x) => {
-      console.log('yearMonth', test.yearMonth, ' ', yearMonth);
-      console.log('overlap', test.overlap, ' ', overlap);
+  onRangeChanged = (ev: { startTime: Date; endTime: Date }) => {
+    let calendarOptions = this.parseDateRange(ev.endTime);
+    this.loadEvents(
+      calendarOptions.yearMonth,
+      calendarOptions.yearMonthOverlap
+    ).then((x) => {
       this.range = ev;
       this.eventSource = x;
     });
