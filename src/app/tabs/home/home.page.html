@@ -62,7 +62,7 @@
         [calendarMode]="calendar.mode"
         [currentDate]="calendar.currentDate"
         (onCurrentDateChanged)="onCurrentDateChanged()"
-        (onEventSelected)="onEventSelected()"
+        (onEventSelected)="onEventSelected($event)"
         (onTitleChanged)="onMonthChange($event)"
         (onTimeSelected)="onTimeSelected()"
         [queryMode]="calendar.queryMode"

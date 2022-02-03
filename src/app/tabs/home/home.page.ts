@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { AlertController, MenuController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import { CalendarService } from '../../services/calendar/calendar.service';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import {
   TaskEvent,
   ProjectEvent,
 } from '../../../graphql/generated/graphql';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'home-tab',
@@ -30,9 +31,13 @@ export class HomePage {
   };
   constructor(
     private menuCtrl: MenuController,
-    private calService: CalendarService
+    private calService: CalendarService,
+    private alertCtrl: AlertController,
+    @Inject(LOCALE_ID) private locale: string
   ) {}
-  assertDate(array: TaskEvent[] | ProjectEvent[]): any {
+  assertDate(
+    array: TaskEvent[] | ProjectEvent[]
+  ): TaskEvent[] | ProjectEvent[] {
     const dateCorrected = array.map((x) => ({ ...x }));
     dateCorrected.map((x) => {
       x.endTime = new Date(x.endTime);
@@ -97,6 +102,18 @@ export class HomePage {
   }
   resetEvent() {}
   onCurrentDateChanged() {}
-  onEventSelected() {}
+  async onEventSelected(event: TaskEvent | ProjectEvent) {
+    let start = formatDate(event.startTime, 'medium', this.locale);
+    let end = formatDate(event.endTime, 'medium', this.locale);
+    let alert: HTMLIonAlertElement;
+    if (event.__typename == 'TaskEvent') {
+      alert = await this.alertCtrl.create({
+        header: `Task: ${event.title}`,
+        subHeader: event.details,
+        message: 'From: ' + start + '<br><br>To: ' + end,
+      });
+    }
+    await alert.present();
+  }
   onTimeSelected() {}
 }
