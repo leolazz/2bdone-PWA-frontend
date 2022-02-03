@@ -12,16 +12,7 @@ export class ProjectCardComponent implements OnInit {
   constructor() {}
 
   formatDate(date: string) {
-    const endDate = new Date(date).toUTCString();
-    return endDate.substring(0, 13);
-  }
-  test(test) {
-    console.log(test);
-  }
-  formatDateTest(date: string) {
-    const endDate = new Date(date).toUTCString();
-    console.log(date);
-    return endDate.substring(0, 13);
+    return date?.substring(0, 10);
   }
 
   ngOnInit() {}

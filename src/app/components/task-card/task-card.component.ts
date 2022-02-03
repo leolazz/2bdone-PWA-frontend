@@ -12,8 +12,7 @@ export class TaskCardComponent implements OnInit {
   constructor() {}
 
   formatDate(date: string) {
-    const endDate = new Date(date).toUTCString();
-    return endDate.substring(0, 13);
+    return date?.substring(0, 10);
   }
   ngOnInit() {}
 }

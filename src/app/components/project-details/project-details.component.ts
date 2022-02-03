@@ -159,8 +159,7 @@ export class ProjectDetailsComponent implements OnInit {
     }
   }
   formatDate(date: string) {
-    const endDate = new Date(date).toUTCString();
-    return endDate.substring(0, 13);
+    return date?.substring(0, 10);
   }
   maxDate() {
     return new Date(new Date().setFullYear(new Date().getFullYear() + 5))
