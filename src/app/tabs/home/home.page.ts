@@ -44,7 +44,6 @@ export class HomePage {
   ionViewWillEnter() {
     this.paneEnabled = true;
     this.menuCtrl.enable(true, 'home');
-    console.log(this.range);
     this.onRangeChanged(this.range);
   }
 

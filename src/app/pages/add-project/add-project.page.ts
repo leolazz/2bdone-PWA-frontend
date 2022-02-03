@@ -99,6 +99,10 @@ export class AddProjectPage implements OnInit {
   ionViewWillEnter() {
     this.queryRef.refetch();
   }
+
+  formatDate(date: string) {
+    return date?.substring(0, 10);
+  }
   ngOnInit() {
     this.queryRef = this.taskService.getTasksProjectForm();
     this.subscriptions.push(
