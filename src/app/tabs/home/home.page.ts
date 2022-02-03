@@ -36,6 +36,8 @@ export class HomePage implements OnInit {
   >;
   yearMonth: string;
   rangeView: string;
+  overLap: string;
+  range = { startTime: Date.prototype, endTime: Date.prototype };
   public eventSource = [];
   calendar = {
     mode: 'month',
@@ -75,35 +77,65 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.paneEnabled = true;
     this.menuCtrl.enable(true, 'home');
-    this.onRangeChanged();
+    this.onRangeChanged(this.range);
   }
   ionViewWillLeave() {
     this.paneEnabled = false;
     this.menuCtrl.close();
   }
 
-  async loadEvents(date: string) {
-    console.log('loadevents', this.yearMonth);
-    let month = await this.calService.getMonth(date);
+  async loadEvents(date: string, overlap?: string) {
+    let month = await this.calService.getMonth(date, overlap);
     let tasks = this.assertDate(month.tasks);
     let projects = this.assertDate(month.projects);
     let events = [...tasks, ...projects];
-    console.log('load stuff');
-    // this.eventSource = events;
     return events;
-    console.log('cal event source', this.Cal.eventSource);
   }
+  // parseYearMonth(endTime: Date) {
+  //   const yearMonth = endTime;
+  //   yearMonth.setMonth(yearMonth.getUTCMonth() - 1);
+  //   return yearMonth.toISOString().substring(0, 7);
+  // }
+  // parseYearMonthOverlap(endTime: Date) {
+  //   const overlap = endTime;
+  //   overlap.setMonth(overlap.getUTCMonth() + 1 );
+  //   return overlap.toISOString().substring(0, 7);
+  // }
+
+  // onRangeChanged = (ev?: { startTime: Date; endTime: Date }) => {
+  //   if (ev) {
+  //     console.log(ev);
+  //     this.calendar.mode === 'week'
+  //       ? (this.yearMonthOverlap = this.parseYearMonthOverlap(ev.endTime))
+  //       : (this.yearMonthOverlap = '');
+  //     console.log('overlap', this.yearMonthOverlap);
+  //     this.yearMonth = this.parseYearMonth(ev.endTime);
+  //   }
+  //   this.loadEvents(this.yearMonth, this.yearMonthOverlap).then((x) => {
+  //     console.log(x);
+  //     this.eventSource = x;
+  //   });
+  // };
 
   onRangeChanged = (ev?: { startTime: Date; endTime: Date }) => {
+    let yearMonth = this.yearMonth;
+    let overlap;
     if (ev) {
-      const endTime = ev.endTime;
+      const endTime = new Date(ev.endTime.valueOf());
       endTime.setMonth(endTime.getUTCMonth() - 1);
-      const yearMonth = endTime.toISOString().substring(0, 7);
-      this.yearMonth = yearMonth;
+      let test = new Date(endTime.valueOf());
+      test.setMonth(test.getUTCMonth() + 1);
+      const over = test.toISOString().substring(0, 7);
+      overlap = over;
+      console.log('overlap', over);
+      yearMonth = endTime.toISOString().substring(0, 7);
+      console.log(yearMonth);
     }
-    this.loadEvents(this.yearMonth).then((x) => {
-      console.log(this.yearMonth);
-      console.log('hello', x);
+
+    this.loadEvents(yearMonth, overlap).then((x) => {
+      this.range = ev;
+      console.log('param', overlap);
+      console.log(x);
       this.eventSource = x;
     });
   };

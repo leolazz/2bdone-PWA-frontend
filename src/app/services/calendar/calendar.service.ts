@@ -6,10 +6,10 @@ import { GetMonthGQL } from '../../../graphql/generated/graphql';
 })
 export class CalendarService {
   constructor(private readonly getMonthService: GetMonthGQL) {}
-  async getMonth(yearMonth: string) {
+  async getMonth(yearMonth: string, yearMonthOverlap?: string) {
     return (
       await this.getMonthService
-        .fetch({ yearMonth }, { fetchPolicy: 'network-only' })
+        .fetch({ yearMonth, yearMonthOverlap }, { fetchPolicy: 'network-only' })
         .toPromise()
     ).data.getMonth;
   }

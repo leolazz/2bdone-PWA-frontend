@@ -1,5 +1,10 @@
-query getMonth($yearMonth: String!) {
-  getMonth(yearMonth: $yearMonth) {
+query getMonth($yearMonth: String!, $yearMonthOverlap: String) {
+  getMonth(
+    calendarOptions: {
+      yearMonth: $yearMonth
+      yearMonthOverlap: $yearMonthOverlap
+    }
+  ) {
     tasks {
       id
       projectId

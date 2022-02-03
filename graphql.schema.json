@@ -63,6 +63,45 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CalendarOptions",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "yearMonth",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "yearMonthOverlap",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CreateProjectDto",
         "description": null,
         "fields": null,
@@ -1313,14 +1352,14 @@
             "description": null,
             "args": [
               {
-                "name": "yearMonth",
+                "name": "calendarOptions",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
+                    "kind": "INPUT_OBJECT",
+                    "name": "CalendarOptions",
                     "ofType": null
                   }
                 },
