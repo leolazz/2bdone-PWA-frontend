@@ -39,7 +39,7 @@ export class TaskPage implements OnInit, OnDestroy {
     { display: 'Deadline', value: 'endDate' },
   ];
   public pageableOptions: PaginatedTasksQueryVariables;
-  private paneEnabled = true;
+  public paneEnabled = true;
   constructor(
     private taskService: TaskService,
     private menuCtrl: MenuController,
