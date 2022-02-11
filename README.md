@@ -2,6 +2,8 @@
 
 ## [Backend Repository](github.com/leolazz/2bedone-PWA-backend)
 
+### Description:
+
 2BeDone-PWA is a rebuild of my first project, but now as progressive web app using a new stack.
 
 ### Why I made this:
