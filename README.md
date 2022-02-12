@@ -18,7 +18,9 @@ Learning a new stack while trying to complete the project quickly and make it fe
 
 Gained a solid and practical understanding of Angular, Ionic, GraphQl, and Apollo.
 
+## Mobile
 ![screenshot-iphone](/images/2bedone-iphone.png)
+## Desktop
 ![screenshot-calendar](/images/2bedone-web1.png)
 ![screenshot-calendar](/images/2bedone-web2.png)
 
