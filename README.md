@@ -1,6 +1,6 @@
 # 2bedone-PWA-frontend
 
-## [Backend Repository](github.com/leolazz/2bedone-PWA-backend)
+## [Backend Repository](https://github.com/leolazz/2bedone-PWA-backend)
 
 ### Description:
 
