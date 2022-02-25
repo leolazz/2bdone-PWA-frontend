@@ -14,7 +14,8 @@ import { environment } from './enviroments/enviroment.prod';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: `/graphql`,
+            // uri: `/graphql`,
+            uri: 'http://localhost:3000/graphql',
             withCredentials: true,
           }),
         };
