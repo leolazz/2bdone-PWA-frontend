@@ -12,7 +12,7 @@ export class IntroGuard implements CanLoad {
 
   async canLoad(): Promise<boolean> {
     const hasSeenIntro = await this.storage.get(INTRO_KEY);
-    if (hasSeenIntro && hasSeenIntro.value === 'true') {
+    if (hasSeenIntro) {
       return true;
     } else {
       this.router.navigateByUrl('/intro', { replaceUrl: true });
