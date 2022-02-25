@@ -70,6 +70,9 @@ export type Mutation = {
   createTask: Task;
   deleteProject: Project;
   deleteTask: Task;
+  login?: Maybe<Scalars['String']>;
+  logout: Scalars['Boolean'];
+  register?: Maybe<Scalars['String']>;
   updateProject: Project;
   updateTask: Task;
 };
@@ -92,6 +95,17 @@ export type MutationDeleteProjectArgs = {
 
 export type MutationDeleteTaskArgs = {
   id: Scalars['Float'];
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationRegisterArgs = {
+  data: UserInput;
 };
 
 
@@ -133,6 +147,7 @@ export type Project = {
   isCompleted: Scalars['Boolean'];
   tasks?: Maybe<Array<Maybe<Task>>>;
   title: Scalars['String'];
+  user: Scalars['Int'];
 };
 
 export type ProjectEvent = {
@@ -155,6 +170,7 @@ export type Query = {
   findOneProjectById: Project;
   findOneTaskById: Task;
   getMonth: Calendar;
+  me?: Maybe<User>;
   paginatedProjects: PaginatedProjectsResponse;
   paginatedTasks: PaginatedTasksResponse;
 };
@@ -210,6 +226,7 @@ export type Task = {
   project?: Maybe<Project>;
   projectId?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
+  user: Scalars['Int'];
 };
 
 export type TaskEvent = {
@@ -234,6 +251,35 @@ export type UpdateProjectDto = {
   tasksToRemoveId?: Maybe<Array<Maybe<Scalars['Int']>>>;
   title: Scalars['String'];
 };
+
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String'];
+  id: Scalars['Int'];
+  projects?: Maybe<Project>;
+  tasks?: Maybe<Task>;
+};
+
+export type UserInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: string | null | undefined };
+
+export type RegisterMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register?: string | null | undefined };
 
 export type GetMonthQueryVariables = Exact<{
   yearMonth: Scalars['String'];
@@ -375,6 +421,38 @@ export type PaginatedTasksQueryVariables = Exact<{
 
 export type PaginatedTasksQuery = { __typename?: 'Query', paginatedTasks: { __typename?: 'PaginatedTasksResponse', total: number, items: Array<{ __typename?: 'Task', id: number, title: string, createdDate: string, endDate: string, isCompleted: boolean, projectId?: number | null | undefined, outcomes?: string | null | undefined, details?: string | null | undefined, project?: { __typename?: 'Project', title: string } | null | undefined }> } };
 
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  login(email: $email, password: $password)
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
+    document = LoginDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String!) {
+  register(data: {email: $email, password: $password})
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class RegisterGQL extends Apollo.Mutation<RegisterMutation, RegisterMutationVariables> {
+    document = RegisterDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetMonthDocument = gql`
     query getMonth($yearMonth: String!, $yearMonthOverlap: String) {
   getMonth(
