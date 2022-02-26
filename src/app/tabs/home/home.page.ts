@@ -12,6 +12,8 @@ import {
   ProjectEvent,
 } from '../../../graphql/generated/graphql';
 import { formatDate } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'home-tab',
@@ -34,6 +36,8 @@ export class HomePage {
     private navCtrl: NavController,
     private calService: CalendarService,
     private alertCtrl: AlertController,
+    private authService: AuthService,
+    private router: Router,
     @Inject(LOCALE_ID) private locale: string
   ) {}
   assertDate(
@@ -45,6 +49,23 @@ export class HomePage {
       x.startTime = new Date(x.startTime);
     });
     return dateCorrected;
+  }
+  async logout() {
+    const alert = await this.alertCtrl.create({
+      header: `Logout`,
+      message: `Are You Sure You Want To Logout?`,
+      buttons: [
+        { text: 'Close' },
+        {
+          text: 'Logout',
+          handler: async () => {
+            await this.authService.logout();
+            this.router.navigateByUrl('/', { replaceUrl: true });
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   ionViewWillEnter() {
@@ -105,7 +126,7 @@ export class HomePage {
     if (isTask) this.navCtrl.navigateForward(`/tabs/tasks/details/${id}`);
     else this.navCtrl.navigateForward(`/tabs/projects/details/${id}`);
   }
-  onCurrentDateChanged() {}
+
   async onEventSelected(event: TaskEvent | ProjectEvent) {
     let end = formatDate(event.endTime, 'medium', this.locale);
     let alert: HTMLIonAlertElement;
@@ -133,5 +154,4 @@ export class HomePage {
     }
     await alert.present();
   }
-  onTimeSelected() {}
 }
