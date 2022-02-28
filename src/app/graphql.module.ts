@@ -2,25 +2,62 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
-import { environment } from './enviroments/enviroment.prod';
+import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
+import { ApolloClientOptions, from, InMemoryCache } from '@apollo/client/core';
+import { Storage } from '@ionic/storage-angular';
 
+export const cache = new InMemoryCache();
+
+export function createApollo(
+  httpLink: HttpLink,
+  storage: Storage
+): ApolloClientOptions<any> {
+  const authLink = setContext(async (_, { headers }) => {
+    const token = await storage.get('TOKEN_KEY');
+    console.log(token);
+    if (!token) {
+      console.log("Couldn't add jwt to header.");
+      return {};
+    } else {
+      return {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    }
+  });
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    let err: string;
+    console.log('errorLink');
+    graphQLErrors?.forEach(({ message, locations, path }) => {
+      err += `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+        locations
+      )}, Path: ${JSON.stringify(path)} \n`;
+    });
+    err += `[Network error]: ${JSON.stringify(networkError)}`;
+    console.log(err);
+  });
+
+  const apolloLink = httpLink.create({
+    uri: `http://localhost:3000/graphql`,
+    withCredentials: true,
+  });
+
+  return {
+    link: from([errorLink, authLink, apolloLink]),
+    cache,
+  } as ApolloClientOptions<any>;
+}
 @NgModule({
-  imports: [HttpClientModule],
+  exports: [HttpClientModule],
   providers: [
     {
       provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink) {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            // uri: `/graphql`,
-            uri: 'http://localhost:3000/graphql',
-            withCredentials: true,
-          }),
-        };
-      },
-      deps: [HttpLink],
+      useFactory: createApollo,
+      deps: [HttpLink, Storage],
     },
   ],
 })

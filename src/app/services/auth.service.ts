@@ -25,6 +25,7 @@ export class AuthService {
 
   async loadToken() {
     const token = await this.storage.get(TOKEN_KEY);
+    console.log('load token ', token);
     if (token) {
       console.log('set token: ', token.value);
       this.token = token;
