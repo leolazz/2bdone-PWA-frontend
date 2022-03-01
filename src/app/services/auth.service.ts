@@ -1,54 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { LoginGQL, RegisterGQL } from '../../graphql/generated/graphql';
-import { map, tap, switchMap } from 'rxjs/operators';
-
-const TOKEN_KEY = '';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    null
-  );
+  isAuthenticated = false;
   token = '';
 
   constructor(
     private storage: Storage,
     private registerGQLService: RegisterGQL,
     private loginGQLService: LoginGQL
-  ) {
-    this.loadToken();
-  }
+  ) {}
 
-  async loadToken() {
-    const token = await this.storage.get(TOKEN_KEY);
-    console.log('load token ', token);
-    if (token) {
-      console.log('set token: ', token.value);
-      this.token = token;
-      this.isAuthenticated.next(true);
-    } else {
-      this.isAuthenticated.next(false);
+  async getToken(): Promise<string> {
+    try {
+      this.token = await this.storage.get('token');
+
+      if (this.token != null) {
+        this.isAuthenticated = true;
+      } else {
+        this.isAuthenticated = false;
+      }
+
+      return this.token;
+    } catch (error) {
+      this.token = null;
+      this.isAuthenticated = false;
     }
   }
 
-  login(credentials: { email; password }): Observable<any> {
-    return this.loginGQLService.mutate(credentials).pipe(
-      map((result: any) => result.data.login),
-      switchMap((token) => {
-        return from(this.storage.set(TOKEN_KEY, token));
-      }),
-      tap((_) => {
-        this.isAuthenticated.next(true);
-      })
-    );
+  async login(credentials: { email; password }): Promise<Observable<boolean>> {
+    const result = await this.loginGQLService.mutate(credentials).toPromise();
+    this.token = result.data.login;
+    if (this.token) {
+      await this.storage.set('token', this.token);
+      this.isAuthenticated = true;
+    }
+    return new Observable((subscriber) => {
+      subscriber.next(this.isAuthenticated);
+      subscriber.complete();
+    });
   }
 
   logout(): Promise<void> {
-    this.isAuthenticated.next(false);
-    return this.storage.remove(TOKEN_KEY);
+    this.isAuthenticated = false;
+    return this.storage.remove('token');
   }
 }

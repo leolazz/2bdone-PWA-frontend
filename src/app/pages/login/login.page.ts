@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -29,23 +30,23 @@ export class LoginPage implements OnInit {
 
   async login() {
     const loading = await this.loadingController.create();
+
     await loading.present();
-    console.log(this.credentials.value);
 
-    this.authService.login(this.credentials.value).subscribe(
+    (await this.authService.login(this.credentials.value)).subscribe(
       async (res) => {
-        await loading.dismiss();
-        this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
-      },
-      async (res) => {
-        await loading.dismiss();
-        const alert = await this.alertController.create({
-          header: 'Login failed',
-          message: res.error.error,
-          buttons: ['OK'],
-        });
+        if (res) {
+          await loading.dismiss();
+          this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
+        } else {
+          await loading.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Login failed',
+            buttons: ['OK'],
+          });
 
-        await alert.present();
+          await alert.present();
+        }
       }
     );
   }
