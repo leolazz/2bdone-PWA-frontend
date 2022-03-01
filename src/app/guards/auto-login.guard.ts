@@ -11,7 +11,6 @@ export class AutoLoginGuard implements CanLoad {
   async canLoad() {
     await this.authService.getToken();
     const user = this.authService.isAuthenticated;
-    console.log(user);
     if (user) {
       this.router.navigateByUrl('/tabs/home', { replaceUrl: true });
     } else {

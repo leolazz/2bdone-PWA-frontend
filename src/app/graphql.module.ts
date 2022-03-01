@@ -16,7 +16,6 @@ export function createApollo(
   const authLink = setContext(async (_, { headers }) => {
     const token = await storage.get('token');
     if (!token) {
-      console.log("Couldn't add jwt to header.");
       return {};
     } else {
       return {
