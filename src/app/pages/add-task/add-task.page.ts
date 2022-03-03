@@ -73,6 +73,9 @@ export class AddTaskPage implements OnInit {
   get taskEndDate() {
     return this.myForm.get('endDate');
   }
+  formatDate(date: string) {
+    return date?.substring(0, 10);
+  }
   async saveTask() {
     let newTask: CreateTaskInput = { ...this.task, ...this.myForm.value };
     const result = await this.taskService.createTask(newTask);
