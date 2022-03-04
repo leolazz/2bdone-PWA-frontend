@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import {
+  AlertController,
+  LoadingController,
+  ModalController,
+} from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { RegisterPage } from '../register/register.page';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,8 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private alertController: AlertController,
     private router: Router,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    public modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -26,6 +31,14 @@ export class LoginPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: RegisterPage,
+      swipeToClose: true,
+    });
+    return await modal.present();
   }
 
   async login() {
@@ -51,7 +64,6 @@ export class LoginPage implements OnInit {
     );
   }
 
-  // Easy access for form fields
   get email() {
     return this.credentials.get('email');
   }
