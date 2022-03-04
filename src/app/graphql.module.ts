@@ -40,7 +40,7 @@ export function createApollo(
   });
 
   const apolloLink = httpLink.create({
-    uri: `http://localhost:3000/graphql`,
+    uri: `/graphql`,
     withCredentials: true,
   });
 
