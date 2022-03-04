@@ -8,11 +8,13 @@ import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    IonicStorageModule.forRoot(),
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,

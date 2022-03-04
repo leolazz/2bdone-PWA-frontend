@@ -29,6 +29,11 @@
         </ion-row>
       </ion-list>
     </ion-header>
+    <ion-footer>
+      <ion-button expand="block" color="danger" (click)="logout()"
+        >Logout</ion-button
+      >
+    </ion-footer>
   </ion-menu>
   <ion-router-outlet id="second">
     <ion-content>
@@ -61,10 +66,8 @@
         [eventSource]="eventSource"
         [calendarMode]="calendar.mode"
         [currentDate]="calendar.currentDate"
-        (onCurrentDateChanged)="onCurrentDateChanged()"
         (onEventSelected)="onEventSelected($event)"
         (onTitleChanged)="onMonthChange($event)"
-        (onTimeSelected)="onTimeSelected()"
         [queryMode]="calendar.queryMode"
         (onRangeChanged)="onRangeChanged($event)"
         [step]="calendar.step"

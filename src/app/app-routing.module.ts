@@ -1,24 +1,39 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { AutoLoginGuard } from './guards/auto-login.guard';
+
+import { IntroGuard } from './guards/intro.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'tabs',
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'intro',
+    loadChildren: () =>
+      import('./pages/intro/intro.module').then((m) => m.IntroPageModule),
   },
   {
-    path: 'add-task',
+    path: 'login',
     loadChildren: () =>
-      import('./pages/add-task/add-task.module').then(
-        (m) => m.AddTaskPageModule
-      ),
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
+    canLoad: [IntroGuard, AutoLoginGuard],
   },
   {
-    path: 'add-project',
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'register',
     loadChildren: () =>
-      import('./pages/add-project/add-project.module').then(
-        (m) => m.AddProjectPageModule
+      import('./pages/register/register.module').then(
+        (m) => m.RegisterPageModule
       ),
   },
 ];
