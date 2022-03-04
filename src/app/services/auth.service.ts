@@ -46,6 +46,23 @@ export class AuthService {
       subscriber.complete();
     });
   }
+  async register(credentials: {
+    email;
+    password;
+  }): Promise<Observable<boolean>> {
+    const result = await this.registerGQLService
+      .mutate(credentials)
+      .toPromise();
+    this.token = result.data.register;
+    if (this.token) {
+      await this.storage.set('token', this.token);
+      this.isAuthenticated = true;
+    }
+    return new Observable((subscriber) => {
+      subscriber.next(this.isAuthenticated);
+      subscriber.complete();
+    });
+  }
 
   logout(): Promise<void> {
     this.isAuthenticated = false;
